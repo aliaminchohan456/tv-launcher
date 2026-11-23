@@ -1,0 +1,10 @@
+﻿Smart TV Pro
+G10
+TCL
+12
+31
+STT2.230203.001 release-keys
+TCL
+Physical size: 3840x2160
+Override size: 1920x1080
+Physical density: 320

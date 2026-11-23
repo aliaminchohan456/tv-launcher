@@ -1,0 +1,45 @@
+# Packages this project disabled on the TV (none were uninstalled).
+# Record only: the live state is in summary.md. com.tcl.miracast and
+# com.tcl.magiconnectfree were re-enabled on 27 October 2026 so the PC can
+# cast to the TV; their lines stay here so restore.ps1 remains complete and
+# idempotent. Do not disable them again while wireless display is wanted.
+com.tcl.logkit
+tv.samba.ssm.ui
+com.google.android.feedback
+android.autoinstalls.config.google.gtvpai
+com.tcl.waterfall.overseas
+com.tcl.messagebox
+com.tcl.tv.tclhome_passive
+com.tcl.esticker
+com.tcl.exhibit
+com.tcl.partnercustomizer
+com.tcl.channelplus
+com.tcl.interactive
+com.tcl.ocean.instructions
+com.tcl.repairguide
+com.tcl.gamebar
+com.tcl.ui_mediaCenter
+com.tcl.UpdatePeripheral
+com.google.android.play.games
+com.tcl.useragreement
+com.google.android.youtube.tvmusic
+com.amazon.amazonvideo.livingroom
+com.gxnet.castle.indiatv
+com.instagram.airwave
+com.tcl.browser
+org.localsend.localsend_app
+com.alphainventor.filemanager
+com.tcl.t_solo
+com.tcl.guard
+com.tcl.smartalexa
+com.tcl.miracast
+com.tcl.airplay2
+com.realtek.airplay2
+com.tcl.magiconnectfree
+com.google.android.marvin.talkback
+com.tcl.hearaid
+com.tcl.usercenter
+com.google.android.apps.tv.dreamx
+com.tcl.ttvs
+com.google.android.apps.tv.launcherx
+com.google.android.tungsten.setupwraith

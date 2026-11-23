@@ -1,0 +1,31 @@
+# Gradle / Android build output
+.gradle/
+build/
+**/build/
+.kotlin/
+*.apk
+*.aab
+*.ap_
+*.dex
+captures/
+
+# Machine-specific settings
+local.properties
+*.jks
+*.keystore
+debug.keystore
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local captures and recordings, kept on disk only
+screenshots/
+videos/
+
+# Logs and scratch
+*.log
+*.hprof

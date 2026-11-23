@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/option_card"
+    android:layout_width="360dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/options_card"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/option_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:letterSpacing="-0.01"
+        android:maxLines="1"
+        android:paddingBottom="16dp"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:background="#1FFFFFFF" />
+
+    <TextView
+        android:id="@+id/option_move"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/option_row"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Move in dock"
+        android:textColor="@drawable/option_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/option_dock"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/option_row"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Add to dock"
+        android:textColor="@drawable/option_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/option_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/option_row"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="App Info"
+        android:textColor="@drawable/option_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/option_uninstall"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/option_row"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Uninstall"
+        android:textColor="@drawable/option_text"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/option_edit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/option_row"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="Edit"
+        android:textColor="@drawable/option_text"
+        android:textSize="18sp" />
+</LinearLayout>

@@ -1,0 +1,1333 @@
+﻿
+
+===== com.tcl.logkit =====
+c12aee9 com.tcl.logkit/.MainActivity filter 675a76e
+fde50a5 com.tcl.logkit/.UsbChangedReceiver filter 2d8cc7a
+4f86c2b com.tcl.logkit/com.tcl.swtc.fft.BCReceiver filter 2fd5888
+62ffe0f com.tcl.logkit/.BootCompletedReceiver filter 71ee9c
+8085221 com.tcl.logkit/.FloatWindowService filter b173646
+com.tcl.logkit/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{c5ca17f com.tcl.logkit/com.tcl.ff.component.utils.common.UtilsFileProvider}
+android.permission.PACKAGE_USAGE_STATS
+android.permission.FOREGROUND_SERVICE
+android.permission.REBOOT
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.DEVICE_POWER
+android.permission.DUMP
+tcl.permission.ACCESS_EXTENDED_RUNNINGTIME
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.MANAGE_EXTERNAL_STORAGE
+com.tcl.permission.openprivacy
+android.permission.CLEAR_APP_USER_DATA
+android.permission.ACCESS_NETWORK_STATE
+com.tcl.bi.permission.access
+android.permission.INTERNET
+android.permission.ACCESS_WIFI_STATE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.SYSTEM_OVERLAY_WINDOW
+android.permission.MANAGE_EXTERNAL_STORAGE: granted=true
+android.permission.SYSTEM_ALERT_WINDOW: granted=true
+android.permission.CLEAR_APP_USER_DATA: granted=true
+com.tcl.bi.permission.access: granted=true
+android.permission.FOREGROUND_SERVICE: granted=true
+android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+android.permission.DEVICE_POWER: granted=true
+android.permission.INTERNET: granted=true
+android.permission.PACKAGE_USAGE_STATS: granted=true
+
+===== tv.samba.ssm.ui =====
+tv.samba.action.LAUNCH_SAMBA_TV_PRIVACY_MANAGER_SETTINGS_ACTIVITY:
+2eb91a tv.samba.ssm.ui/tv.samba.ssm.activities.SambaTVPrivacyManagerSettingsActivity filter 466ec4b
+tv.samba.action.LAUNCH_SAMBA_TV_SETTINGS_ACTIVITY:
+5895d37 tv.samba.ssm.ui/tv.samba.ssm.activities.SambaTVSettingsActivity filter 56da2a4
+b0c95d3 tv.samba.ssm.ui/tv.samba.ssm.activities.SambaTVSetupActivity filter 3ac7809
+tv.samba.action.LAUNCH_SAMBA_TV_PRIVACY_MANAGER_SETUP_ACTIVITY:
+480a23c tv.samba.ssm.ui/tv.samba.ssm.activities.SambaTVPrivacyManagerSetupActivity filter 29b8bc5
+tv.samba.action.LAUNCH_SAMBA_TV_NOTIFICATION_ACTIVITY:
+cf80a0e tv.samba.ssm.ui/tv.samba.ssm.activities.SambaTVNotificationActivity filter d80bc2f
+tv.samba.action.LAUNCH_SAMBA_TV_SETUP_ACTIVITY:
+b0c95d3 tv.samba.ssm.ui/tv.samba.ssm.activities.SambaTVSetupActivity filter e344510
+tv.samba.action.LAUNCH_SAMBA_TV_READING_ACTIVITY:
+614680d tv.samba.ssm.ui/tv.samba.ssm.activities.SambaTVReadingActivity filter 57273c2
+9ef4ce6 tv.samba.ssm.ui/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 4360227
+8d3a628 tv.samba.ssm.ui/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter 9ae1f41
+b79cca tv.samba.ssm.ui/androidx.profileinstaller.ProfileInstallReceiver filter e9c5ab1
+d0fcd4 tv.samba.ssm.ui/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter 5fc6e7d
+7d35172 tv.samba.ssm.ui/androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy filter 7f699c3
+b79cca tv.samba.ssm.ui/androidx.profileinstaller.ProfileInstallReceiver filter e2f7e3b
+6ab1240 tv.samba.ssm.ui/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 3e67579
+b79cca tv.samba.ssm.ui/androidx.profileinstaller.ProfileInstallReceiver filter f50e958
+b79cca tv.samba.ssm.ui/androidx.profileinstaller.ProfileInstallReceiver filter 21abb96
+34f126c tv.samba.ssm.ui/androidx.work.impl.diagnostics.DiagnosticsReceiver filter bcff035
+58112be tv.samba.ssm.ui/androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver filter 89f0f1f
+deaf0ed tv.samba.ssm.ui/tv.samba.ssm.SambaApiService filter 6befb22
+tv.samba.ssm.SSM_SERVICE:
+68dc317 tv.samba.ssm.ui/tv.samba.ssm.settings.SettingsSliceProvider filter 6974304
+Permission [tv.samba.ssm.permission.MODIFY_SAMBA_SETTINGS] (3e27f29):
+perm=PermissionInfo{48b51e4 tv.samba.ssm.permission.MODIFY_SAMBA_SETTINGS}
+tv.samba.ssm.ui/tv.samba.ssm.settings.SettingsSliceProvider:
+Provider{68dc317 tv.samba.ssm.ui/tv.samba.ssm.settings.SettingsSliceProvider}
+tv.samba.ssm.permission.MODIFY_SAMBA_SETTINGS: prot=signature|privileged, INSTALLED
+tcl.permission.SambaVideoService
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+
+===== com.tcl.ttvs =====
+1275ef1 com.tcl.ttvs/.versionUpdateApp.appstore.ui.activity.ServiceUpdateActivity filter c170ad6
+ab7b9fe com.tcl.ttvs/.versionUpdateApp.core.UI.SystemUpdateActivity filter 359c55f
+a7f587b com.tcl.ttvs/.versionUpdateApp.core.UI.CheckoutVersionActivity filter f505698
+ab7b9fe com.tcl.ttvs/.versionUpdateApp.core.UI.SystemUpdateActivity filter dd62bac
+8873075 com.tcl.ttvs/.versionUpdateApp.core.UI.NetworkUpdateActivity filter 1d1780a
+571780 com.tcl.ttvs/.versionUpdateApp.core.UI.UpdateEntranceActivity filter b3e31b9
+2a10157 com.tcl.ttvs/.versionUpdateApp.appstore.ui.activity.LauncherOptActivity filter d404444
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter e4227e3
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 6e455e0
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 4bff7ba
+9c1f92d com.tcl.ttvs/.CoreReceiver filter 750fe62
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 713566b
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter fdf4674
+c1a0d55 com.tcl.ttvs/.versionUpdateApp.appstore.component.broadcast.CommonBroadcastReceiver filter be5c36a
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 70eee47
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter b40879d
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 439c412
+com.tcl.versionUpdateApp.BootSTRCompleteService:
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 95295c8
+5ab05b com.tcl.ttvs/com.tcl.trackdata.service.StatsFetchBroadcast filter 9bb00f8
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter d65d586
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 27ce661
+cca5bf3 com.tcl.ttvs/.versionUpdateApp.core.receiver.BootBroadcastReceiver filter 3449eae
+6bb29d1 com.tcl.ttvs/.ssm.receiver.SSMReceive filter d14ac36
+cca5bf3 com.tcl.ttvs/.versionUpdateApp.core.receiver.BootBroadcastReceiver filter b1f60b0
+ca30099 com.tcl.ttvs/.versionUpdateApp.appstore.component.service.InstallManager$InstallMessageReceiver filter aec0f5e
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 891d7dc
+3e55f3f com.tcl.ttvs/.versionUpdateApp.appstore.component.service.UninstallManager$UninstallMessageReceiver filter 568f00c
+cca5bf3 com.tcl.ttvs/.versionUpdateApp.core.receiver.BootBroadcastReceiver filter 3f1fb29
+524c44f com.tcl.ttvs/.versionUpdateApp.core.receiver.SystemUpdateReceiver filter 60620e5
+cbe7d96 com.tcl.ttvs/.bi.core.BIService filter f635d17
+com.tcl.ttvs.TVSServerService:
+63a962f com.tcl.ttvs/.tcast.core.server.TVSServerService filter 80e743c
+com.tcl.multiscreeninteractiontv.MSI_TV_Service:
+d184209 com.tcl.ttvs/com.tcl.multiscreeninteractiontv.PlayerService filter 3690c0e
+
+===== com.tcl.waterfall.overseas =====
+5fc3909 com.tcl.waterfall.overseas/com.tcl.browser.portal.browse.activity.PlayWebVideoActivity filter c50e52f
+5fc3909 com.tcl.waterfall.overseas/com.tcl.browser.portal.browse.activity.PlayWebVideoActivity filter 5a0173c
+839ee3f com.tcl.waterfall.overseas/.ui.SchemeActivity filter afbd30c
+839ee3f com.tcl.waterfall.overseas/.ui.SchemeActivity filter eceb455
+839ee3f com.tcl.waterfall.overseas/.ui.SchemeActivity filter 7b2de6a
+839ee3f com.tcl.waterfall.overseas/.ui.SchemeActivity filter 6e92f5b
+839ee3f com.tcl.waterfall.overseas/.ui.SchemeActivity filter 91913f8
+816637 com.tcl.waterfall.overseas/.ui.mediaDetail.MediaDetailActivity filter 9c777a4
+5fc3909 com.tcl.waterfall.overseas/com.tcl.browser.portal.browse.activity.PlayWebVideoActivity filter bbb370e
+d9340d1 com.tcl.waterfall.overseas/.ui.web.WebActivity filter 8187736
+7fc2ed3 com.tcl.waterfall.overseas/.ui.moviesOfActors.MoviesOfActorsActivity filter 6d66a10
+51bc6e3 com.tcl.waterfall.overseas/.main.MainActivity filter 68d7a5e
+51bc6e3 com.tcl.waterfall.overseas/.main.MainActivity filter 38b3799
+51bc6e3 com.tcl.waterfall.overseas/.main.MainActivity filter 9ff08e0
+d3a190d com.tcl.waterfall.overseas/.ui.setting.SettingActivity filter 26cd0c2
+a90a54b com.tcl.waterfall.overseas/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 4f56b28
+a65cc5 com.tcl.waterfall.overseas/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter c77b61a
+44b781f com.tcl.waterfall.overseas/androidx.profileinstaller.ProfileInstallReceiver filter 3b9d9ca
+c150041 com.tcl.waterfall.overseas/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter e4b19e6
+5c24b27 com.tcl.waterfall.overseas/androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy filter dca11d4
+44b781f com.tcl.waterfall.overseas/androidx.profileinstaller.ProfileInstallReceiver filter 9b5c76c
+e705f7d com.tcl.waterfall.overseas/androidx.work.impl.background.systemalarm.RescheduleReceiver filter a9eee72
+44b781f com.tcl.waterfall.overseas/androidx.profileinstaller.ProfileInstallReceiver filter eb10135
+44b781f com.tcl.waterfall.overseas/androidx.profileinstaller.ProfileInstallReceiver filter 2b9773b
+e287679 com.tcl.waterfall.overseas/androidx.work.impl.diagnostics.DiagnosticsReceiver filter 5e97fbe
+7e72c3 com.tcl.waterfall.overseas/androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver filter 2a07740
+com.tcl.waterfall.overseas/androidx.startup.InitializationProvider:
+Provider{c98ca36 com.tcl.waterfall.overseas/androidx.startup.InitializationProvider}
+com.tcl.waterfall.overseas/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{66ebd37 com.tcl.waterfall.overseas/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.waterfall.overseas/com.google.mlkit.common.internal.MlKitInitProvider:
+Provider{a5782a4 com.tcl.waterfall.overseas/com.google.mlkit.common.internal.MlKitInitProvider}
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+com.tvos.permission.READ_DEVICE_INFO
+
+===== com.tcl.messagebox =====
+918aac0 com.tcl.messagebox/.activity.ImagePlayerActivity filter 40763f9
+ae304a7 com.tcl.messagebox/.activity.MainActivity filter e3e0d54
+ae304a7 com.tcl.messagebox/.activity.MainActivity filter 67c15f2
+ae304a7 com.tcl.messagebox/.activity.MainActivity filter b7374fd
+ae304a7 com.tcl.messagebox/.activity.MainActivity filter cb14443
+3319f3e com.tcl.messagebox/org.tcl.ttvs.LocalCompactReceiver filter 299e19f
+com.tcl.messagebox/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{d547f41 com.tcl.messagebox/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.messagebox/com.tcl.messagebox_core.provider.MessageProvider:
+Provider{9062ce6 com.tcl.messagebox/com.tcl.messagebox_core.provider.MessageProvider}
+android.permission.ACCESS_WIFI_STATE
+android.permission.ACCESS_NETWORK_STATE
+android.permission.INTERNET
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.SYSTEM_OVERLAY_WINDOW
+android.permission.INTERNAL_SYSTEM_WINDOW
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.FOREGROUND_SERVICE
+android.permission.VIBRATE
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.BROADCAST_STICKY
+android.permission.GET_TASKS
+android.permission.READ_EXTERNAL_STORAGE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.CHANGE_COMPONENT_ENABLED_STATE
+com.tcl.permission.openprivacy
+com.tvos.permission.READ_DEVICE_INFO
+android.permission.PACKAGE_USAGE_STATS
+android.permission.MEDIA_CONTENT_CONTROL
+com.tcl.bi.permission.access
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+android.permission.CONFIGURE_WIFI_DISPLAY: granted=true
+
+===== com.tcl.guard =====
+7ad190b com.tcl.guard/.permissionshield.main.activity.PermissionShieldActivity filter 9e1fa01
+7ad190b com.tcl.guard/.permissionshield.main.activity.PermissionShieldActivity filter bd733e8
+6682382 com.tcl.guard/.mainmenu.splashpage.activity.StartActivity filter db4ea93
+6682382 com.tcl.guard/.mainmenu.splashpage.activity.StartActivity filter 632dad0
+6682382 com.tcl.guard/.mainmenu.splashpage.activity.StartActivity filter f32bac9
+9399cef com.tcl.guard/.mainmenu.main.activity.MainMenuActivity filter 2233a85
+9fa5c64 com.tcl.guard/.portal.activity.InfoAndSettingActivity filter 117fecd
+d29f0a6 com.tcl.guard/.appmanager.activity.AppManagerActivity filter 8923ae7
+com.tcl.guard.intent.action.DepthCleanActivity:
+5e135ff com.tcl.guard/.portal.activity.DepthCleanActivity filter 191dfcc
+5e135ff com.tcl.guard/.portal.activity.DepthCleanActivity filter 114a215
+3601df6 com.tcl.guard/.portal.activity.WidgetCleanActivity filter b51e5f7
+6682382 com.tcl.guard/.mainmenu.splashpage.activity.StartActivity filter df8f5ce
+9399cef com.tcl.guard/.mainmenu.main.activity.MainMenuActivity filter cb2a0da
+69992a com.tcl.guard/.portal.activity.RecentlyAppActivity filter a1d331b
+9399cef com.tcl.guard/.mainmenu.main.activity.MainMenuActivity filter b32d3fc
+5e32cb8 com.tcl.guard/.portal.activity.lowmem.MemWarningActivity filter 7aa4a91
+ed1342c com.tcl.guard/.appmanager.receiver.UsbMountedReceiver filter 300cef5
+15a9800 com.tcl.guard/.portal.broadcast.SafetyGuardReceiver filter de2e839
+1746e7e com.tcl.guard/.deviceuse.receiver.BootStartReceiver filter bb19fdf
+9dfa694 com.tcl.guard/.commonware.eventdispatcher.EventDispatcher$DispatcherReceiver filter 373353d
+c747132 com.tcl.guard/.portal.receiver.BootReceiver filter 6bd9e83
+ed1342c com.tcl.guard/.appmanager.receiver.UsbMountedReceiver filter ce4f48a
+tcl.intent.action.BroadcastDispatchService:
+3eb943a com.tcl.guard/.commonware.BroadcastDispatchService filter 153f8eb
+com.tcl.guard.action.ZeroSpaceService:
+fdc6571 com.tcl.guard/.portal.service.ZeroSpaceService filter e25cf56
+com.tcl.guard.action.PROXY_SERVICE:
+cba5afb com.tcl.guard/.portal.ttvs.CentralService filter c336718
+com.tcl.guard.CleanRubbishService:
+67151a9 com.tcl.guard/.portal.service.CleanRubbishService filter 6d7732e
+com.tcl.tvweishi.packageinstaller.UninstallerService:
+dc9abd7 com.tcl.guard/.portal.packageinstaller.UninstallerService filter 83dcc4
+com.tcl.guard.deviceuse.service.DeviceUseService:
+ca0005c com.tcl.guard/.deviceuse.service.DeviceUseService filter 3645f65
+
+===== com.tcl.usercenter =====
+deb3f2 com.tcl.usercenter/.activity.WelActivity filter 8d28a43
+73ecb97 com.tcl.usercenter/.webview.WebViewActivity filter 6a46d6d
+deb3f2 com.tcl.usercenter/.activity.WelActivity filter 4201d3e
+com.tcl.usercenter.activity.logintypeactivity:
+deb3f2 com.tcl.usercenter/.activity.WelActivity filter 689879f
+com.tcl.usercenter.activity.WelActivity:
+deb3f2 com.tcl.usercenter/.activity.WelActivity filter dc919f9
+f88febb com.tcl.usercenter/.activity.ShowAccountActivity filter a939fd8
+deb3f2 com.tcl.usercenter/.activity.WelActivity filter a9778c0
+com.tcl.usercenter.activity.bindphoneactivity:
+49f0f31 com.tcl.usercenter/.activity.BindPhoneActivity filter f409616
+deb3f2 com.tcl.usercenter/.activity.WelActivity filter e7ccf4a
+deb3f2 com.tcl.usercenter/.activity.WelActivity filter e785cb5
+com.tcl.usercenter.activity.scanqractivity:
+deb3f2 com.tcl.usercenter/.activity.WelActivity filter 3db60ec
+com.tcl.usercenter.webview.webviewactivity:
+73ecb97 com.tcl.usercenter/.webview.WebViewActivity filter 58ee184
+ca7fda2 com.tcl.usercenter/.background.services.receiver.BootCompletedReceiver filter 1a8a33
+com.tcl.usercenter.UserCenterService:
+7da91f0 com.tcl.usercenter/.background.services.aidl.UserCenterService filter 277369
+com.tcl.usercenter/com.tcl.tab.OemTabProvider:
+Provider{35bdb22 com.tcl.usercenter/com.tcl.tab.OemTabProvider}
+com.tcl.usercenter/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{92cd9b3 com.tcl.usercenter/com.tcl.ff.component.utils.common.UtilsFileProvider}
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.ACCESS_WIFI_STATE
+android.permission.WAKE_LOCK
+android.permission.CHANGE_NETWORK_STATE
+android.permission.WRITE_SETTINGS
+android.permission.RUN_INSTRUMENTATION
+android.permission.FOREGROUND_SERVICE
+com.tcl.permission.openprivacy
+android.permission.QUERY_ALL_PACKAGES
+
+===== com.tcl.useragreement =====
+9598492 com.tcl.useragreement/.module_oversea.activity.TCLUserAgreementActivity filter c6e1e63
+13d7a48 com.tcl.useragreement/.module_oversea.activity.DetailPrivacyActivity filter 2707cc7
+13d7a48 com.tcl.useragreement/.module_oversea.activity.DetailPrivacyActivity filter e1f30e1
+13d7a48 com.tcl.useragreement/.module_oversea.activity.DetailPrivacyActivity filter 3328e06
+9598492 com.tcl.useragreement/.module_oversea.activity.TCLUserAgreementActivity filter bb74a60
+dff745c com.tcl.useragreement/.module_oversea.activity.FVPActivity filter 660c365
+7da283a com.tcl.useragreement/.module_oversea.activity.ErrorActivity filter 700fceb
+f44c72e com.tcl.useragreement/.module_oversea.activity.UpdateActivity filter 8d02cf
+8d3f2f4 com.tcl.useragreement/.module_oversea.activity.CustomPageActivity filter 2fcfa1d
+4d43530 com.tcl.useragreement/.module_common.ui.CertificationActivity filter 9af75a9
+ba24fd5 com.tcl.useragreement/.module_oversea.receiver.PrivacyUpdateReceiver filter c2d13ea
+c3ef6db com.tcl.useragreement/.module_oversea.receiver.ShopInitResetReceiver filter e680578
+bf41b19 com.tcl.useragreement/.module_oversea.receiver.BootCompleteReceiver filter 58757de
+b1a3dbf com.tcl.useragreement/.module_oversea.receiver.StrResumeCompleteReceiver filter 9b6ac8c
+62c25b7 com.tcl.useragreement/.module_oversea.service.CheckUpdateService filter 6d40124
+a536653 com.tcl.useragreement/.module_proxy.service.ProxyIntentService filter 5e20b90
+com.tcl.useragreement.action.PROXY_SERVICE:
+com.tcl.useragreement.networkmonitorservice:
+6c51451 com.tcl.useragreement/.module_oversea.service.ForegroundService filter 5c084b6
+675a48d com.tcl.useragreement/.module_data.service.AgreementAidlService filter a483642
+Permission [com.tcl.permission.openprivacy] (52037c3):
+perm=PermissionInfo{e5eb221 com.tcl.permission.openprivacy}
+com.tcl.useragreement/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{f1e1646 com.tcl.useragreement/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.permission.openprivacy: prot=signature, INSTALLED
+android.permission.INTERNET
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.WRITE_SECURE_SETTINGS
+android.permission.FOREGROUND_SERVICE
+android.permission.FOREGROUND_SERVICE_DATA_SYNC
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+com.tcl.bi.permission.access
+android.permission.WRITE_EXTERNAL_STORAGE
+
+===== com.tcl.hotelmenu =====
+78a2355 com.tcl.hotelmenu/.MainActivity filter 553216a
+8169fd1 com.tcl.hotelmenu/.LoadingPageActivity filter 2f9ea36
+a8fb65b com.tcl.hotelmenu/.HomePageActivity filter e228ef8
+Permission [com.tcl.hotelmenu.permission.HomePageActivity] (9f5c8be):
+perm=PermissionInfo{9fa8459 com.tcl.hotelmenu.permission.HomePageActivity}
+com.tcl.hotelmenu/androidx.startup.InitializationProvider:
+Provider{9d3a81e com.tcl.hotelmenu/androidx.startup.InitializationProvider}
+com.tcl.hotelmenu/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{18be8ff com.tcl.hotelmenu/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.hotelmenu.permission.HomePageActivity: prot=signature, INSTALLED
+android.permission.WAKE_LOCK
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.MANAGE_EXTERNAL_STORAGE
+com.android.providers.tv.permission.READ_EPG_DATA
+com.android.providers.tv.permission.WRITE_EPG_DATA
+com.android.providers.tv.permission.ACCESS_ALL_EPG_DATA
+com.tvos.permission.SET_POWER_MODE
+com.tvos.permission.READ_DEVICE_INFO
+com.tvos.permission.MODIFY_SYSTEM_PASSWORD
+com.tvos.permission.ACCESS_SYSTEM_PASSWORD
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.WRITE_SETTINGS
+android.permission.WRITE_SECURE_SETTINGS
+android.permission.MODIFY_AUDIO_ROUTING
+android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+android.permission.CLEAR_APP_USER_DATA
+android.permission.CHANGE_COMPONENT_ENABLED_STATE
+android.permission.QUERY_ALL_PACKAGES
+com.tvos.permission.TCL_HOTEL_SET_BOOT_LOGO
+android.permission.ACCESS_WIFI_STATE
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.FOREGROUND_SERVICE
+android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS
+
+===== com.tcl.initsetup =====
+42b5dfb com.tcl.initsetup/.module_main.main.MainActivity filter f04a071
+42b5dfb com.tcl.initsetup/.module_main.main.MainActivity filter 83bae18
+24993c4 com.tcl.initsetup/.module_main.receiver.ShopInitResetReceiver filter 1f1d2ad
+640ee56 com.tcl.initsetup/.module_main.receiver.PartnerReceiver filter ec7ded7
+c2e2830 com.tcl.initsetup/.unitizeui.ui.ChannelInstallationService filter 505eca9
+f599e2 com.tcl.initsetup/.module_main.service.InitSetupService filter 4419173
+557722e com.tcl.initsetup/.module_user.sambatv.SambaTVService filter 899d1cf
+com.tcl.initsetup/androidx.lifecycle.ProcessLifecycleOwnerInitializer:
+Provider{4be9cf6 com.tcl.initsetup/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+com.tcl.initsetup/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{53ff8f7 com.tcl.initsetup/com.tcl.ff.component.utils.common.UtilsFileProvider}
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.BLUETOOTH
+android.permission.BLUETOOTH_ADMIN
+com.android.setupwizard.permission.SETUP
+android.permission.QUERY_ALL_PACKAGES
+tcl.permission.SambaVideoService
+android.permission.WRITE_SECURE_SETTINGS
+com.tcl.permission.openprivacy
+android.permission.SET_TIME_ZONE
+com.tcl.bi.permission.access
+com.tvos.permission.READ_DEVICE_INFO
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.ACCESS_WIFI_STATE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.BLUETOOTH_SCAN
+android.permission.BLUETOOTH_CONNECT
+android.permission.BLUETOOTH_ADVERTISE
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+android.permission.CONFIGURE_WIFI_DISPLAY: granted=true
+
+===== com.tcl.miracast =====
+c85975c com.tcl.miracast/.MainActivity filter 627aa65
+582cd48 com.tcl.miracast/.DeviceListActivity filter ed87e1
+3ec833a com.tcl.miracast/.DeamonSinkActivity filter 48bbbeb
+d8f9906 com.tcl.miracast/.CloudFuncChangeReceiver filter 7682bc7
+79b75f4 com.tcl.miracast/.BootCompletedReceiver filter 9d9c11d
+3fc3f92 com.tcl.miracast/.MiracastIntentService filter ab1bd63
+Permission [com.tcl.miracast.permission.ACCESS_PROVIDER] (db03196):
+perm=PermissionInfo{d66cafc com.tcl.miracast.permission.ACCESS_PROVIDER}
+com.tcl.miracast/.provider.MiracastProvider:
+Provider{1856585 com.tcl.miracast/.provider.MiracastProvider}
+com.tcl.miracast/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{498efda com.tcl.miracast/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.miracast.permission.ACCESS_PROVIDER: prot=normal, INSTALLED
+android.permission.ACCESS_WIFI_STATE
+android.permission.CHANGE_WIFI_STATE
+android.permission.CHANGE_NETWORK_STATE
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.READ_PHONE_STATE
+android.permission.WAKE_LOCK
+android.permission.FOREGROUND_SERVICE
+android.permission.ACCESS_SURFACE_FLINGER
+android.permission.ACCESS_COARSE_LOCATION
+android.permission.PEERS_MAC_ADDRESS
+android.permission.WRITE_SETTINGS
+android.permission.WRITE_SECURE_SETTINGS
+android.permission.CONFIGURE_WIFI_DISPLAY
+android.permission.CONNECTIVITY_INTERNAL
+android.permission.GET_TASKS
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.ACCESS_NETWORK_SETTINGS
+com.tcl.bi.permission.access
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+
+===== com.tcl.hearaid =====
+3cc728c com.tcl.hearaid/.portal.main.activity.MainActivity filter d3b9dd5
+90bf4db com.tcl.hearaid/.volumeadaptation.MainActivity filter b142b78
+c2ab28d com.tcl.hearaid/.wireless_speakers.module.SpeakerWirelessMainActivity filter 6a32c42
+5cb03b7 com.tcl.hearaid/.accessibility.TextMagnifierActivity filter 91c8724
+1dcb060 com.tcl.hearaid/.portal.main.activity.ResultListActivity filter 2f48919
+63a2dde com.tcl.hearaid/.portal.main.activity.TestTutorialActivity filter 8735bbf
+3cc728c com.tcl.hearaid/.portal.main.activity.MainActivity filter 43749ea
+3a54251 com.tcl.hearaid/.soundfield.activities.JumpManagerActivity filter 3381ab6
+8022453 com.tcl.hearaid/.portal.main.receiver.SwitchReceiver filter b2cf190
+91cea89 com.tcl.hearaid/.volumeadaptation.BootBroadcastReceiver filter fbbca8e
+bafcacb com.tcl.hearaid/.wireless_speakers.service.WirelessSpeakerDialogService filter da562a8 permission com.tcl.hearaid.permission.wireless_speaker
+6e0a645 com.tcl.hearaid/.wireless_speakers.service.WirelessSpeakersService filter eae019a permission com.tcl.hearaid.permission.wireless_speaker
+android.accessibilityservice.AccessibilityService:
+280b2af com.tcl.hearaid/.accessibility.service.HearAidAccessibilityService filter 99796bc permission android.permission.BIND_ACCESSIBILITY_SERVICE
+com.tcl.hearaid/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{2f5a032 com.tcl.hearaid/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.hearaid/androidx.lifecycle.ProcessLifecycleOwnerInitializer:
+Provider{210a183 com.tcl.hearaid/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+android.permission.INTERNET
+android.permission.FOREGROUND_SERVICE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.ACCESS_NETWORK_STATE
+android.permission.READ_PHONE_STATE
+com.tvos.permission.TCL_KEY_USAGE
+com.tvos.permission.READ_DEVICE_INFO
+android.permission.MODIFY_AUDIO_ROUTING
+android.permission.MODIFY_AUDIO_SETTINGS
+android.permission.BLUETOOTH
+android.permission.WRITE_SECURE_SETTINGS
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.RECORD_AUDIO
+android.permission.CAPTURE_AUDIO_OUTPUT
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.WRITE_SETTINGS
+
+===== com.tcl.t_solo =====
+application/com.tcl.audioplayer.ui.BluetoothActivity:
+daf4fa6 com.tcl.t_solo/com.tcl.bluetoothlistenalone.ListenAloneActivity filter 9b99d94
+daf4fa6 com.tcl.t_solo/com.tcl.bluetoothlistenalone.ListenAloneActivity filter e4dade7
+com.tcl.t_solo/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{e7d038a com.tcl.t_solo/com.tcl.ff.component.utils.common.UtilsFileProvider}
+android.permission.ACCESS_NETWORK_STATE
+android.permission.INTERNET
+android.permission.DEVICE_POWER
+tcl.permission.ACCESS_EXTENDED_POWER
+android.permission.BLUETOOTH_PRIVILEGED
+android.permission.CONTROL_DEVICE_LIGHTS
+android.permission.REAL_GET_TASKS
+android.permission.WAKE_LOCK
+android.permission.READ_DREAM_STATE
+android.permission.QUERY_ALL_PACKAGES
+android.permission.BLUETOOTH
+android.permission.BLUETOOTH_ADMIN
+com.tcl.bi.permission.access
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.ACCESS_WIFI_STATE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.BLUETOOTH_SCAN
+android.permission.BLUETOOTH_CONNECT
+android.permission.BLUETOOTH_ADVERTISE
+android.permission.REAL_GET_TASKS: granted=true
+com.tcl.bi.permission.access: granted=true
+tcl.permission.ACCESS_EXTENDED_POWER: granted=true
+android.permission.CONTROL_DEVICE_LIGHTS: granted=true
+android.permission.DEVICE_POWER: granted=true
+android.permission.BLUETOOTH: granted=true
+android.permission.INTERNET: granted=true
+android.permission.BLUETOOTH_ADMIN: granted=true
+android.permission.BLUETOOTH_PRIVILEGED: granted=true
+android.permission.ACCESS_NETWORK_STATE: granted=true
+
+===== com.tcl.magiconnectfree =====
+a54a7b6 com.tcl.magiconnectfree/com.tcl.multiscreeninteractiontv.UI.activity.SplashActivity filter de90cb7
+a54a7b6 com.tcl.magiconnectfree/com.tcl.multiscreeninteractiontv.UI.activity.SplashActivity filter aa45c24
+com.tcl.magiconnectfree/com.google.firebase.provider.FirebaseInitProvider:
+Provider{57279e2 com.tcl.magiconnectfree/com.google.firebase.provider.FirebaseInitProvider}
+com.tcl.magiconnectfree/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{9acf173 com.tcl.magiconnectfree/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.magiconnectfree/androidx.lifecycle.ProcessLifecycleOwnerInitializer:
+Provider{2260830 com.tcl.magiconnectfree/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+com.tcl.magiconnectfree/me.jessyan.autosize.InitProvider:
+Provider{5d04ca9 com.tcl.magiconnectfree/me.jessyan.autosize.InitProvider}
+com.tcl.magiconnectfree/androidx.core.content.FileProvider:
+Provider{4c2522e com.tcl.magiconnectfree/androidx.core.content.FileProvider}
+android.permission.ACCESS_FINE_LOCATION
+android.permission.CHANGE_WIFI_STATE
+android.permission.INTERNET
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.ACCESS_NETWORK_STATE
+android.permission.READ_PHONE_STATE
+android.permission.REORDER_TASKS
+android.permission.ACCESS_WIFI_STATE
+android.permission.ACCESS_COARSE_LOCATION
+android.permission.GET_TASKS
+android.permission.GET_PACKAGE_SIZE
+android.permission.WAKE_LOCK
+android.permission.INJECT_EVENT
+android.permission.CHANGE_NETWORK_STATE
+com.tcl.permission.START_CHECK_SYSTEMUPDATE
+com.tcl.permission.openprivacy
+com.google.android.gms.permission.AD_ID
+android.permission.READ_PRIVILEGED_PHONE_STATE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE
+android.permission.ACCESS_ADSERVICES_ATTRIBUTION
+android.permission.ACCESS_ADSERVICES_AD_ID
+
+===== com.tcl.smartalexa =====
+df61d2e com.tcl.smartalexa/.view.activity.MainActivity filter e42a0cf
+e77ba5c com.tcl.smartalexa/.IconAlias filter 2ea9165
+f4ade3a com.tcl.smartalexa/.IconShow filter d727aeb
+7f42048 com.tcl.smartalexa/org.tcl.ttvs.LocalCompactReceiver filter 477dee1
+com.tcl.ttvs.alexa.client_service:
+b4ef8f4 com.tcl.smartalexa/.service.AlexaInvokeService filter 132881d
+b6afa92 com.tcl.smartalexa/com.tcl.ttvs.alexa.core.AlexaService filter 3d15c63
+ff8a406 com.tcl.smartalexa/.service.SettingService filter 17bdac7
+com.tcl.smartalexa/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{1b51d63 com.tcl.smartalexa/com.tcl.ff.component.utils.common.UtilsFileProvider}
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.MEDIA_CONTENT_CONTROL
+android.permission.INJECT_EVENTS
+android.permission.PACKAGE_USAGE_STATS
+android.permission.REAL_GET_TASKS
+com.android.providers.tv.permission.READ_EPG_DATA
+com.android.providers.tv.permission.WRITE_EPG_DATA
+android.permission.ACCESS_FINE_LOCATION
+android.permission.ACCESS_COARSE_LOCATION
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+android.permission.READ_PHONE_STATE
+android.permission.INTERNET
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.WRITE_EXTERNAL_STORAGE
+com.tcl.permission.openprivacy
+android.permission.FOREGROUND_SERVICE
+com.android.providers.tv.permission.ACCESS_ALL_EPG_DATA
+android.permission.QUERY_ALL_PACKAGES
+com.tvos.permission.READ_DEVICE_INFO
+android.permission.CHANGE_WIFI_MULTICAST_STATE
+android.permission.READ_OWNER_DATA
+android.permission.WRITE_OWNER_DATA
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.WRITE_SECURE_SETTINGS
+
+===== com.tcl.channelplus =====
+2f64fb6 com.tcl.channelplus/com.tcl.live.ui_play.PlayActivity filter bed94b7
+b317e90 com.tcl.channelplus/com.tcl.live.ui_privacy.activity.WebActivity filter c02f389
+c8fb142 com.tcl.channelplus/com.tcl.live.ui_privacy.activity.PrivacyCmpActivity filter c3cc553
+4024424 com.tcl.channelplus/com.tcl.live.ui_privacy.activity.PrivacyActivity filter d922b8d
+86b9f8e com.tcl.channelplus/androidx.profileinstaller.ProfileInstallReceiver filter c9e3f45
+86b9f8e com.tcl.channelplus/androidx.profileinstaller.ProfileInstallReceiver filter 64463af
+86b9f8e com.tcl.channelplus/androidx.profileinstaller.ProfileInstallReceiver filter 9d7f3bc
+86b9f8e com.tcl.channelplus/androidx.profileinstaller.ProfileInstallReceiver filter b06269a
+com.tcl.channelplus.service.BootService:
+67d8bcb com.tcl.channelplus/com.tcl.live.ui_tif_init.BootService filter e0e8fa8 permission com.tcl.channelplus.service.BootService
+android.media.tv.TvInputService:
+fe88ac1 com.tcl.channelplus/com.tcl.iptv.service.InputService filter 2901266 permission android.permission.BIND_TV_INPUT
+com.tcl.channelplus/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{586d5db com.tcl.channelplus/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.channelplus/androidx.startup.InitializationProvider:
+Provider{1f3f878 com.tcl.channelplus/androidx.startup.InitializationProvider}
+com.tvos.permission.ACCESS_SYSTEM_PASSWORD
+com.android.providers.tv.permission.READ_EPG_DATA
+com.android.providers.tv.permission.WRITE_EPG_DATA
+com.tvos.permission.READ_DEVICE_INFO
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+com.android.providers.tv.permission.ACCESS_ALL_EPG_DATA
+com.android.providers.tv.permission.ACCESS_WATCHED_PROGRAMS
+android.permission.SYSTEM_ALERT_WINDOW
+com.google.android.gms.permission.AD_ID
+android.permission.READ_SETTINGS
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+com.tcl.bi.permission.access
+android.permission.SYSTEM_ALERT_WINDOW: granted=true
+com.tcl.bi.permission.access: granted=true
+com.android.providers.tv.permission.READ_EPG_DATA: granted=true
+
+===== com.tcl.tv.tclhome_passive =====
+302468 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.HomePassiveActivity filter 76081
+6171f14 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.SwitchChangeReceiver filter c883bd
+cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter a6f3cac
+6171f14 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.SwitchChangeReceiver filter eb1ddb2
+cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter 8d11880
+7519526 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.BootCompleteReceiver filter a924567
+cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter 7587a5f
+cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter 97e9eb9
+cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter b5c22fe
+com.tcl.tv.tclhome_passive/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{335c3af com.tcl.tv.tclhome_passive/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.provider.AppPassiveContentProvider:
+Provider{7ddd3bc com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.provider.AppPassiveContentProvider}
+android.permission.ACCESS_WIFI_STATE
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.MOUNT_UNMOUNT_FILESYSTEM
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.INSTALL_SELF_UPDATES
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.SYSTEM_OVERLAY_WINDOW
+android.permission.FOREGROUND_SERVICE
+android.permission.INJECT_EVENTS
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.RESTART_PACKAGES
+com.tvos.permission.READ_DEVICE_INFO
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.RESTART_PACKAGES: granted=true
+android.permission.SYSTEM_ALERT_WINDOW: granted=true
+android.permission.FOREGROUND_SERVICE: granted=true
+android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+android.permission.INTERNET: granted=true
+android.permission.ACCESS_NETWORK_STATE: granted=true
+android.permission.INSTALL_SELF_UPDATES: granted=true
+
+===== com.tcl.partnercustomizer =====
+b4508d4 com.tcl.partnercustomizer/.LoadingActivity filter d0d8a7d
+4017f17 com.tcl.partnercustomizer/.resource.LoadingActivity filter c264f04
+5c73558 com.tcl.partnercustomizer/.tkey.WithIcon filter a57e796
+97b0ced com.tcl.partnercustomizer/.resource.LauncherNetGuideActivity filter 3a2e722
+8a43d72 com.tcl.partnercustomizer/.tkey.TKeyActivity filter d315c3
+253de40 com.tcl.partnercustomizer/.tkey.TKeyGalaActivity filter ed5179
+74bebe com.tcl.partnercustomizer/.tkey.TKeyFree filter 8c74b1f
+eb89e6c com.tcl.partnercustomizer/.tkey.TKeyChannel filter 8688c35
+53a08ca com.tcl.partnercustomizer/.tkey.NoIcon filter e9f7a3b
+5c73558 com.tcl.partnercustomizer/.tkey.WithIcon filter 222b6b1
+514f5b3 com.tcl.partnercustomizer/.LauncherNotificationReceiver filter 83b5770
+514f5b3 com.tcl.partnercustomizer/.LauncherNotificationReceiver filter 6888ae9
+bac536e com.tcl.partnercustomizer/.resource.LauncherNotificationReceiver filter edf3a0f
+com.tcl.partnercustomizer.startservice:
+2ce387a com.tcl.partnercustomizer/.resource.LauncherDefaultService filter f5f682b permission android.permission.BIND_JOB_SERVICE
+f567a9c com.tcl.partnercustomizer/.data.DataManagerService filter 1d5eca5
+com.tcl.partnercustomizer/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{b9479a7 com.tcl.partnercustomizer/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.partnercustomizer/.provider.ConfigurationProvider:
+Provider{972de54 com.tcl.partnercustomizer/.provider.ConfigurationProvider}
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+com.tvos.permission.READ_DEVICE_INFO
+android.permission.QUERY_ALL_PACKAGES
+android.permission.REORDER_TASKS
+com.android.providers.tv.permission.WRITE_EPG_DATA
+com.android.providers.tv.permission.READ_EPG_DATA
+android.permission.ACCESS_WIFI_STATE
+com.google.android.providers.gsf.permission.READ_GSERVICES
+com.tcl.permission.START_CHECK_SYSTEMUPDATE
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+
+===== com.tcl.interactive =====
+ceeba06 com.tcl.interactive/.InteractiveTclService filter 4f738c7
+android.permission.FOREGROUND_SERVICE
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+com.tvos.permission.READ_DEVICE_INFO
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.INTERNAL_SYSTEM_WINDOW
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+android.permission.CONFIGURE_WIFI_DISPLAY: granted=true
+android.permission.RECOVERY: granted=true
+android.permission.BIND_ATTENTION_SERVICE: granted=true
+com.google.android.c2dm.permission.RECEIVE: granted=true
+android.permission.RESTART_PACKAGES: granted=true
+com.tvos.permission.SUBSCREEN: granted=true
+android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+android.permission.MANAGE_EXTERNAL_STORAGE: granted=true
+android.permission.MODIFY_AUDIO_ROUTING: granted=true
+com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+com.tcl.permission.TCL_DEVICEINFO_SETOAIDSTATUS: granted=true
+android.permission.INSTALL_LOCATION_PROVIDER: granted=true
+android.permission.USE_RESERVED_DISK: granted=true
+android.permission.MANAGE_ACCOUNTS: granted=true
+android.permission.SYSTEM_ALERT_WINDOW: granted=true
+android.permission.CLEAR_APP_USER_DATA: granted=true
+android.permission.SHUTDOWN: granted=true
+android.permission.CHANGE_COMPONENT_ENABLED_STATE: granted=true
+android.permission.MODIFY_PARENTAL_CONTROLS: granted=true
+android.permission.INTERNAL_SYSTEM_WINDOW: granted=true
+com.tcl.bi.permission.access: granted=true
+android.permission.BIND_ROTATION_RESOLVER_SERVICE: granted=true
+android.permission.NETWORK_SETTINGS: granted=true
+android.permission.CHANGE_NETWORK_STATE: granted=true
+
+===== com.tcl.exhibit =====
+494f7ed com.tcl.exhibit/com.tcl.multimode.changeui.ModeChangeActivity filter 545f622
+6c0b217 com.tcl.exhibit/.portal.view.activity.MainActivity filter b190604
+1458b3 com.tcl.exhibit/.portal.receiver.MinimalistLauncherReceiver filter 9227e70
+com.tcl.exhibit/androidx.startup.InitializationProvider:
+Provider{a348484 com.tcl.exhibit/androidx.startup.InitializationProvider}
+com.tcl.exhibit/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{ad4d46d com.tcl.exhibit/com.tcl.ff.component.utils.common.UtilsFileProvider}
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+android.permission.WRITE_SECURE_SETTINGS
+android.permission.MANAGE_EXTERNAL_STORAGE
+android.permission.MODIFY_AUDIO_ROUTING
+android.permission.DEVICE_POWER
+android.permission.BLUETOOTH_CONNECT
+android.permission.BLUETOOTH
+android.permission.BLUETOOTH_ADMIN
+android.permission.WRITE_SETTINGS
+android.permission.WAKE_LOCK
+android.permission.FORCE_STOP_PACKAGES
+android.permission.FOREGROUND_SERVICE
+com.tcl.multimodemanager.permission.BIND_MMM_SERVICE
+com.tcl.multimodemanager.permission.CHANGE_MODE
+com.tcl.multimodemanager.permission.BOOT_DATA_MANAGER
+com.tcl.multimodemanager.permission.GET_MODE_LIST
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.WRITE_EXTERNAL_STORAGE
+com.tcl.multimodemanager.permission.INTERNAL_MODE_MANAGER
+com.tcl.multimodemanager.permission.MODE_CHANGE_CONTROL
+com.tvos.permission.ALLOW_SET_MMWAVE
+com.tcl.permission.openprivacy
+android.permission.READ_MEDIA_IMAGES
+android.permission.MODIFY_AUDIO_SETTINGS
+com.tvos.permission.READ_DEVICE_INFO
+tcl.permission.ACCESS_EXTENDED_POWER
+
+===== com.tcl.esticker =====
+cde7da1 com.tcl.esticker/com.tcl.soundbar_demo.SoundbarDemoActivity filter 88bbc6
+240c425 com.tcl.esticker/com.tcl.store_ext.settings.ShowmodeSettingActivity filter af4f9fa
+fd4cbab com.tcl.esticker/.settings.EStickerSettingsActivity filter 4eb0208
+2a8d07f com.tcl.esticker/com.tcl.showmode.middleware.usb.USBStateReceiver filter 2a1a84c
+6e40095 com.tcl.esticker/androidx.profileinstaller.ProfileInstallReceiver filter f66fd38
+4927787 com.tcl.esticker/com.tcl.materials.LowMemoryBroadcastReceiver filter c3236b4
+6e40095 com.tcl.esticker/androidx.profileinstaller.ProfileInstallReceiver filter f7fd5aa
+6e40095 com.tcl.esticker/androidx.profileinstaller.ProfileInstallReceiver filter 803f59b
+14452dd com.tcl.esticker/com.tcl.store_ext.receiver.SliceIntentReceiver filter f44ce52
+6e40095 com.tcl.esticker/androidx.profileinstaller.ProfileInstallReceiver filter 1511111
+c950523 com.tcl.esticker/com.tcl.store_ext.PictureResetBroadcastReceiver filter f160a20
+8383fd9 com.tcl.esticker/com.tcl.showmode.middleware.ShowmodeBootReceiver filter e3d7d9e
+a128a4e com.tcl.esticker/.EStickerService filter 65cd76f
+1797002 com.tcl.esticker/com.tcl.materials.MaterialService filter 4617d13 permission com.tcl.permission.material_update
+32ab4e4 com.tcl.esticker/com.tcl.showmode.ShowModeService filter 8a4ad4d permission com.tcl.permission.showmode
+com.tcl.esticker.action.StickerService:
+e05bc7c com.tcl.esticker/com.tcl.showmode.middleware.ttvs.awareness.AwarenessInterceptorService filter bc73905
+610fd5a com.tcl.esticker/com.tcl.showmode.middleware.service.CommonService filter 97b8b
+1503b50 com.tcl.esticker/com.tcl.materials.DialogMaterialService filter 11bd149 permission com.tcl.showmode.material_dialog
+6dda276 com.tcl.esticker/com.tcl.store_ext.slice.OverseaStoreModeSliceProvider filter 1225077
+Permission [android.permission.ACCESS_EXTENDED_STOREMODE] (20a23c9):
+perm=PermissionInfo{cb12425 android.permission.ACCESS_EXTENDED_STOREMODE}
+Permission [com.tcl.ttvs.permission.access.TTVS_READY_RESTART] (baeaace):
+perm=PermissionInfo{1ac2bab com.tcl.ttvs.permission.access.TTVS_READY_RESTART}
+Permission [com.tcl.permission.showmode] (abdadef):
+perm=PermissionInfo{df4dda1 com.tcl.permission.showmode}
+com.tcl.esticker/com.tcl.store_ext.slice.OverseaStoreModeSliceProvider:
+Provider{6dda276 com.tcl.esticker/com.tcl.store_ext.slice.OverseaStoreModeSliceProvider}
+com.tcl.esticker/androidx.startup.InitializationProvider:
+Provider{f8416b4 com.tcl.esticker/androidx.startup.InitializationProvider}
+com.tcl.esticker/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{d60b2dd com.tcl.esticker/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.permission.showmode: prot=normal, INSTALLED
+android.permission.ACCESS_EXTENDED_STOREMODE: prot=normal, INSTALLED
+android.permission.INTERNAL_SYSTEM_WINDOW
+
+===== com.tcl.ocean.instructions =====
+683603d com.tcl.ocean.instructions/.portal.home.HomeActivity filter 970c032
+83d4183 com.tcl.ocean.instructions/.receiver.BootCompleteReceiver filter a5cff00
+90872df com.tcl.ocean.instructions/.portal.service.GuideService filter 3130b2c
+94ac339 com.tcl.ocean.instructions/.provider.SpecificationSliceProvider filter 366ad7e
+com.tcl.ocean.instructions/androidx.lifecycle.ProcessLifecycleOwnerInitializer:
+Provider{24f884c com.tcl.ocean.instructions/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+com.tcl.ocean.instructions/.provider.SpecificationSliceProvider:
+Provider{94ac339 com.tcl.ocean.instructions/.provider.SpecificationSliceProvider}
+com.tcl.ocean.instructions/com.tcl.ff.component.download.db.DownloadProvider:
+Provider{e2c6095 com.tcl.ocean.instructions/com.tcl.ff.component.download.db.DownloadProvider}
+com.tcl.ocean.instructions/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{690b5aa com.tcl.ocean.instructions/com.tcl.ff.component.utils.common.UtilsFileProvider}
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.QUERY_ALL_PACKAGES
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.FOREGROUND_SERVICE
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.SYSTEM_OVERLAY_WINDOW
+com.tcl.bi.permission.access
+com.tvos.permission.READ_DEVICE_INFO
+com.tvos.permission.SET_DEVICE_UUID
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.MODIFY_AUDIO_ROUTING
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.ACCESS_WIFI_STATE
+android.permission.MODIFY_AUDIO_ROUTING: granted=true
+android.permission.SYSTEM_ALERT_WINDOW: granted=true
+com.tcl.bi.permission.access: granted=true
+android.permission.FOREGROUND_SERVICE: granted=true
+android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+android.permission.INTERNET: granted=true
+android.permission.ACCESS_NETWORK_STATE: granted=true
+com.tvos.permission.SET_DEVICE_UUID: granted=true
+
+===== com.tcl.repairguide =====
+4e3a921 com.tcl.repairguide/.common.self.audio.AudioDiagnosisActivity filter 2fd4146
+2e237a5 com.tcl.repairguide/.common.self.video.VideoDiagnosisActivity filter 5e4277a
+56617ff com.tcl.repairguide/.stability.log.StabilityLogActivity filter 60219cc
+d64d4a3 com.tcl.repairguide/.network.NetworkDiagnosisActivity filter 5ca63a0
+d625e9 com.tcl.repairguide/.hdmi.troubleshoot.HdmiTroubleshootActivity filter 5f1526e
+8882b2b com.tcl.repairguide/.common.self.picture.PictureDiagnosisActivity filter d63ab88
+f30b65d com.tcl.repairguide/.network.NetworkSpeedActivity filter 83c2bd2
+1dc4f07 com.tcl.repairguide/.common.DiagnosticResultActivity filter 14bf834
+f475b59 com.tcl.repairguide/.remotediagnosis.RemoteDiagnosisActivity filter f0d331e
+df1cd0f com.tcl.repairguide/.common.DiagnosisHomeActivity filter 509119c
+com.tcl.repairguide/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{7f63149 com.tcl.repairguide/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.repairguide/androidx.core.content.FileProvider:
+Provider{e4d6a4e com.tcl.repairguide/androidx.core.content.FileProvider}
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+android.permission.CHANGE_NETWORK_STATE
+android.permission.INTERNET
+android.permission.HDMI_CEC
+android.permission.WRITE_SETTINGS
+android.permission.WRITE_SECURE_SETTINGS
+com.tvos.permission.READ_DEVICE_INFO
+android.permission.MODIFY_AUDIO_ROUTING
+android.permission.BLUETOOTH
+android.permission.BLUETOOTH_CONNECT
+android.permission.BLUETOOTH_ADMIN
+android.permission.ACCESS_ACCESSIBILITY_SERVICE
+android.permission.REAL_GET_TASKS
+android.permission.CHANGE_WIFI_STATE
+android.permission.ACCESS_FINE_LOCATION
+android.permission.ACCESS_COARSE_LOCATION
+android.permission.ACCESS_BACKGROUND_LOCATION
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.USB_PERMISSION
+
+===== com.tcl.gamebar =====
+7ce2d65 com.tcl.gamebar/.activity.MainActivity filter 5bc4a3a
+9f93ae1 com.tcl.gamebar/androidx.profileinstaller.ProfileInstallReceiver filter b5504f4
+2a576eb com.tcl.gamebar/.signal_manager.receiver.SourceReceiver filter f716c48
+9f93ae1 com.tcl.gamebar/androidx.profileinstaller.ProfileInstallReceiver filter a14d006
+9f93ae1 com.tcl.gamebar/androidx.profileinstaller.ProfileInstallReceiver filter ce296c7
+9f93ae1 com.tcl.gamebar/androidx.profileinstaller.ProfileInstallReceiver filter 36da41d
+91de692 com.tcl.gamebar/.signal_manager.service.BarService filter 4e7d863
+com.tcl.gamebar/androidx.startup.InitializationProvider:
+Provider{4afa567 com.tcl.gamebar/androidx.startup.InitializationProvider}
+com.tcl.gamebar/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{7d8ff14 com.tcl.gamebar/com.tcl.ff.component.utils.common.UtilsFileProvider}
+android.permission.INTERNET
+android.permission.ACCESS_WIFI_STATE
+android.permission.ACCESS_NETWORK_STATE
+android.permission.FOREGROUND_SERVICE
+android.permission.WRITE_SECURE_SETTINGS
+android.permission.QUERY_ALL_PACKAGES
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+com.tvos.permission.READ_DEVICE_INFO
+com.tcl.bi.permission.access
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+android.permission.CONFIGURE_WIFI_DISPLAY: granted=true
+android.permission.RECOVERY: granted=true
+android.permission.BIND_ATTENTION_SERVICE: granted=true
+com.google.android.c2dm.permission.RECEIVE: granted=true
+android.permission.RESTART_PACKAGES: granted=true
+com.tvos.permission.SUBSCREEN: granted=true
+android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+android.permission.MANAGE_EXTERNAL_STORAGE: granted=true
+android.permission.MODIFY_AUDIO_ROUTING: granted=true
+
+===== com.tcl.ui_mediaCenter =====
+de8ccc9 com.tcl.ui_mediaCenter/com.tcl.audioplayer.ui.AudioPlayerActivity filter 6fa9fce
+b286c85 com.tcl.ui_mediaCenter/com.tcl.picture_business.PictureActivity filter b76daa6
+2fa094 com.tcl.ui_mediaCenter/com.tcl.common.mediaplayer.video.UI.VideoPlayerActivity filter daca73d
+5b03200 com.tcl.ui_mediaCenter/com.tcl.pvr.pvrplayer.video.ui.VideoPlayerActivity filter 7417a39
+b286c85 com.tcl.ui_mediaCenter/com.tcl.picture_business.PictureActivity filter a9ddce7
+cbafeef com.tcl.ui_mediaCenter/com.tcl.audioplayer.ui.FileInfoActivityDialog filter 1258dfc
+tcl.intent.action.nScreenBrowserActivity:
+f7d664 com.tcl.ui_mediaCenter/.main.FileListActivity filter 3c32d82
+2895415 com.tcl.ui_mediaCenter/.main.MainActivity filter 955632a
+2895415 com.tcl.ui_mediaCenter/.main.MainActivity filter a0e351b
+b286c85 com.tcl.ui_mediaCenter/com.tcl.picture_business.PictureActivity filter ee29b0b
+2895415 com.tcl.ui_mediaCenter/.main.MainActivity filter a1d06b8
+2895415 com.tcl.ui_mediaCenter/.main.MainActivity filter b81c91
+b286c85 com.tcl.ui_mediaCenter/com.tcl.picture_business.PictureActivity filter 3084c01
+3a5fb32 com.tcl.ui_mediaCenter/com.tcl.common.mediaplayer.video.UI.VideoInfoDialogActivity filter ae16083
+b286c85 com.tcl.ui_mediaCenter/com.tcl.picture_business.PictureActivity filter 73b8de8
+b286c85 com.tcl.ui_mediaCenter/com.tcl.picture_business.PictureActivity filter 524eada
+3e87f6 com.tcl.ui_mediaCenter/.main.MediaBrowserActivity filter 65107f7
+tcl.intent.action.mediaCenter.DetailActivity:
+6842c93 com.tcl.ui_mediaCenter/.main.pages.detail.DetailActivity filter 88df4d0
+com.tcl.ui_mediaCenter.action.PVRBrowserActivity:
+f7d664 com.tcl.ui_mediaCenter/.main.FileListActivity filter 230f0cd
+b34987e com.tcl.ui_mediaCenter/.data_manager.receiver.MediaReceiver filter b4f81df
+com.tcl.videoplayer.control.VideoPlayerControlService:
+e624118 com.tcl.ui_mediaCenter/com.tcl.videoplayer.control.VideoPlayerControlService filter 3b3771
+com.tcl.ui_mediaCenter.action.dlna_service:
+6813956 com.tcl.ui_mediaCenter/.dlna_cybergarage.DlnaDeviceService filter 301cdd7
+com.tcl.ui_mediaCenter.action.refresh_token_service:
+fc656c4 com.tcl.ui_mediaCenter/.middleware.service.RefreshTokenService filter 57ad9ad
+com.tcl.imageplayer.control.PicturePlayerControlService:
+37dbe8a com.tcl.ui_mediaCenter/com.tcl.picture_business.voice.PlayerControlService filter 5545cfb
+com.tcl.common.mediaplayer.AudioPlayerService:
+be66e2c com.tcl.ui_mediaCenter/com.tcl.audioplayer.control.AudioPlayerService filter 8b680f5
+com.tcl.ui_mediaCenter/.middleware.dataProvider.HistoryDataProvider:
+Provider{9d3bd7b com.tcl.ui_mediaCenter/.middleware.dataProvider.HistoryDataProvider}
+
+===== com.tcl.UpdatePeripheral =====
+2f3fd60 com.tcl.UpdatePeripheral/com.tcl.updateperipheral.module_upgrade.wight.UpgradePanelActivity filter 1565219
+b0c2eea com.tcl.UpdatePeripheral/com.tcl.updateperipheral.module_upgrade.SbarConnectReceiver filter d7775db
+71ac2de com.tcl.UpdatePeripheral/com.tcl.updateperipheral.module_upgrade.BootReceiver filter 378ccbf
+38b8f8c com.tcl.UpdatePeripheral/com.tcl.updateperipheral.module_upgrade.StrResumeCompleteReceiver filter a70f6d5
+4281878 com.tcl.UpdatePeripheral/com.tcl.updateperipheral.module_upgrade.UpgradeService filter 1572b51 permission com.tcl.updateperipheral.permission.UPGRADE
+Permission [com.tcl.updateperipheral.permission.UPGRADE] (75caf73):
+perm=PermissionInfo{c119361 com.tcl.updateperipheral.permission.UPGRADE}
+com.tcl.UpdatePeripheral/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{c697e86 com.tcl.UpdatePeripheral/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.updateperipheral.permission.UPGRADE: prot=signature, INSTALLED
+android.permission.READ_PHONE_STATE
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.FOREGROUND_SERVICE
+com.tcl.updateperipheral.permission.UPGRADE
+android.permission.REBOOT
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.CAMERA
+android.permission.TCL_USB_CAMERA
+android.permission.READ_SETTINGS
+android.permission.CHANGE_COMPONENT_ENABLED_STATE
+com.tcl.bi.permission.access
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.ACCESS_WIFI_STATE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+android.permission.CONFIGURE_WIFI_DISPLAY: granted=true
+android.permission.RECOVERY: granted=true
+android.permission.BIND_ATTENTION_SERVICE: granted=true
+com.google.android.c2dm.permission.RECEIVE: granted=true
+android.permission.RESTART_PACKAGES: granted=true
+
+===== com.tcl.dashboard =====
+b8fa007 com.tcl.dashboard/.MainActivity filter d7c35a3
+54cb0a0 com.tcl.dashboard/.giftbox.ui.GiftMainActivity filter b382459
+b8fa007 com.tcl.dashboard/.MainActivity filter 8070d2
+b8fa007 com.tcl.dashboard/.MainActivity filter b537534
+b8fa007 com.tcl.dashboard/.MainActivity filter a76ef5d
+3fbf3b8 com.tcl.dashboard/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter ed90591
+33d482a com.tcl.dashboard/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter 790b61b
+fdc36cc com.tcl.dashboard/com.tcl.tv.dashboard_iot.broadcast.MessageBoxReceiver filter 73dad15
+13fbcf6 com.tcl.dashboard/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter ffa98f7
+e589364 com.tcl.dashboard/androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy filter bf769cd
+c22b282 com.tcl.dashboard/androidx.work.impl.background.systemalarm.RescheduleReceiver filter fb5cd93
+7d0c81e com.tcl.dashboard/.UserCenterEventReceiver filter 61288ff
+64d74ce com.tcl.dashboard/androidx.work.impl.diagnostics.DiagnosticsReceiver filter de5afef
+7bd81d0 com.tcl.dashboard/androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver filter 1dd5c9
+12fbae8 com.tcl.dashboard/.giftbox.service.GiftService filter 3b57501
+840eafc com.tcl.dashboard/.DismissService filter 6250585
+com.tcl.dashboard.extservice.MessageExtService:
+f500fda com.tcl.dashboard/com.tcl.notify.message.extservice.MessageExtService filter 6875c0b permission com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE
+com.tcl.dashboard/androidx.startup.InitializationProvider:
+Provider{7fbf43f com.tcl.dashboard/androidx.startup.InitializationProvider}
+com.tcl.dashboard/androidx.lifecycle.ProcessLifecycleOwnerInitializer:
+Provider{26c610c com.tcl.dashboard/androidx.lifecycle.ProcessLifecycleOwnerInitializer}
+com.tcl.dashboard/me.jessyan.autosize.InitProvider:
+Provider{8ff2a55 com.tcl.dashboard/me.jessyan.autosize.InitProvider}
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: prot=normal, INSTALLED
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.INTERNET
+android.permission.FOREGROUND_SERVICE
+android.permission.QUERY_ALL_PACKAGES
+com.tcl.permission.openprivacy
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+android.permission.CHANGE_WIFI_STATE
+android.permission.MOUNT_UNMOUNT_FILESYSTEM
+android.permission.WRITE_EXTERNAL_STORAGE
+
+===== com.tcl.suspension =====
+10189d7 com.tcl.suspension/.ui.main.MainActivity filter 8f162c4
+276f5ad com.tcl.suspension/.ui.main.InputActivity filter c4f80e2
+7eaec73 com.tcl.suspension/.DismissService filter 703e730
+com.tcl.suspension/.provider.SourceOrderProvider:
+Provider{f3f54d3 com.tcl.suspension/.provider.SourceOrderProvider}
+android.permission.PACKAGE_USAGE_STATS
+android.permission.INTERNET
+android.permission.REORDER_TASKS
+com.tcl.miracast.permission.READ_PROVIDER
+com.tcl.permission.showmode
+com.tvos.permission.READ_DEVICE_INFO
+com.mediatek.permission.AirPlay.BroadCast
+android.permission.QUERY_ALL_PACKAGES
+android.permission.ACCESS_NETWORK_STATE
+com.tcl.bi.permission.access
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.ACCESS_WIFI_STATE
+com.tcl.ttvs.deviceauthen.permission.READ_DNUM
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+android.permission.CONFIGURE_WIFI_DISPLAY: granted=true
+android.permission.RECOVERY: granted=true
+android.permission.BIND_ATTENTION_SERVICE: granted=true
+com.google.android.c2dm.permission.RECEIVE: granted=true
+android.permission.RESTART_PACKAGES: granted=true
+com.tvos.permission.SUBSCREEN: granted=true
+android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+android.permission.MANAGE_EXTERNAL_STORAGE: granted=true
+android.permission.MODIFY_AUDIO_ROUTING: granted=true
+com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+com.tcl.permission.TCL_DEVICEINFO_SETOAIDSTATUS: granted=true
+android.permission.INSTALL_LOCATION_PROVIDER: granted=true
+
+===== com.tcl.systemserver =====
+a673b4a com.tcl.systemserver/.flex.FlexTransitConnectionService filter 740fabb
+com.tcl.systemserver/.HotKeyDispatcher.FarFieldMicContentProvider:
+Provider{6528b4b com.tcl.systemserver/.HotKeyDispatcher.FarFieldMicContentProvider}
+com.tcl.systemserver/.HotKeyDispatcher.HotWordMicContentProvider:
+Provider{e985928 com.tcl.systemserver/.HotKeyDispatcher.HotWordMicContentProvider}
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+android.permission.CONFIGURE_WIFI_DISPLAY: granted=true
+android.permission.RECOVERY: granted=true
+android.permission.BIND_ATTENTION_SERVICE: granted=true
+com.google.android.c2dm.permission.RECEIVE: granted=true
+android.permission.RESTART_PACKAGES: granted=true
+com.tvos.permission.SUBSCREEN: granted=true
+android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+android.permission.MANAGE_EXTERNAL_STORAGE: granted=true
+android.permission.MODIFY_AUDIO_ROUTING: granted=true
+com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+com.tcl.permission.TCL_DEVICEINFO_SETOAIDSTATUS: granted=true
+android.permission.INSTALL_LOCATION_PROVIDER: granted=true
+android.permission.USE_RESERVED_DISK: granted=true
+android.permission.MANAGE_ACCOUNTS: granted=true
+android.permission.SYSTEM_ALERT_WINDOW: granted=true
+android.permission.CLEAR_APP_USER_DATA: granted=true
+android.permission.SHUTDOWN: granted=true
+android.permission.CHANGE_COMPONENT_ENABLED_STATE: granted=true
+android.permission.MODIFY_PARENTAL_CONTROLS: granted=true
+android.permission.INTERNAL_SYSTEM_WINDOW: granted=true
+com.tcl.bi.permission.access: granted=true
+android.permission.BIND_ROTATION_RESOLVER_SERVICE: granted=true
+android.permission.NETWORK_SETTINGS: granted=true
+android.permission.CHANGE_NETWORK_STATE: granted=true
+android.permission.MASTER_CLEAR: granted=true
+android.permission.FOREGROUND_SERVICE: granted=true
+
+===== com.tcl.airplay2 =====
+ab1ebd8 com.tcl.airplay2/com.mediatek.partner.airplay.BootupReceiver filter 4ad6b31
+com.tcl.airplay2/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{fa6c72 com.tcl.airplay2/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.realtek.media.airplay2.permission.AIRPLAY_APP
+android.permission.READ_PHONE_STATE
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.FOREGROUND_SERVICE
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.WAKE_LOCK
+android.permission.MODIFY_AUDIO_SETTINGS
+android.permission.CHANGE_WIFI_STATE
+android.permission.ACCESS_WIFI_STATE
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.USE_FULL_SCREEN_INTENT
+com.google.android.tv.permission.RECEIVE_INPUT_EVENT
+com.android.tv.permission.RECEIVE_INPUT_EVENT
+android.permission.RECEIVE_INPUT_EVENT
+android.permission.CHANGE_HDMI_CEC_ACTIVE_SOURCE
+android.permission.HDMI_CEC
+android.permission.MODIFY_PARENTAL_CONTROLS
+android.permission.WRITE_SETTINGS
+android.permission.WRITE_SECURE_SETTINGS
+com.mediatek.permission.AirPlay.BroadCast
+com.tvos.permission.READ_DEVICE_INFO
+com.tvos.permission.ACCESS_DEVICE_KEY
+android.permission.DEVICE_POWER
+android.permission.INJECT_EVENTS
+android.permission.READ_PRIVILEGED_PHONE_STATE
+android.permission.GET_TASKS
+android.permission.KILL_BACKGROUND_PROCESSES
+android.permission.BIND_TV_INPUT
+android.permission.START_ANY_ACTIVITY
+android.permission.REAL_GET_TASKS
+com.android.providers.tv.permission.READ_EPG_DATA
+
+===== com.realtek.airplay2 =====
+21a6623 com.realtek.airplay2/com.realtek.media.airplay2.SetupWizardActivity filter 26e5720
+8afb3b4 com.realtek.airplay2/com.realtek.media.airplay2.MainActivity filter cc88bdd
+8afb3b4 com.realtek.airplay2/com.realtek.media.airplay2.MainActivity filter 5ef1352
+a4708d9 com.realtek.airplay2/com.realtek.media.airplay2.luna.LunaBroadcastReceiver filter 5c7129e
+1a3417f com.realtek.airplay2/com.realtek.media.airplay2.daemon.AirPlayBroadcastReceiver filter 7b1c54c
+Permission [com.realtek.media.airplay2.permission.PROVISIONING] (3214360):
+perm=PermissionInfo{e547735 com.realtek.media.airplay2.permission.PROVISIONING}
+Permission [com.realtek.media.airplay2.permission.AIRPLAY_APP] (3f12019):
+perm=PermissionInfo{dc0dd3b com.realtek.media.airplay2.permission.AIRPLAY_APP}
+com.realtek.media.airplay2.permission.AIRPLAY_APP: prot=normal, INSTALLED
+com.realtek.media.airplay2.permission.PROVISIONING: prot=signature, INSTALLED
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+android.permission.CHANGE_WIFI_MULTICAST_STATE
+android.permission.FOREGROUND_SERVICE
+android.permission.INTERNET
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.START_ACTIVITIES_FROM_BACKGROUND
+android.permission.SHUTDOWN
+android.permission.REBOOT
+android.permission.TURN_SCREEN_ON
+android.permission.USER_ACTIVITY
+android.permission.WRITE_DREAM_STATE
+android.permission.INJECT_EVENTS
+android.permission.DEVICE_POWER
+com.realtek.media.airplay2.permission.AIRPLAY_APP
+tcl.permission.ACCESS_EXTENDED_POWER
+com.realtek.media.airplay2.permission.PROVISIONING
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+com.realtek.media.airplay2.permission.PROVISIONING: granted=true
+android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+android.permission.MODIFY_AUDIO_ROUTING: granted=true
+android.permission.USE_RESERVED_DISK: granted=true
+android.permission.SYSTEM_ALERT_WINDOW: granted=true
+
+===== com.tcl.factory.view =====
+96a61c1 com.tcl.factory.view/.tv.ui.FactoryTvActivity filter 85a9d66
+d6e48a7 com.tcl.factory.view/.MainMenu filter a420154
+57a58fd com.tcl.factory.view/.sale.service.WriteInfoService filter ce329f2
+Permission [com.tcl.factory.view.permission.FACTORY_OS_DISPATCH] (e34abf):
+perm=PermissionInfo{fa7787e com.tcl.factory.view.permission.FACTORY_OS_DISPATCH}
+com.tcl.factory.view/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{78e1df com.tcl.factory.view/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.factory.view.permission.FACTORY_OS_DISPATCH: prot=signature, INSTALLED
+android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.CHANGE_NETWORK_STATE
+android.permission.SYSTEM_ALERT_WINDOW
+android.permission.ACCESS_WIFI_STATE
+android.permission.CHANGE_WIFI_STATE
+android.permission.SET_TIME_ZONE
+android.permission.CAMERA
+android.permission.GET_TASKS
+android.permission.REBOOT
+android.permission.CHANGE_CONFIGURATION
+android.permission.FORCE_STOP_PACKAGES
+android.permission.SHUTDOWN
+android.permission.WRITE_OWNER_DATA
+android.permission.READ_OWNER_DATA
+android.permission.READ_EXTERNAL_STORAGE
+android.permission.DISABLE_KEYGUARD
+android.permission.WRITE_EXTERNAL_STORAGE
+android.permission.WRITE_SETTINGS
+android.permission.BLUETOOTH
+android.permission.BLUETOOTH_ADMIN
+android.permission.TCL_USB_CAMERA
+android.permission.WRITE_SECURE_SETTINGS
+android.permission.BIND_JOB_SERVICE
+android.permission.RECORD_AUDIO
+android.permission.RECOVERY
+android.permission.MASTER_CLEAR
+
+===== com.tcl.providers.config =====
+com.tcl.providers.config/.ConfigProvider:
+Provider{9e90005 com.tcl.providers.config/.ConfigProvider}
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+android.permission.CHANGE_NETWORK_STATE
+android.permission.CHANGE_WIFI_STATE
+android.permission.INTERNET
+com.tcl.bi.permission.access
+android.permission.REAL_GET_TASKS: granted=true
+android.permission.ACCESS_CACHE_FILESYSTEM: granted=true
+com.tcl.dashboard.ACCESS_MESSAGE_EXT_SERVICE: granted=true
+android.permission.WRITE_SETTINGS: granted=true
+android.permission.CONFIGURE_WIFI_DISPLAY: granted=true
+android.permission.RECOVERY: granted=true
+android.permission.BIND_ATTENTION_SERVICE: granted=true
+com.google.android.c2dm.permission.RECEIVE: granted=true
+android.permission.RESTART_PACKAGES: granted=true
+com.tvos.permission.SUBSCREEN: granted=true
+android.permission.MODIFY_AUDIO_SETTINGS: granted=true
+android.permission.MANAGE_EXTERNAL_STORAGE: granted=true
+android.permission.MODIFY_AUDIO_ROUTING: granted=true
+com.google.android.providers.gsf.permission.READ_GSERVICES: granted=true
+com.tcl.permission.TCL_DEVICEINFO_SETOAIDSTATUS: granted=true
+android.permission.INSTALL_LOCATION_PROVIDER: granted=true
+android.permission.USE_RESERVED_DISK: granted=true
+android.permission.MANAGE_ACCOUNTS: granted=true
+android.permission.SYSTEM_ALERT_WINDOW: granted=true
+android.permission.CLEAR_APP_USER_DATA: granted=true
+android.permission.SHUTDOWN: granted=true
+android.permission.CHANGE_COMPONENT_ENABLED_STATE: granted=true
+android.permission.MODIFY_PARENTAL_CONTROLS: granted=true
+android.permission.INTERNAL_SYSTEM_WINDOW: granted=true
+com.tcl.bi.permission.access: granted=true
+android.permission.BIND_ROTATION_RESOLVER_SERVICE: granted=true
+android.permission.NETWORK_SETTINGS: granted=true
+
+===== com.tcl.browser =====
+9f5709b com.tcl.browser/.portal.browse.activity.PlayWebVideoActivity filter 307b77
+9f5709b com.tcl.browser/.portal.browse.activity.PlayWebVideoActivity filter 75a8411
+8e89b7f com.tcl.browser/.portal.browse.activity.BrowsePageActivity filter d2c4395
+1e57552 com.tcl.browser/.portal.home.activity.MainPageActivity filter 7de2023
+8e89b7f com.tcl.browser/.portal.browse.activity.BrowsePageActivity filter 2ae5caa
+f4d03e4 com.tcl.browser/.portal.home.activity.SearchForKeywordActivity filter 152504d
+d11d702 com.tcl.browser/.portal.browse.activity.PodcastDetailPageActivity filter da75813
+ec87a50 com.tcl.browser/.portal.browse.activity.PlayPodcastActivity filter a80a449
+44a614e com.tcl.browser/.portal.browse.activity.MediaDetailPageActivity filter 442eb7c
+9f5709b com.tcl.browser/.portal.browse.activity.PlayWebVideoActivity filter bed9976
+9f5709b com.tcl.browser/.portal.browse.activity.PlayWebVideoActivity filter 8b25c38
+8e89b7f com.tcl.browser/.portal.browse.activity.BrowsePageActivity filter da5174c
+5708920 com.tcl.browser/.portal.home.activity.HomePageActivity filter 7c1949e
+2263c05 com.tcl.browser/.portal.browse.activity.PlayNetflixActivity filter 16f445a
+5708920 com.tcl.browser/.portal.home.activity.HomePageActivity filter 97252d9
+44a614e com.tcl.browser/.portal.browse.activity.MediaDetailPageActivity filter da5626f
+d39381 com.tcl.browser/androidx.profileinstaller.ProfileInstallReceiver filter 2eb2e14
+d39381 com.tcl.browser/androidx.profileinstaller.ProfileInstallReceiver filter 7cd4c26
+d39381 com.tcl.browser/androidx.profileinstaller.ProfileInstallReceiver filter b013067
+d39381 com.tcl.browser/androidx.profileinstaller.ProfileInstallReceiver filter da4e6bd
+acfb68b com.tcl.browser/.portal.home.receiver.GetRestrictionsReceiver filter e914368
+com.tcl.browser/com.tcl.ff.component.utils.common.UtilsFileProvider:
+Provider{c560026 com.tcl.browser/com.tcl.ff.component.utils.common.UtilsFileProvider}
+com.tcl.browser/androidx.core.content.FileProvider:
+Provider{80dd467 com.tcl.browser/androidx.core.content.FileProvider}
+com.tcl.browser/com.tcl.voice.overall.VideoProvider:
+Provider{3450214 com.tcl.browser/com.tcl.voice.overall.VideoProvider}
+com.tcl.browser/com.tcl.ff.component.download.db.DownloadProvider:
+Provider{a7c2abd com.tcl.browser/com.tcl.ff.component.download.db.DownloadProvider}
+com.tcl.browser/com.google.mlkit.common.internal.MlKitInitProvider:
+Provider{711f8b2 com.tcl.browser/com.google.mlkit.common.internal.MlKitInitProvider}
+com.tcl.browser/.share.SharedRegistryProvider:
+Provider{8195003 com.tcl.browser/.share.SharedRegistryProvider}
+com.tcl.browser/com.google.firebase.provider.FirebaseInitProvider:
+Provider{e7a2b80 com.tcl.browser/com.google.firebase.provider.FirebaseInitProvider}
+
+===== com.google.android.katniss =====
+37ee3e1 com.google.android.katniss/androidx.media3.session.BluetoothValidationActivity filter 77bc506
+b883fb8 com.google.android.katniss/com.google.android.apps.tvsearch.app.launch.trampoline.SearchActivityTrampoline filter 16c9e82
+e46fc71 com.google.android.katniss/com.google.android.apps.tvsearch.setup.hotword.activity.HotwordSilentToggleActivity filter 58a1a56
+6e2ebef com.google.android.katniss/com.google.android.apps.tvsearch.launcher.assistant.redirect.TvOperatorDiagnosticRedirectActivity filter c5b76fc
+9ccaedf com.google.android.katniss/com.google.android.apps.tvsearch.results.imageattribution.ImageAttributionActivity filter 8e8972c
+41aa185 com.google.android.katniss/com.google.android.apps.tvsearch.launcher.searchtab.LauncherUpdateActivity filter a6706e8
+a3669e7 com.google.android.katniss/com.google.android.apps.tvsearch.preferences.activity.GoogleSettingsActivity filter b0dac32
+ff5bd83 com.google.android.katniss/com.google.android.libraries.social.licenses.LicenseMenuActivity filter 1b1cb00
+b883fb8 com.google.android.katniss/com.google.android.apps.tvsearch.app.launch.trampoline.SearchActivityTrampoline filter 782e8f6
+e174993 com.google.android.katniss/com.google.android.apps.tvsearch.launcher.assistant.redirect.AmbientRedirectActivity filter 3074dd0
+41aa185 com.google.android.katniss/com.google.android.apps.tvsearch.launcher.searchtab.LauncherUpdateActivity filter 81c580b
+e50dcf com.google.android.katniss/com.google.android.apps.tvsearch.setup.AssistantSetupForSetupWizardActivity filter 8d6235c
+b883fb8 com.google.android.katniss/com.google.android.apps.tvsearch.app.launch.trampoline.SearchActivityTrampoline filter 9c585cd
+68d9f39 com.google.android.katniss/com.google.android.apps.tvsearch.results.disclaimer.DisclaimerActivity filter fe6597e
+71b4665 com.google.android.katniss/com.google.android.apps.tvsearch.setup.EnrollHotwordForATVSetupActivity filter d2def3a
+c4eb7eb com.google.android.katniss/com.google.android.apps.tvsearch.voice.voiceinput.VoiceInputActivity filter 4501948
+9110d73 com.google.android.katniss/com.google.android.apps.tvsearch.setup.AssistantHotwordSetupActivity filter 84df430
+11ff5f5 com.google.android.katniss/com.google.android.apps.tvsearch.results.web.webview.WebViewActivity filter 80a8f8a
+b883fb8 com.google.android.katniss/com.google.android.apps.tvsearch.app.launch.trampoline.SearchActivityTrampoline filter 9fc54f7
+8fdeead com.google.android.katniss/com.google.android.apps.tvsearch.setup.AssistantDataSharingConsentActivity filter 9a585e2
+2b1b1c9 com.google.android.katniss/com.google.android.apps.tvsearch.launcher.assistant.redirect.AssistantNotificationRedirectActivity filter 44a20ce
+165b42a com.google.android.katniss/com.google.android.apps.tvsearch.app.launch.tokenretrieval.TokenRetrievalActivity filter 7aeb21b
+a3669e7 com.google.android.katniss/com.google.android.apps.tvsearch.preferences.activity.GoogleSettingsActivity filter 2107c3d
+41aa185 com.google.android.katniss/com.google.android.apps.tvsearch.launcher.searchtab.LauncherUpdateActivity filter e6b7bda
+a3669e7 com.google.android.katniss/com.google.android.apps.tvsearch.preferences.activity.GoogleSettingsActivity filter d19a994
+2f759fb com.google.android.katniss/com.google.android.apps.tvsearch.setup.fragment.homegraph.HomeGraphSetupActivity filter 3ddfa18
+b883fb8 com.google.android.katniss/com.google.android.apps.tvsearch.app.launch.trampoline.SearchActivityTrampoline filter cbd6191
+b883fb8 com.google.android.katniss/com.google.android.apps.tvsearch.app.launch.trampoline.SearchActivityTrampoline filter 5d9f64
+6b7c8a9 com.google.android.katniss/com.google.android.apps.tvsearch.setup.AssistantSetupActivity filter 71a1e2e
+168d101 com.google.android.katniss/com.google.android.apps.tvsearch.performers.parentalauth.ParentalAuthorizationRedirectActivity filter 1157ba6
+6fbc2cc com.google.android.katniss/com.google.android.apps.tvsearch.app.launch.permission.RequestPermissionsProxyActivity filter 4544915
+4579ad7 com.google.android.katniss/com.google.android.apps.tvsearch.setup.receiver.JiTUpdateReceiverActivity filter 3c49fc4
+e5ee7c7 com.google.android.katniss/com.google.android.libraries.phenotype.client.stable.AccountRemovedBroadcastReceiver filter 3f181f4
+4dc478d com.google.android.katniss/com.google.android.apps.tvsearch.platform.account.state.AccountChangedReceiver_Receiver filter 3a59d42
+cdd9faf com.google.android.katniss/com.google.android.apps.tvsearch.setup.fix.FixAssistantSettingsReceiver_Receiver filter 15e7fbc
+
+===== com.google.android.apps.mediashell =====
+86b5f67 com.google.android.apps.mediashell/com.google.android.apps.cast.mirroring.MirroringActivity filter d733114
+1306a81 com.google.android.apps.mediashell/.settings.OpenSourceActivity filter 2d6d726
+6a4f58b com.google.android.apps.mediashell/.settings.CastSettingsActivity filter b8f1668
+ffad45f com.google.android.apps.mediashell/com.google.android.gms.gcm.GcmReceiver filter afb8eac
+c782dbd com.google.android.apps.mediashell/.AutoStartListener filter a493fb2
+8448b03 com.google.android.apps.mediashell/.HighPriorityAutoStartListener filter edc4a80
+17ee8b9 com.google.android.apps.mediashell/.BootCompleteListener filter 607a4fe
+274f057 com.google.android.apps.mediashell/com.google.android.apps.cast.CastReceiverProxyService filter 74f0744
+79c5775 com.google.android.apps.mediashell/.CastReceiverService filter 9b5130a
+android.media.MediaRoute2ProviderService:
+43307e5 com.google.android.apps.mediashell/.mediarouter.MediashellMediaRouteProviderService filter 64052ba
+34e7229 com.google.android.apps.mediashell/.ChromecastGcmListenerService filter 3e549ae
+375002d com.google.android.apps.mediashell/com.google.android.libraries.cast.tv.warg.service.WargService filter eacf962
+9e7f5f1 com.google.android.apps.mediashell/.ClientAuthProviderService filter e1955d6 permission com.google.android.apps.mediashell.permission.CAST_AUTH
+fa7934f com.google.android.apps.mediashell/com.google.ipc.invalidation.ticl.android2.channel.AndroidInstanceIDListenerService filter 755fadc
+874156b com.google.android.apps.mediashell/org.chromium.chromecast.shell.CastBrowserService filter 3b5e8c8
+1a2577b com.google.android.apps.mediashell/.MediaShellCastReceiverService filter ce8e998
+Permission [com.google.android.apps.mediashell.permission.SANDBOX] (eac9ef9):
+perm=PermissionInfo{7832cc9 com.google.android.apps.mediashell.permission.SANDBOX}
+Permission [com.google.android.apps.mediashell.permission.MULTIZONE_INFO] (585be3e):
+perm=PermissionInfo{acc5eef com.google.android.apps.mediashell.permission.MULTIZONE_INFO}
+Permission [com.google.android.apps.mediashell.permission.CAST_AUTH] (bdd149f):
+perm=PermissionInfo{408cc85 com.google.android.apps.mediashell.permission.CAST_AUTH}
+com.google.android.apps.mediashell/androidx.startup.InitializationProvider:
+Provider{9edcada com.google.android.apps.mediashell/androidx.startup.InitializationProvider}
+com.google.android.apps.mediashell/.settings.CastSettingsSliceProvider:
+Provider{ca9fb0b com.google.android.apps.mediashell/.settings.CastSettingsSliceProvider}
+com.google.android.apps.mediashell.permission.MULTIZONE_INFO: prot=signature|privileged, INSTALLED
+com.google.android.apps.mediashell.permission.CAST_AUTH: prot=signature|privileged, INSTALLED
+com.google.android.apps.mediashell.permission.SANDBOX: prot=signature, INSTALLED
+android.permission.ACCESS_DRM_CERTIFICATES
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+android.permission.CHANGE_WIFI_MULTICAST_STATE
+android.permission.FOREGROUND_SERVICE

@@ -1,0 +1,1085 @@
+﻿
+===== com.tcl.logkit =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Action: "android.intent.action.MEDIA_MOUNTED"
+          Action: "android.intent.action.MEDIA_EJECT"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{61e9aaa com.tcl.logkit}
+    versionName=1.49.07_e81f80d_260326
+
+===== tv.samba.ssm.ui =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BATTERY_OKAY:
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.ACTION_POWER_DISCONNECTED:
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+      android.intent.action.DEVICE_STORAGE_LOW:
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.intent.action.DEVICE_STORAGE_OK:
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.intent.action.BATTERY_LOW:
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.TIMEZONE_CHANGED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.TIME_SET:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.ACTION_POWER_CONNECTED:
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+      android.intent.action.VIEW:
+          Action: "android.intent.action.VIEW"
+          Category: "android.app.slice.category.SLICE"
+    pkg=Package{9fc7e13 tv.samba.ssm.ui}
+
+===== com.tcl.ttvs =====
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_REMOVED"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.SCREEN_OFF:
+          Action: "android.intent.action.SCREEN_OFF"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.SCREEN_ON:
+          Action: "android.intent.action.SCREEN_ON"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.TIMEZONE_CHANGED:
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.TIME_SET:
+          Action: "android.intent.action.TIME_SET"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.PRE_BOOT_COMPLETED:
+          Action: "android.intent.action.PRE_BOOT_COMPLETED"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+
+===== com.tcl.waterfall.overseas =====
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.SEND"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Authority: "com.tcl.waterfall.overseas.home": -1
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+
+===== com.tcl.messagebox =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+      android.intent.action.VIEW:
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+      android.intent.action.MY_PACKAGE_REPLACED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+    pkg=Package{da8ce7d com.tcl.messagebox}
+    versionName=4.13.03
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+    pkg=Package{a0af240 com.tcl.messagebox}
+    versionName=4.10.07
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.guard =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      com.tcl.guard.action.SAFETY_GUARD_HOME:
+          Action: "com.tcl.guard.action.SAFETY_GUARD_HOME"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.MEDIA_UNMOUNTED"
+          Action: "android.intent.action.MEDIA_REMOVED"
+          Action: "android.intent.action.MEDIA_BAD_REMOVAL"
+          Action: "android.intent.action.MEDIA_EJECT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.intent.action.DEVICE_STORAGE_LOW:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.intent.action.DEVICE_STORAGE_OK:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+
+===== com.tcl.usercenter =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{6915e0f com.tcl.usercenter}
+    versionName=4.0.2.5.250806
+        com.tcl.tv.tclhome_passive
+
+===== com.tcl.useragreement =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+    pkg=Package{fd34f5d com.tcl.useragreement}
+    versionName=1.09.32_dcbe67f_250711
+
+===== com.tcl.hotelmenu =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+        a8fb65b com.tcl.hotelmenu/.HomePageActivity filter e228ef8
+          Category: "android.intent.category.DEFAULT"
+  Permission [com.tcl.hotelmenu.permission.HomePageActivity] (61c90a0):
+    perm=PermissionInfo{9fa8459 com.tcl.hotelmenu.permission.HomePageActivity}
+    pkg=Package{140161b com.tcl.hotelmenu}
+    versionName=2.04.00_2035efa_250606
+      com.tcl.hotelmenu.permission.HomePageActivity: prot=signature, INSTALLED
+
+===== com.tcl.initsetup =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{8af9282 com.tcl.initsetup}
+    versionName=2.18.01_d11f56d_251119
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.miracast =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+    pkg=Package{4bbd501 com.tcl.miracast}
+    versionName=2.3.938cc82
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.hearaid =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{cb1d2df com.tcl.hearaid}
+    versionName=1.19.10
+
+===== com.tcl.t_solo =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+      android.intent.action.VIEW:
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{e630071 com.tcl.t_solo}
+    versionName=3.0.49
+
+===== com.tcl.magiconnectfree =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+    pkg=Package{4a3e7e1 com.tcl.magiconnectfree}
+    versionName=1.0.0.53
+    pkg=Package{60d55f4 com.tcl.magiconnectfree}
+    versionName=1.0.0.20
+
+===== com.tcl.smartalexa =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+          Action: "android.intent.action.BOOT_COMPLETED"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{6fda2de com.tcl.smartalexa}
+    versionName=6.13.18_8e93d75_25050720
+
+===== com.tcl.channelplus =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{2ac2424 com.tcl.channelplus}
+    versionName=2.50.00_791d754_251230
+    queriesIntents=[Intent { act=android.intent.action.VIEW dat=http:///... }]
+
+===== com.tcl.tv.tclhome_passive =====
+      android.intent.action.MAIN:
+        302468 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.HomePassiveActivity filter 76081
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+        6171f14 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.SwitchChangeReceiver filter c883bd
+        cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter a6f3cac
+        6171f14 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.SwitchChangeReceiver filter eb1ddb2
+        cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter 8d11880
+      android.intent.action.BOOT_COMPLETED:
+        7519526 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.BootCompleteReceiver filter a924567
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.LAUNCHER"
+        cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter 7587a5f
+        cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter 97e9eb9
+      android.intent.action.MY_PACKAGE_REPLACED:
+        cf3d103 com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.broadcast.UserStateReceiver filter b5c22fe
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+  Permission [com.tcl.tv.home.passive.contentProvider.permission] (ad82553):
+    sourcePackage=com.tcl.tv.tclhome_passive
+    perm=PermissionInfo{a995e90 com.tcl.tv.home.passive.contentProvider.permission}
+    sourcePackage=com.tcl.tv.tclhome_passive
+  com.tcl.tv.tclhome_passive/com.tcl.ff.component.utils.common.UtilsFileProvider:
+    Provider{335c3af com.tcl.tv.tclhome_passive/com.tcl.ff.component.utils.common.UtilsFileProvider}
+  com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.provider.AppPassiveContentProvider:
+    Provider{7ddd3bc com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.provider.AppPassiveContentProvider}
+  [com.tcl.tv.tclhome_passive.utils.common.provider]:
+    Provider{335c3af com.tcl.tv.tclhome_passive/com.tcl.ff.component.utils.common.UtilsFileProvider}
+      applicationInfo=ApplicationInfo{f5e9f45 com.tcl.tv.tclhome_passive}
+    Provider{7ddd3bc com.tcl.tv.tclhome_passive/com.tcl.tclhome_passive.provider.AppPassiveContentProvider}
+      applicationInfo=ApplicationInfo{42f069a com.tcl.tv.tclhome_passive}
+  [com.tcl.tv.tclhome_passive]
+  Package [com.tcl.tv.tclhome_passive] (124ebcb):
+    pkg=Package{6926fa8 com.tcl.tv.tclhome_passive}
+    codePath=/product/app/TCLHome_passive
+    resourcePath=/product/app/TCLHome_passive
+    legacyNativeLibraryDir=/product/app/TCLHome_passive/lib
+    versionName=1.2.3.9
+    applicationInfo=PackageImpl{6926fa8 com.tcl.tv.tclhome_passive}
+    dataDir=/data/user/0/com.tcl.tv.tclhome_passive
+      com.tcl.tv.home.passive.contentProvider.permission: prot=normal, INSTALLED
+
+===== com.tcl.partnercustomizer =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.PACKAGE_ADDED:
+          Action: "android.intent.action.PACKAGE_ADDED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.PACKAGE_ADDED"
+
+===== com.tcl.interactive =====
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{8c70631 com.tcl.interactive}
+    versionName=1.0
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.exhibit =====
+      com.tcl.intent.action.multimodemanager.MODE_SWITCH_HOME:
+          Action: "com.tcl.intent.action.multimodemanager.MODE_SWITCH_HOME"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+    pkg=Package{4774a69 com.tcl.exhibit}
+    versionName=2.70.08_97dc5e9_2601191623
+    queriesIntents=[Intent { act=android.intent.action.MAIN }]
+
+===== com.tcl.esticker =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.MEDIA_MOUNTED"
+      android.intent.action.DEVICE_STORAGE_LOW:
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "com.tcl.category.appstate.change"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.VIEW:
+          Action: "android.intent.action.VIEW"
+          Category: "android.app.slice.category.SLICE"
+    pkg=Package{9ba9fd9 com.tcl.esticker}
+    versionName=7.06.05_e5146ad_260312
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.ocean.instructions =====
+      android.intent.action.MAIN:
+        683603d com.tcl.ocean.instructions/.portal.home.HomeActivity filter 970c032
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.VIEW:
+          Action: "android.intent.action.VIEW"
+          Category: "android.app.slice.category.SLICE"
+    pkg=Package{eb494e4 com.tcl.ocean.instructions}
+    versionName=3.00.01_114f634_250929
+
+===== com.tcl.repairguide =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      com.tcl.repairguide.intent.action.DiagnosisHome:
+        df1cd0f com.tcl.repairguide/.common.DiagnosisHomeActivity filter 509119c
+          Action: "com.tcl.repairguide.intent.action.DiagnosisHome"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{319dd5a com.tcl.repairguide}
+    versionName=1.50.10_aedd78a_251016
+
+===== com.tcl.gamebar =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{b873103 com.tcl.gamebar}
+    versionName=4.10.33_2dec96e_250626
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+    pkg=Package{40f02fe com.tcl.gamebar}
+    versionName=4.10.32_8176794_250617
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.ui_mediaCenter =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+
+===== com.tcl.UpdatePeripheral =====
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{e099774 com.tcl.UpdatePeripheral}
+    versionName=2.10.1_59018ef_25042909
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.dashboard =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+      android.intent.action.BATTERY_OKAY:
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.ACTION_POWER_DISCONNECTED:
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+      android.intent.action.DEVICE_STORAGE_LOW:
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.intent.action.DEVICE_STORAGE_OK:
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.intent.action.BATTERY_LOW:
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.TIMEZONE_CHANGED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.TIME_SET:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.ACTION_POWER_CONNECTED:
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+          Category: "android.intent.category.DEFAULT"
+
+===== com.tcl.suspension =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{162cf09 com.tcl.suspension}
+    versionName=3.6.2.e41f601.250707
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+    pkg=Package{950253c com.tcl.suspension}
+    versionName=3.4.5.8a015a6.nps
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.systemserver =====
+    pkg=Package{2bc9127 com.tcl.systemserver}
+    versionName=1001
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.airplay2 =====
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.SEND:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+          Action: "Show.Home.AirplayAPK"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.SEND"
+
+===== com.realtek.airplay2 =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+    pkg=Package{5285c58 com.realtek.airplay2}
+    versionName=1.0-04fe853c-release
+
+===== com.google.android.katniss =====
+          Action: "android.intent.action.VIEW"
+          Action: "android.intent.action.VIEW"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.SEARCH_LONG_PRESS:
+          Action: "android.intent.action.SEARCH_LONG_PRESS"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      com.google.assistant.HOMEGRAPH_SETUP:
+        2f759fb com.google.android.katniss/com.google.android.apps.tvsearch.setup.fragment.homegraph.HomeGraphSetupActivity filter 3ddfa18
+          Action: "com.google.assistant.HOMEGRAPH_SETUP"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.ASSIST:
+          Action: "android.intent.action.ASSIST"
+          Category: "android.intent.category.DEFAULT"
+
+===== com.google.android.apps.mediashell =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+      android.intent.action.MY_PACKAGE_REPLACED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.DOCK_EVENT:
+          Action: "android.intent.action.DOCK_EVENT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{d7b3ce7 com.google.android.apps.mediashell}
+    versionName=3.72.446070
+    pkg=Package{caadb32 com.google.android.apps.mediashell}
+    versionName=3.72.425634
+
+===== com.tcl.factory.view =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Action: "android.intent.action.MAIN"
+          Action: "android.intent.action.MAIN"
+    pkg=Package{a6ee0f5 com.tcl.factory.view}
+    versionName=3.0.e15d669
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.google.android.feedback =====
+      android.intent.action.APP_ERROR:
+          Action: "android.intent.action.APP_ERROR"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.BUG_REPORT:
+          Action: "android.intent.action.BUG_REPORT"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{5199771 com.google.android.feedback}
+    versionName=12
+
+===== android.autoinstalls.config.google.gtvpai =====
+    pkg=Package{9df39ad android.autoinstalls.config.google.gtvpai}
+    versionName=1
+
+===== com.google.android.apps.tv.dreamx =====
+        dc9614 com.google.android.apps.tv.dreamx/com.google.android.libraries.tv.smarthome.core.cameraview.FullScreenCameraActivity filter b1e2ebd
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Authority: "home.google.com": -1
+        145acb2 com.google.android.apps.tv.dreamx/com.google.android.libraries.tv.smarthome.core.dashboard.spaces.SpaceActivity filter ff6ff80
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Authority: "home.google.com": -1
+        5c8cd5f com.google.android.apps.tv.dreamx/com.google.android.libraries.tv.smarthome.core.shortcutselection.ShortcutSelectionActivity filter b8c93ac
+          Action: "home.google.shortcuts"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Authority: "home.google.com": -1
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+        dc9614 com.google.android.apps.tv.dreamx/com.google.android.libraries.tv.smarthome.core.cameraview.FullScreenCameraActivity filter b1e2ebd
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Authority: "home.google.com": -1
+        145acb2 com.google.android.apps.tv.dreamx/com.google.android.libraries.tv.smarthome.core.dashboard.spaces.SpaceActivity filter ff6ff80
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Authority: "home.google.com": -1
+        5c8cd5f com.google.android.apps.tv.dreamx/com.google.android.libraries.tv.smarthome.core.shortcutselection.ShortcutSelectionActivity filter b8c93ac
+          Action: "home.google.shortcuts"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+
+===== com.google.android.tv.remote.service =====
+      android.intent.action.BOOT_COMPLETED:
+          Action: "android.intent.action.BOOT_COMPLETED"
+      android.intent.action.MY_PACKAGE_REPLACED:
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+          Action: "com.android.athome.START_SERVICE"
+          Action: "com.android.athome.START_SERVICE"
+          Action: "com.android.athome.START_SERVICE"
+      com.android.athome.START_SERVICE:
+          Action: "com.android.athome.START_SERVICE"
+    pkg=Package{a3f128d com.google.android.tv.remote.service}
+    versionName=7.00.999235495
+    pkg=Package{614d190 com.google.android.tv.remote.service}
+    versionName=6.0.648630202
+
+===== com.tcl.tv =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Action: "android.intent.action.VIEW"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+        ec4ebd5 com.tcl.tv/.fvpepg.home.EpgActivity filter 5717fea
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+          Action: "android.intent.action.VIEW"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+
+===== com.tcl.tvinput =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.TIMEZONE_CHANGED:
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.DATE_CHANGED"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.TIME_SET:
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.DATE_CHANGED"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.DATE_CHANGED:
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.DATE_CHANGED"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.USER_UNLOCKED:
+          Action: "android.intent.action.USER_UNLOCKED"
+          Action: "android.intent.action.USER_UNLOCKED"
+    pkg=Package{7ae54a com.tcl.tvinput}
+    versionName=TVM6.2.2_4a43c4fb2_251125
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.autopair =====
+    pkg=Package{36c9d31 com.tcl.autopair}
+    versionName=jedi.trunk.autopair.v24.06.18
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.google.android.marvin.talkback =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Action: "android.intent.action.MAIN"
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.accessibilityservice.category.FEEDBACK_AUDIBLE"
+          Category: "android.accessibilityservice.category.FEEDBACK_HAPTIC"
+          Category: "android.accessibilityservice.category.FEEDBACK_SPOKEN"
+          Category: "android.accessibilityservice.category.FEEDBACK_GENERIC"
+    pkg=Package{7bba6c6 com.google.android.marvin.talkback}
+    versionName=14.2.0.740629310 leanback
+    queriesIntents=[Intent { act=android.intent.action.TTS_SERVICE }, Intent { act=android.speech.RecognitionService }]
+    pkg=Package{bd879dd com.google.android.marvin.talkback}
+    versionName=14.1.0.644281411 leanback
+    queriesIntents=[Intent { act=android.intent.action.TTS_SERVICE }, Intent { act=android.speech.RecognitionService }]
+
+===== com.tcl.inputmethod.international =====
+      android.intent.action.MAIN:
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+    pkg=Package{a03bf7f com.tcl.inputmethod.international}
+    versionName=4.05.01_35234f2_250915
+
+===== com.google.android.play.games =====
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+      android.intent.action.MAIN:
+        8a67bb7 com.google.android.play.games/com.google.android.apps.play.games.app.atv.features.home.HomeActivity filter f1e9f24
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+        8a67bb7 com.google.android.play.games/com.google.android.apps.play.games.app.atv.features.home.HomeActivity filter e5eea8d
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.DEFAULT"
+
+===== com.tcl.providers.config =====
+    pkg=Package{b9a1a8b com.tcl.providers.config}
+    versionName=4.0.0
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+        com.tcl.tv.tclhome_passive
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE: granted=true
+
+===== com.tcl.browser =====
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Action: "android.intent.action.VIEW"

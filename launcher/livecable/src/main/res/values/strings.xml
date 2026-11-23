@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Live Cable</string>
+    <string name="opening_input">Connecting to StormFiber on HDMI 1…</string>
+    <string name="live_input">Live Cable · StormFiber · HDMI 1</string>
+    <string name="no_signal">No picture on HDMI 1\nCheck that the StormFiber box is on, then press OK to retry.</string>
+    <string name="input_unavailable">HDMI 1 is unavailable\nPress OK to try again.</string>
+</resources>

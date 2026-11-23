@@ -1,0 +1,9 @@
+﻿package:io.gh.reisxd.tizentube.cobalt
+package:app.netmirror.newtv
+package:com.alphainventor.filemanager
+package:com.gxnet.castle.indiatv
+package:com.tcl.browser
+package:com.instagram.airwave
+package:app.quickpaste.keyboard
+package:org.localsend.localsend_app
+package:com.nuvio.app
