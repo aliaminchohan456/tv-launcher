@@ -31,7 +31,7 @@ final class AppLoader {
     }
 
     private static void collect(Context context, PackageManager pm, String self, Set<String> seen,
-                                List<HomeApp> apps, String category) {
+            List<HomeApp> apps, String category) {
         Intent query = new Intent(Intent.ACTION_MAIN);
         query.addCategory(category);
         List<ResolveInfo> found = pm.queryIntentActivities(query, 0);
@@ -48,6 +48,12 @@ final class AppLoader {
             }
             CharSequence label = info.loadLabel(pm);
             Drawable art = info.activityInfo.loadBanner(pm);
+            if (art == null) {
+                try {
+                    art = pm.getApplicationBanner(pkg);
+                } catch (PackageManager.NameNotFoundException ignored) {
+                }
+            }
             if (art == null) {
                 art = info.loadIcon(pm);
             }
@@ -91,6 +97,10 @@ final class AppLoader {
         if (w > maxWidth) {
             h = Math.max(1, h * maxWidth / w);
             w = maxWidth;
+        }
+        if (h > maxWidth) {
+            w = Math.max(1, w * maxWidth / h);
+            h = maxWidth;
         }
         Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);

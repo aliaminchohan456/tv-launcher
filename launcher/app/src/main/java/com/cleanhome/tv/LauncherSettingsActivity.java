@@ -7,9 +7,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -66,7 +66,8 @@ public class LauncherSettingsActivity extends Activity {
         moreBox = findViewById(R.id.section_more);
         title = findViewById(R.id.settings_title);
         subtitle = findViewById(R.id.settings_subtitle);
-        ring = new FocusRing((FrameLayout) findViewById(R.id.settings_root));
+        FrameLayout settingsRoot = findViewById(R.id.settings_root);
+        ring = new FocusRing(settingsRoot);
         ((TextView) findViewById(R.id.settings_kicker)).setTypeface(outfit(500));
         title.setTypeface(outfit(600));
         subtitle.setTypeface(outfit(420));
@@ -74,14 +75,13 @@ public class LauncherSettingsActivity extends Activity {
         dock.addAll(Dock.loadAvailable(this));
         buildSidebar();
         buildDock();
-        // Read focus after layout so newly visible rows have their final bounds.
-        dockRow.getViewTreeObserver().addOnPreDrawListener(() -> {
-            View focused = getCurrentFocus();
-            if (focused != null) {
-                int radius = focused.getParent() == sidebar ? 12 : DOCK_CARD_RADIUS;
-                ring.moveTo(focused, dp(radius));
+        settingsRoot.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
+            if (newFocus != null) {
+                int radius = newFocus.getParent() == sidebar ? 12 : DOCK_CARD_RADIUS;
+                ring.moveTo(newFocus, dp(radius));
+            } else {
+                ring.hide();
             }
-            return true;
         });
         buildButtons();
         buildMore();
@@ -187,7 +187,7 @@ public class LauncherSettingsActivity extends Activity {
         add.setOnClickListener(v -> pickApp(-1));
 
         TextView addLabel = new TextView(this);
-        addLabel.setText("+  Add app");
+        addLabel.setText("+ Add app");
         addLabel.setTextSize(14f);
         addLabel.setTypeface(outfit(500));
         addLabel.setTextColor(0xE6FFFFFF);
@@ -264,7 +264,9 @@ public class LauncherSettingsActivity extends Activity {
         buildDock();
         int index = Math.max(0, Math.min(focusIndex, dockArts.size() - 1));
         View card = dockArts.isEmpty() ? dockRow.getChildAt(0) : dockArts.get(index);
-        card.requestFocus();
+        if (card != null) {
+            card.requestFocus();
+        }
     }
 
     private Bitmap artOf(String pkg) {
@@ -277,6 +279,9 @@ public class LauncherSettingsActivity extends Activity {
             List<ResolveInfo> found = pm.queryIntentActivities(query, 0);
             if (!found.isEmpty() && found.get(0).activityInfo != null) {
                 art = found.get(0).activityInfo.loadBanner(pm);
+            }
+            if (art == null) {
+                art = pm.getApplicationBanner(pkg);
             }
             if (art == null) {
                 art = pm.getApplicationIcon(pkg);
@@ -377,7 +382,11 @@ public class LauncherSettingsActivity extends Activity {
                 first.requestFocus();
             }
         });
-        dialog.setOnDismissListener(d -> currentDialog = null);
+        dialog.setOnDismissListener(d -> {
+            if (currentDialog == dialog) {
+                currentDialog = null;
+            }
+        });
         dialog.show();
     }
 
@@ -458,7 +467,7 @@ public class LauncherSettingsActivity extends Activity {
     }
 
     private void addToggle(LinearLayout box, String label, String description,
-                           int iconRes, String key) {
+            int iconRes, String key) {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
@@ -548,7 +557,7 @@ public class LauncherSettingsActivity extends Activity {
                     Dock.save(this, new ArrayList<>(java.util.Arrays.asList(Dock.DEFAULT)));
                     dock.clear();
                     dock.addAll(Dock.loadAvailable(this));
-                    rebuildDock(0);
+                    buildDock();
                 });
         addAction(moreBox, "Show the dock bar again",
                 "Brings the three buttons back if they were hidden.",
@@ -601,7 +610,7 @@ public class LauncherSettingsActivity extends Activity {
     }
 
     private void addAction(LinearLayout box, String label, String description,
-                           java.util.function.Consumer<TextView> action) {
+            java.util.function.Consumer<TextView> action) {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);

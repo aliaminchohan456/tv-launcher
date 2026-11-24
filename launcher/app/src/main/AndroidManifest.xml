@@ -23,7 +23,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- Android 12 hides the SSID from apps without location access. Only used for the Wi-Fi pill. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- Only used by the built-in picture picker, and only when "Add photo" is pressed. -->
@@ -41,11 +40,12 @@
 
         <activity
             android:name=".ClockScreenActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="false" />
 
         <activity
             android:name=".MainActivity"
-            android:configChanges="keyboard|keyboardHidden"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="true"
             android:launchMode="singleTask"
             android:stateNotNeeded="true">
@@ -58,18 +58,22 @@
 
         <activity
             android:name=".EditAppActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="false" />
 
         <activity
             android:name=".IconPickerActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="false" />
 
         <activity
             android:name=".LauncherSettingsActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="false" />
 
         <activity
             android:name=".PhotoPickerActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="false" />
 
         <service

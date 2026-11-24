@@ -13,10 +13,10 @@ import android.widget.FrameLayout;
  * It lives on the root instead of on the card, so a card never clips its own
  * border. Two things are drawn, both of them outside the card edge:
  *
- *   1. an even band of dark right at the card, so the white ring still reads
- *      on a white card such as Netflix,
- *   2. one crisp white stroke that runs parallel to the card, so the gap is
- *      the same the whole way round including the corners.
+ * 1. an even band of dark right at the card, so the white ring still reads
+ *    on a white card such as Netflix,
+ * 2. one crisp white stroke that runs parallel to the card, so the gap is
+ *    the same the whole way round including the corners.
  *
  * Both are plain strokes. Nothing here clips a canvas: a clip path costs this
  * panel more frames than the rest of the ring put together.
@@ -118,7 +118,10 @@ final class GlassHighlight extends View {
             // ring has to come back on screen: it is hidden while the top row
             // holds the focus, and the target does not change when the focus
             // comes back down to the same card.
-            if (getVisibility() != VISIBLE) {
+            int expectedW = Math.max(1, Math.round(shownW + pad * 2f));
+            int expectedH = Math.max(1, Math.round(shownH + pad * 2f));
+            if (getVisibility() != VISIBLE
+                    || getWidth() != expectedW || getHeight() != expectedH) {
                 apply();
             }
             return;
@@ -134,6 +137,9 @@ final class GlassHighlight extends View {
         }
         if (travel != null) {
             travel.cancel();
+        }
+        if (getVisibility() != VISIBLE) {
+            apply();
         }
         travel = android.animation.ValueAnimator.ofFloat(0f, 1f);
         travel.setDuration(Motion.DURATION);
@@ -246,6 +252,9 @@ final class GlassHighlight extends View {
             lp.height = height;
             setLayoutParams(lp);
         }
+        if (getWidth() != width || getHeight() != height) {
+            requestLayout();
+        }
         setX(shownX - pad);
         setY(shownY - pad);
         setVisibility(VISIBLE);
@@ -267,9 +276,7 @@ final class GlassHighlight extends View {
 
         // The dark band at the card edge, drawn as a stroke that sits entirely
         // outside the card. Its inner edge is the card edge itself, so nothing
-        // paints over the picture and no clip is needed. The old version
-        // clipped a centred stroke, and a clip path here costs this panel more
-        // frames than every other part of the ring put together.
+        // paints over the picture and no clip is needed.
         seamRect.set(card);
         seamRect.inset(-gap / 2f, -gap / 2f);
         seam.setStrokeWidth(gap);

@@ -16,7 +16,20 @@ Three completed one-minute runs on the same TCL measured 50.0 presented FPS each
 
 Whole-launcher source pass on the same date, also not yet built or installed: `IconPickerActivity` no longer asks one Intent for both launcher categories (which left the picker nearly empty) and now builds `app:pkg:banner/icon` specs that match artwork that exists; `ClockPreferences.background()` falls back instead of crashing on a stale preference; the first app load in `MainActivity` shares the reload token so a package broadcast cannot be overwritten by an older list; one Back press in settings no longer dismisses a dialog and finishes the screen; async picker callbacks no longer touch a destroyed activity; the dead Wi-Fi panel, unused `AtmosphereView`, unused methods and unused imports were removed. Details below.
 
-Source-only follow-up, not yet built or installed on the TV: `FloatingClockView.updateAmbient()` no longer refreshes the mascot's period from the wall clock while Meadow is mounted. That call overwrote the period chosen by `setMeadowHour()` and broke the generic 07/11/18 choreography whenever the preview hour differed from the real hour. `ClockScreenActivity` now leaves the preview only on Back/Escape instead of on any key, consumes the other D-pad keys, pauses the Meadow frame loop in `onStop()`, and shows a fading control legend. Dawn now gets haze and dew beads, and the larger stars get a quiet halo. The duplicate `PhotoPickerActivity` manifest entry is gone. Java sources were syntax-parsed locally; there is no JDK or Android SDK in this workspace, so APK build and on-TV verification are still required.
+Source-only follow-up, not yet built or installed on the TV: `FloatingClockView.updateAmbient()` no longer refreshes the mascot's period from the wall clock while Meadow is mounted. That call overwrote the period chosen by `setMeadowHour()` and broke the generic 07/11/18 choreography whenever the preview hour differed from the real hour. `ClockScreenActivity` now leaves the preview only on Back/Escape instead of on any key, consumes the other D-pad keys, pauses the Meadow frame loop in `onStop()`, and shows a fading control legend. Dawn now gets haze and dew beads, and the larger stars get a quiet halo. The duplicate `PhotoPickerActivity` manifest entry is gone.
+
+## Whole-launcher audit pass (24 November 2026)
+
+The 17-file audit was applied and verified on the TCL. Two extra fixes were needed:
+
+- `FocusRing` now keeps tracking a card that receives focus before it has been measured, and `GlassHighlight` retries `requestLayout()` when the first layout-params change is dropped. Without these, the icon picker, photo picker and settings screen showed no ring on first focus.
+- `Dock.DEFAULT` now names Nuvio as `com.nuvio.tv`, the installed package. `com.nuvio.app` is the old id, so "Bring the dock back" used to drop Nuvio. The TV dock was restored to Netflix, TizenTube (shown as YouTube), Nuvio, NetMirror.
+
+Verified: both modules assemble; the installed APK hash matches; Home resolves; dock, focus ring and Wi-Fi SSID pill render; grid Up/Down/Left/Right and ring work; long-press Edit shows the selected badge on "Icons from other app" and "Icon from gallery"; Save updates Home immediately; Settings Dock/Buttons/Clock/More work and one Back closes a dialog without leaving the screen; PhotoPicker ring works; no `com.cleanhome` crash in logcat. The Live Cable APK was installed; its HDMI surface is secure, so screencap is blank, but the activity launches.
+
+TV cleanup: removed the old APK/XAPK installers from Download (about 1 GB) and cleared the MediaStore image/video rows. Launcher data and wallpaper were not touched.
+
+Remaining: the javac deprecation note and the two pre-existing manifest lint errors (`MissingLeanbackLauncher`, `CoarseFineLocation`).
 
 ## Goal
 
@@ -89,7 +102,7 @@ Quick Paste `app.quickpaste.keyboard` was left enabled on purpose at debloat tim
 
 ### Never disable
 
-`com.tcl.tv` (Live TV and HDMI playback), `com.tcl.tvinput`, `com.tcl.dashboard`, `com.tcl.suspension` (Quick panel / TCL HOME tiles), `com.tcl.autopair`, `com.tcl.systemserver`, `com.tcl.providers.config`, `com.tcl.factory.view`, `com.tcl.initsetup`, both keyboards (`com.tcl.inputmethod.international`, `com.google.android.inputmethod.latin`), Play Store `com.android.vending`, `com.google.android.gms`, `com.google.android.gsf`, `com.android.tv.settings`, `com.android.bluetooth`, `com.realtek.power`, `com.realtek.dongledetect`, SystemUI, `com.google.android.tv.remote.service` (phone remote; user said never disable remote services), Google Assistant `com.google.android.katniss`, Chromecast `com.google.android.apps.mediashell`, Netflix `com.netflix.ninja` and `com.netflix.tokenmanager`, YouTube `com.google.android.youtube.tv`, TizenTube `io.gh.reisxd.tizentube.cobalt`, Nuvio `com.nuvio.app`, NetMirror `app.netmirror.newtv`.
+`com.tcl.tv` (Live TV and HDMI playback), `com.tcl.tvinput`, `com.tcl.dashboard`, `com.tcl.suspension` (Quick panel / TCL HOME tiles), `com.tcl.autopair`, `com.tcl.systemserver`, `com.tcl.providers.config`, `com.tcl.factory.view`, `com.tcl.initsetup`, both keyboards (`com.tcl.inputmethod.international`, `com.google.android.inputmethod.latin`), Play Store `com.android.vending`, `com.google.android.gms`, `com.google.android.gsf`, `com.android.tv.settings`, `com.android.bluetooth`, `com.realtek.power`, `com.realtek.dongledetect`, SystemUI, `com.google.android.tv.remote.service` (phone remote; user said never disable remote services), Google Assistant `com.google.android.katniss`, Chromecast `com.google.android.apps.mediashell`, Netflix `com.netflix.ninja` and `com.netflix.tokenmanager`, YouTube `com.google.android.youtube.tv`, TizenTube `io.gh.reisxd.tizentube.cobalt`, Nuvio `com.nuvio.tv`, NetMirror `app.netmirror.newtv`.
 
 TCL HOME and Quick panel tiles stayed after usercenter was disabled. They belong to dashboard / suspension. Leave those packages alone.
 
@@ -150,7 +163,7 @@ Dock order is the array in `launcher\app\src\main\java\com\cleanhome\tv\Dock.jav
 ```text
 com.netflix.ninja
 io.gh.reisxd.tizentube.cobalt
-com.nuvio.app
+com.nuvio.tv
 app.netmirror.newtv
 ```
 

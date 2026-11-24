@@ -17,12 +17,13 @@ final class EarthEdition {
     private static final String[] NAMES = {"Makran Coast", "The Red Sea", "Western Australia",
             "The Mediterranean", "The Himalayas", "Baja California", "Namib Coast"};
     // Lower-left coordinates in Web Mercator metres. Each frame has a 16:9 footprint.
-    private static final int[][] CORNERS = {{7000000,2700000},{3550000,1950000},
-            {12400000,-3100000},{1200000,3950000},{8200000,3260000},
-            {-13000000,2620000},{950000,-3050000}};
+    private static final int[][] CORNERS = {{7000000, 2700000}, {3550000, 1950000},
+            {12400000, -3100000}, {1200000, 3950000}, {8200000, 3260000},
+            {-13000000, 2620000}, {950000, -3050000}};
 
     final Bitmap image;
     final String place;
+
     EarthEdition(Bitmap image, String place) {
         this.image = image;
         this.place = place;
@@ -39,6 +40,7 @@ final class EarthEdition {
                 download(day, 3, pending);
                 if (!hasFullCoverage(pending)) download(day, 4, pending);
                 if (!hasFullCoverage(pending)) throw new IOException("Incomplete satellite coverage");
+                if (today.exists()) today.delete();
                 if (!pending.renameTo(today)) throw new IOException("Cannot save edition");
                 File[] old = directory.listFiles((dir, name) -> name.endsWith(".jpg"));
                 if (old != null) for (File file : old) if (!file.equals(today)) file.delete();
@@ -55,8 +57,12 @@ final class EarthEdition {
         if (selected != null && hasFullCoverage(selected)) {
             Bitmap bitmap = BitmapFactory.decodeFile(selected.getPath(), options);
             if (bitmap != null) {
-                LocalDate edition = LocalDate.parse(selected.getName().substring(0, 10));
-                return new EarthEdition(bitmap, NAMES[index(edition)]);
+                try {
+                    LocalDate edition = LocalDate.parse(selected.getName().substring(0, 10));
+                    return new EarthEdition(bitmap, NAMES[index(edition)]);
+                } catch (RuntimeException badName) {
+                    bitmap.recycle();
+                }
             }
             selected.delete();
         }
@@ -71,7 +77,7 @@ final class EarthEdition {
 
     private static void download(LocalDate day, int daysBack, File file) throws IOException {
         int[] corner = CORNERS[index(day)];
-        String box = corner[0] + "," + corner[1] + "," + (corner[0]+1500000) + "," + (corner[1]+843750);
+        String box = corner[0] + "," + corner[1] + "," + (corner[0] + 1500000) + "," + (corner[1] + 843750);
         URL url = new URL("https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi?SERVICE=WMS"
                 + "&VERSION=1.1.1&REQUEST=GetMap&LAYERS=MODIS_Terra_CorrectedReflectance_TrueColor"
                 + "&STYLES=&FORMAT=image/jpeg&SRS=EPSG:3857&WIDTH=3840&HEIGHT=2160&BBOX=" + box

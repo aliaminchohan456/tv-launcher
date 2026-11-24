@@ -1,6 +1,7 @@
 package com.cleanhome.tv;
 
 import android.service.dreams.DreamService;
+import android.view.KeyEvent;
 
 public class ClockDream extends DreamService {
     private FloatingClockView clock;
@@ -16,21 +17,24 @@ public class ClockDream extends DreamService {
         setContentView(clock);
     }
 
-    @Override public void onDreamingStarted() {
+    @Override
+    public void onDreamingStarted() {
         super.onDreamingStarted();
         if (clock != null) clock.setDreamRunning(true);
     }
 
-    @Override public void onDreamingStopped() {
+    @Override
+    public void onDreamingStopped() {
         if (clock != null) clock.setDreamRunning(false);
         super.onDreamingStopped();
     }
 
     @Override
-    public boolean dispatchKeyEvent(android.view.KeyEvent event) {
+    public boolean dispatchKeyEvent(KeyEvent event) {
         if (clock != null && clock.handleGreeting(event)) return true;
-        if (isInteractive() && event.getKeyCode() == android.view.KeyEvent.KEYCODE_BACK) {
-            if (event.getAction() == android.view.KeyEvent.ACTION_UP) finish();
+        int key = event.getKeyCode();
+        if (isInteractive() && (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE)) {
+            if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) finish();
             return true;
         }
         return super.dispatchKeyEvent(event);

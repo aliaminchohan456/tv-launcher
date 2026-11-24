@@ -62,7 +62,8 @@ final class AppStyles {
         // If the directory cannot be made, the caller still gets the path and
         // its own existence check decides what to do.
         if (!dir.isDirectory()) dir.mkdirs();
-        return new File(dir, fileName);
+        String safeName = new File(fileName).getName();
+        return new File(dir, safeName);
     }
 
     static Bitmap loadCustomArt(Context context, String packageName, int maxWidth) {

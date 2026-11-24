@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -164,6 +163,12 @@ public class EditAppActivity extends Activity {
             }
             art = found.get(0).activityInfo.loadBanner(pm);
             if (art == null) {
+                try {
+                    art = pm.getApplicationBanner(pkg);
+                } catch (PackageManager.NameNotFoundException ignored) {
+                }
+            }
+            if (art == null) {
                 art = found.get(0).loadIcon(pm);
             }
             if (art != null) {
@@ -236,9 +241,7 @@ public class EditAppActivity extends Activity {
         art.setOnFocusChangeListener((v, hasFocus) -> {
             CardFocus.apply(v, hasFocus);
             if (hasFocus) {
-                // The focus lands while the card is still being measured, so the
-                // ring has to wait for the layout to finish.
-                v.post(() -> ring.moveTo(v, dp(16)));
+                ring.moveTo(v, dp(16));
             } else {
                 // The focus left the pictures for a button, the ring goes too.
                 v.post(() -> {
@@ -270,14 +273,19 @@ public class EditAppActivity extends Activity {
             boolean current = spec != null && spec.toString().equals(chosen);
             frame.getChildAt(1).setVisibility(current ? View.VISIBLE : View.GONE);
         }
-        // The icon in use came from another app, so no tile in the row above
-        // can carry the badge. Mark that button instead, so it is still clear
-        // where the picture came from.
+        // Mark the source button when the chosen art came from another app or the gallery.
         TextView otherApps = findViewById(R.id.edit_other_apps);
         if (otherApps != null) {
-            boolean foreign = chosen.startsWith("app:") && !chosen.contains(packageName);
-            otherApps.setCompoundDrawables(null, null,
+            boolean foreign = chosen.startsWith("app:")
+                    && !chosen.startsWith("app:" + packageName + ":");
+            otherApps.setCompoundDrawablesWithIntrinsicBounds(null, null,
                     foreign ? getDrawable(R.drawable.badge_selected) : null, null);
+        }
+        TextView fromGallery = findViewById(R.id.edit_from_gallery);
+        if (fromGallery != null) {
+            boolean fromFile = chosen.startsWith("file:");
+            fromGallery.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                    fromFile ? getDrawable(R.drawable.badge_selected) : null, null);
         }
     }
 
@@ -399,11 +407,14 @@ public class EditAppActivity extends Activity {
         }
         new Thread(() -> {
             Bitmap bitmap = copyGallery(uri);
-            if (bitmap == null) {
-                return;
-            }
             runOnUiThread(() -> {
-                if (isFinishing() || isDestroyed()) return;
+                if (isFinishing() || isDestroyed()) {
+                    return;
+                }
+                if (bitmap == null) {
+                    Toast.makeText(this, "Could not load that picture", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 preview.setImageBitmap(bitmap);
                 selectedSpec = "file:icon_" + packageName.replace('.', '_') + ".png";
                 applyBadge();
@@ -419,14 +430,13 @@ public class EditAppActivity extends Activity {
             BitmapFactory.Options bounds = new BitmapFactory.Options();
             bounds.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(in, null, bounds);
-            in.close();
             int sample = 1;
             while (bounds.outWidth / sample > 480 && sample < 16) {
                 sample *= 2;
             }
             BitmapFactory.Options opts = new BitmapFactory.Options();
             opts.inSampleSize = sample;
-            opts.inPreferredConfig = Bitmap.Config.RGB_565;
+            opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
             Bitmap decoded;
             try (InputStream again = getContentResolver().openInputStream(uri)) {
                 if (again == null) {
@@ -512,6 +522,7 @@ public class EditAppActivity extends Activity {
             return Typeface.create("sans-serif-light", Typeface.NORMAL);
         }
     }
+
     /** One picture and the spec that says where it came from. */
     static final class Choice {
         final Bitmap bitmap;
@@ -522,8 +533,6 @@ public class EditAppActivity extends Activity {
             this.spec = spec;
         }
     }
-
-
 
     private int dp(float value) {
         return Math.round(value * getResources().getDisplayMetrics().density);
@@ -538,5 +547,4 @@ public class EditAppActivity extends Activity {
         });
         view.setClipToOutline(true);
     }
-
 }

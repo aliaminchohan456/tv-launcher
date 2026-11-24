@@ -59,7 +59,8 @@ public class AmbientBackgroundView extends View {
     private float centerY = 0.42f;
 
     private Bitmap mask;
-    private float maskScale = MASK_DOWNSCALE;
+    private float maskScaleX = MASK_DOWNSCALE;
+    private float maskScaleY = MASK_DOWNSCALE;
     private PorterDuffColorFilter tint;
     private int tintColor = -1;
 
@@ -162,8 +163,6 @@ public class AmbientBackgroundView extends View {
         Bitmap next = Bitmap.createBitmap(maskW, maskH, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(next);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        // A radius of about one panel width. The old one was 70% of it, which
-        // made the fade fall off so fast that the rings showed.
         paint.setShader(new RadialGradient(
                 maskW / 2f,
                 maskH / 2f,
@@ -175,7 +174,8 @@ public class AmbientBackgroundView extends View {
         // The old bitmap is left to the collector. The render thread may
         // still be holding it for the frame that is in flight.
         mask = next;
-        maskScale = (w * MASK_OVERSCAN) / maskW;
+        maskScaleX = (w * MASK_OVERSCAN) / maskW;
+        maskScaleY = (h * MASK_OVERSCAN) / maskH;
     }
 
     @Override
@@ -193,8 +193,8 @@ public class AmbientBackgroundView extends View {
             tintColor = rgb;
             tint = new PorterDuffColorFilter(rgb, PorterDuff.Mode.SRC_IN);
         }
-        float halfW = mask.getWidth() * maskScale / 2f;
-        float halfH = mask.getHeight() * maskScale / 2f;
+        float halfW = mask.getWidth() * maskScaleX / 2f;
+        float halfH = mask.getHeight() * maskScaleY / 2f;
         float cx = w * centerX;
         float cy = h * centerY;
         washRect.set(cx - halfW, cy - halfH, cx + halfW, cy + halfH);

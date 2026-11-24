@@ -1,12 +1,12 @@
 package com.cleanhome.tv;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
-import android.widget.LinearLayout;
-import android.text.format.DateFormat;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
+import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -76,7 +76,7 @@ final class FloatingClockView extends FrameLayout {
         warmGlow.setAlpha(0f);
         sky = new FoxSkyView(context);
         if (meadow != null) {
-            addView(meadow, new LayoutParams(-1,-1));
+            addView(meadow, new LayoutParams(-1, -1));
         } else if (ambient) {
             addView(warmGlow, new LayoutParams(-1, -1));
             addView(sky, new LayoutParams(-1, -1));
@@ -105,7 +105,7 @@ final class FloatingClockView extends FrameLayout {
             line.setShadowLayer(5f, 0f, 2f, 0xAA000000);
         }
         companion = new FoxMascotView(context);
-        companion.setVisibility(ClockPreferences.background(context) == ClockPreferences.Background.AMBIENT ? VISIBLE : GONE);
+        companion.setVisibility(mode == ClockPreferences.Background.AMBIENT ? VISIBLE : GONE);
         LinearLayout.LayoutParams stage = new LinearLayout.LayoutParams(dp(164), dp(124));
         stage.bottomMargin = dp(10);
         face.addView(companion, stage);
@@ -139,8 +139,8 @@ final class FloatingClockView extends FrameLayout {
                 LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.CENTER_HORIZONTAL));
         if (preview) {
             hint = label(15f, 460, 0xd8f2ede4);
-            hint.setText(meadow != null ? "LEFT / RIGHT  HOURS    OK  GREET    BACK  EXIT"
-                    : ambient ? "OK  GREET    BACK  EXIT" : "BACK  EXIT");
+            hint.setText(meadow != null ? "LEFT / RIGHT HOURS   OK GREET   BACK EXIT"
+                    : ambient ? "OK GREET   BACK EXIT" : "BACK EXIT");
             hint.setGravity(Gravity.CENTER);
             hint.setLetterSpacing(.14f);
             hint.setShadowLayer(dp(6), 0, dp(2), 0xaa000000);
@@ -172,15 +172,26 @@ final class FloatingClockView extends FrameLayout {
         label.setIncludeFontPadding(false);
         label.setTextColor(color);
         label.setTextSize(size);
-        label.setTypeface(new Typeface.Builder(getContext().getAssets(), "fonts/outfit.ttf")
-                .setFontVariationSettings("'wght' " + weight).build());
+        label.setTypeface(outfit(weight));
         return label;
+    }
+
+    private Typeface outfit(int weight) {
+        try {
+            return new Typeface.Builder(getContext().getAssets(), "fonts/outfit.ttf")
+                    .setFontVariationSettings("'wght' " + weight)
+                    .build();
+        } catch (RuntimeException ex) {
+            return Typeface.create("sans-serif-light", Typeface.NORMAL);
+        }
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (meadow == null) ((GradientDrawable) getBackground()).setGradientRadius(Math.max(1f, w * .78f));
+        if (meadow == null && getBackground() instanceof GradientDrawable) {
+            ((GradientDrawable) getBackground()).setGradientRadius(Math.max(1f, w * .78f));
+        }
     }
 
     @Override
@@ -239,7 +250,7 @@ final class FloatingClockView extends FrameLayout {
                         photo.setAlpha(0f);
                         photo.setImageBitmap(edition.image);
                         photo.animate().alpha(1f).setDuration(800).start();
-                        credit.setText(edition.place + "  ·  NASA / MODIS");
+                        credit.setText(edition.place + " · NASA / MODIS");
                         credit.setVisibility(VISIBLE);
                     });
                 } catch (java.io.IOException e) {
@@ -292,9 +303,11 @@ final class FloatingClockView extends FrameLayout {
             palette[i] = androidx.core.graphics.ColorUtils.blendARGB(
                     LIGHT[slot][i], LIGHT[slot + 1][i], progress);
         }
-        GradientDrawable glow = (GradientDrawable) getBackground();
-        glow.setColors(palette);
-        glow.setGradientCenter(.32f + .13f * (float) Math.sin(hour * Math.PI / 12), .65f);
+        if (getBackground() instanceof GradientDrawable) {
+            GradientDrawable glow = (GradientDrawable) getBackground();
+            glow.setColors(palette);
+            glow.setGradientCenter(.32f + .13f * (float) Math.sin(hour * Math.PI / 12), .65f);
+        }
     }
 
     void setDreamRunning(boolean running) {

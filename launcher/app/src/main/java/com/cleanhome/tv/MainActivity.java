@@ -1,9 +1,9 @@
 package com.cleanhome.tv;
 
+import android.Manifest;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
-import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,24 +15,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.graphics.Typeface;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.media.tv.TvContract;
 import android.media.tv.TvInputInfo;
 import android.media.tv.TvInputManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -75,6 +75,7 @@ public class MainActivity extends Activity {
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private ConnectivityManager.NetworkCallback networkWatch;
+    private final Runnable networkRefresh = this::loadSsidAsync;
     private List<HomeApp> allApps = Collections.emptyList();
     private final List<HomeApp> dockApps = new ArrayList<>();
     private final List<HomeApp> gridApps = new ArrayList<>();
@@ -94,7 +95,7 @@ public class MainActivity extends Activity {
     private AmbientBackgroundView ambient;
     private TextView shelfTitle;
     private int highlightRetries;
-    private int seenStyleGeneration;
+    private int seenStyleGeneration = -1;
     private boolean reloadOnResume;
     private int appLoadToken;
     private BroadcastReceiver packageReceiver;
@@ -143,6 +144,12 @@ public class MainActivity extends Activity {
     private Runnable pendingHeroSwap;
     private boolean appsReady;
 
+    private Locale cachedLocale;
+    private SimpleDateFormat fmt24;
+    private SimpleDateFormat fmt12;
+    private SimpleDateFormat fmtAmPm;
+    private SimpleDateFormat fmtDate;
+
     private final Runnable clockTick = new Runnable() {
         @Override
         public void run() {
@@ -158,6 +165,7 @@ public class MainActivity extends Activity {
         // panels show steps instead of a smooth fade.
         getWindow().setFormat(PixelFormat.RGBA_8888);
         focusSound = new FocusSound(this);
+        seenStyleGeneration = AppStyles.generation(this);
         setContentView(R.layout.activity_home);
         thin = outfit(300);
         text = outfit(420);
@@ -226,8 +234,8 @@ public class MainActivity extends Activity {
      *
      * The name is read once when the screen is built and again every time the
      * launcher comes forward. While it sits open the callback follows the
-     * network that arrives and the one that is switched off, so the button
-     * never keeps the name of a connection that is gone.
+     * network that arrives, updates capabilities, and handles disconnects so
+     * the button never keeps the name of a connection that is gone.
      */
     private void watchNetwork() {
         if (networkWatch != null) {
@@ -244,12 +252,21 @@ public class MainActivity extends Activity {
             }
 
             @Override
+            public void onCapabilitiesChanged(Network network, NetworkCapabilities caps) {
+                refreshNetworkButton();
+            }
+
+            @Override
             public void onLost(Network network) {
                 // A network that was switched off leaves no name behind.
                 refreshNetworkButton();
             }
         };
-        cm.registerDefaultNetworkCallback(networkWatch);
+        try {
+            cm.registerDefaultNetworkCallback(networkWatch);
+        } catch (RuntimeException ignored) {
+            networkWatch = null;
+        }
     }
 
     /**
@@ -293,9 +310,10 @@ public class MainActivity extends Activity {
         }
     }
 
-    /** Reads the network again on its own thread and puts its word up. */
+    /** Debounces network changes and reads the SSID on a worker thread. */
     private void refreshNetworkButton() {
-        loadSsidAsync();
+        handler.removeCallbacks(networkRefresh);
+        handler.postDelayed(networkRefresh, 250L);
     }
 
     /**
@@ -327,18 +345,27 @@ public class MainActivity extends Activity {
         if (root != null) {
             root.removeCallbacks(focusTick);
         }
-        if (optionsDialog != null && optionsDialog.isShowing()) {
-            optionsDialog.dismiss();
+        if (optionsDialog != null) {
+            if (optionsDialog.isShowing()) {
+                optionsDialog.dismiss();
+            }
+            optionsDialog = null;
         }
         if (networkWatch != null) {
             ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             if (cm != null) {
-                cm.unregisterNetworkCallback(networkWatch);
+                try {
+                    cm.unregisterNetworkCallback(networkWatch);
+                } catch (RuntimeException ignored) {
+                }
             }
             networkWatch = null;
         }
         if (packageReceiver != null) {
-            unregisterReceiver(packageReceiver);
+            try {
+                unregisterReceiver(packageReceiver);
+            } catch (RuntimeException ignored) {
+            }
             packageReceiver = null;
         }
         super.onDestroy();
@@ -378,7 +405,7 @@ public class MainActivity extends Activity {
         applyHiddenButtons();
         int styles = AppStyles.generation(this);
         if (reloadOnResume || !Dock.loadAvailable(this).equals(dockPackages())
-                || (seenStyleGeneration != 0 && styles != seenStyleGeneration)) {
+                || styles != seenStyleGeneration) {
             reloadOnResume = false;
             reloadApps();
         }
@@ -437,7 +464,7 @@ public class MainActivity extends Activity {
         dockBand = findViewById(R.id.dock_band);
         dockRow = findViewById(R.id.dock_row);
         dockBand.addOnLayoutChangeListener((view, left, top, right, bottom,
-                                            oldLeft, oldTop, oldRight, oldBottom) -> {
+                oldLeft, oldTop, oldRight, oldBottom) -> {
             view.setClipBounds(new Rect(0, 0, right - left, bottom - top));
             ViewGroup.MarginLayoutParams titleParams =
                     (ViewGroup.MarginLayoutParams) shelfTitle.getLayoutParams();
@@ -560,6 +587,7 @@ public class MainActivity extends Activity {
     }
 
     private void renderZone() {
+        highlightRetries = 0;
         // A move to another part of the screen is not a slide. The ring
         // dissolves and comes back instead of flying across the panel.
         ringJump = (ringZone != zone) || gridScrolled;
@@ -609,7 +637,6 @@ public class MainActivity extends Activity {
         if (zone == GRID) {
             // The grid lights up with the app that has the focus in it.
             updateAmbient();
-
         } else if (zone == DOCK && showShelf && dockIndex < dockApps.size()) {
             showHero(dockApps.get(dockIndex));
         }
@@ -1084,6 +1111,9 @@ public class MainActivity extends Activity {
         }
         if (dockMoveOrigin >= 0 && isNav(key)) {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if ((key == KeyEvent.KEYCODE_BACK || isActivateKey(key)) && event.getRepeatCount() > 0) {
+                    return true;
+                }
                 handleDockMoveKey(key);
             }
             return true;
@@ -1279,6 +1309,7 @@ public class MainActivity extends Activity {
             if (zone == GRID) {
                 if (gridIndex >= COLS) {
                     gridIndex -= COLS;
+                    gridScrolled = true;
                 } else {
                     zone = DOCK;
                 }
@@ -1416,6 +1447,11 @@ public class MainActivity extends Activity {
         }
         Dialog dialog = new Dialog(this, android.R.style.Theme_DeviceDefault_Dialog);
         optionsDialog = dialog;
+        dialog.setOnDismissListener(d -> {
+            if (optionsDialog == dialog) {
+                optionsDialog = null;
+            }
+        });
         dialog.setContentView(R.layout.options_menu);
         if (dialog.getWindow() != null) {
             android.view.Window window = dialog.getWindow();
@@ -1905,7 +1941,19 @@ public class MainActivity extends Activity {
         return ssid;
     }
 
+    private void ensureDateFormats() {
+        Locale locale = Locale.getDefault();
+        if (!locale.equals(cachedLocale)) {
+            cachedLocale = locale;
+            fmt24 = new SimpleDateFormat("H:mm", locale);
+            fmt12 = new SimpleDateFormat("h:mm", locale);
+            fmtAmPm = new SimpleDateFormat("a", locale);
+            fmtDate = new SimpleDateFormat("EEEE d MMMM", locale);
+        }
+    }
+
     private void renderClock() {
+        ensureDateFormats();
         Date now = new Date();
         int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
         String newGreeting = hour < 12 ? "Good morning"
@@ -1914,8 +1962,7 @@ public class MainActivity extends Activity {
             greeting.setText(newGreeting);
         }
         boolean hour24 = ClockPreferences.is24Hour(this);
-        String newClock = new SimpleDateFormat(hour24 ? "H:mm" : "h:mm",
-                Locale.getDefault()).format(now);
+        String newClock = (hour24 ? fmt24 : fmt12).format(now);
         // setText re-measures even when the words are the same. The clock is
         // the largest text on the screen, so this is the difference between a
         // quiet screen and a small hitch every second.
@@ -1926,12 +1973,12 @@ public class MainActivity extends Activity {
             ampm.setVisibility(View.GONE);
         } else {
             ampm.setVisibility(View.VISIBLE);
-            String newAmPm = new SimpleDateFormat("a", Locale.getDefault()).format(now);
+            String newAmPm = fmtAmPm.format(now);
             if (!newAmPm.contentEquals(ampm.getText())) {
                 ampm.setText(newAmPm);
             }
         }
-        String newDate = new SimpleDateFormat("EEEE d MMMM", Locale.getDefault()).format(now);
+        String newDate = fmtDate.format(now);
         if (!newDate.contentEquals(dateView.getText())) {
             dateView.setText(newDate);
         }

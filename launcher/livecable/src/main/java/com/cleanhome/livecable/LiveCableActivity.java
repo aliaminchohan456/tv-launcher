@@ -24,7 +24,11 @@ public final class LiveCableActivity extends Activity {
     private TvView video;
     private TextView message;
     private boolean live;
-    private final Runnable showNoSignal = () -> showMessage(R.string.no_signal);
+    private boolean connecting;
+    private final Runnable showNoSignal = () -> {
+        connecting = false;
+        showMessage(R.string.no_signal);
+    };
     private final Runnable hideLabel = () -> message.setVisibility(View.INVISIBLE);
 
     @Override
@@ -55,6 +59,7 @@ public final class LiveCableActivity extends Activity {
             @Override
             public void onVideoAvailable(String inputId) {
                 live = true;
+                connecting = false;
                 Log.i(TAG, "HDMI 1 video available in Live Cable");
                 showLiveLabel();
             }
@@ -62,8 +67,11 @@ public final class LiveCableActivity extends Activity {
             @Override
             public void onVideoUnavailable(String inputId, int reason) {
                 live = false;
-                showMessage(R.string.opening_input);
-                message.postDelayed(showNoSignal, CONNECT_TIMEOUT_MS);
+                if (!connecting) {
+                    connecting = true;
+                    showMessage(R.string.opening_input);
+                    message.postDelayed(showNoSignal, CONNECT_TIMEOUT_MS);
+                }
             }
 
             @Override
@@ -86,6 +94,7 @@ public final class LiveCableActivity extends Activity {
 
     @Override
     protected void onStop() {
+        connecting = false;
         video.reset();
         message.removeCallbacks(showNoSignal);
         message.removeCallbacks(hideLabel);
@@ -115,6 +124,7 @@ public final class LiveCableActivity extends Activity {
             showInputUnavailable();
             return;
         }
+        connecting = true;
         showMessage(R.string.opening_input);
         message.postDelayed(showNoSignal, CONNECT_TIMEOUT_MS);
         video.reset();
@@ -123,6 +133,7 @@ public final class LiveCableActivity extends Activity {
 
     private void showInputUnavailable() {
         live = false;
+        connecting = false;
         showMessage(R.string.input_unavailable);
     }
 

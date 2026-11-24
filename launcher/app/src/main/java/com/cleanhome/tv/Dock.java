@@ -18,7 +18,7 @@ public final class Dock {
     public static final String[] DEFAULT = {
             "com.netflix.ninja",
             "io.gh.reisxd.tizentube.cobalt",
-            "com.nuvio.app",
+            "com.nuvio.tv",
             "app.netmirror.newtv"
     };
 

@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ public class IconPickerActivity extends Activity {
     public static final String EXTRA_PACKAGE = "package";
     private static final int COLS = 4;
 
+    private final List<Entry> appEntries = new ArrayList<>();
     private final List<Entry> entries = new ArrayList<>();
     private RecyclerView grid;
     private TextView title;
@@ -45,6 +47,7 @@ public class IconPickerActivity extends Activity {
     private FocusRing ring;
     private Adapter adapter;
     private String chosenPackage;
+    private int lastAppPosition;
     private boolean pickAppMode;
     private boolean replaceApp;
     private Typeface medium;
@@ -74,18 +77,8 @@ public class IconPickerActivity extends Activity {
         adapter = new Adapter();
         grid.setAdapter(adapter);
         grid.addOnLayoutChangeListener((view, left, top, right, bottom,
-                                        oldLeft, oldTop, oldRight, oldBottom) ->
+                oldLeft, oldTop, oldRight, oldBottom) ->
                 view.setClipBounds(new Rect(0, 0, right - left, bottom - top)));
-        grid.getViewTreeObserver().addOnPreDrawListener(() -> {
-            View focused = grid.findFocus();
-            View art = focused == null ? null : focused.findViewById(R.id.art);
-            if (art != null) {
-                ring.moveTo(art, dp(16));
-            } else {
-                ring.hide();
-            }
-            return true;
-        });
         new Thread(this::loadApps, "picker-apps").start();
     }
 
@@ -93,9 +86,6 @@ public class IconPickerActivity extends Activity {
     private void loadApps() {
         final List<Entry> found = new ArrayList<>();
         Set<String> docked = pickAppMode ? new HashSet<>(Dock.load(this)) : null;
-        // AppLoader queries LEANBACK_LAUNCHER and LAUNCHER separately. Asking
-        // one Intent for both categories only matches apps that declare both,
-        // which left this screen nearly empty on the television.
         for (HomeApp app : AppLoader.load(this)) {
             if (docked != null && docked.contains(app.packageName)) {
                 continue;
@@ -105,9 +95,6 @@ public class IconPickerActivity extends Activity {
             entry.label = app.label;
             entry.art = app.art;
             if (!pickAppMode) {
-                // The spec has to name the picture that really exists. A
-                // hardcoded ":banner" returned null later for apps with only
-                // a round launcher icon.
                 String kind = "icon";
                 try {
                     if (getPackageManager().getApplicationBanner(app.packageName) != null) {
@@ -127,28 +114,56 @@ public class IconPickerActivity extends Activity {
             if (isFinishing() || isDestroyed()) {
                 return;
             }
-            entries.clear();
-            entries.addAll(found);
-            adapter.notifyDataSetChanged();
-            if (found.isEmpty()) {
-                help.setText(pickAppMode ? "No other apps are available for the dock." : "No apps found.");
-            } else if (pickAppMode) {
-                help.setText(replaceApp ? "Press OK to replace with the focused app."
-                        : "Press OK to add the focused app.");
-            } else {
-                help.setText("Choose an app to browse its artwork.");
+            appEntries.clear();
+            appEntries.addAll(found);
+            restoreAppList(0);
+        });
+    }
+
+    private void restoreAppList(int focusIndex) {
+        chosenPackage = null;
+        if (pickAppMode) {
+            title.setText(replaceApp ? "Replace dock app" : "Add to dock");
+        } else {
+            title.setText("Choose an app");
+        }
+        entries.clear();
+        entries.addAll(appEntries);
+        adapter.notifyDataSetChanged();
+        if (entries.isEmpty()) {
+            help.setText(pickAppMode ? "No other apps are available for the dock." : "No apps found.");
+            ring.hide();
+        } else if (pickAppMode) {
+            help.setText(replaceApp ? "Press OK to replace with the focused app."
+                    : "Press OK to add the focused app.");
+            focusPosition(focusIndex);
+        } else {
+            help.setText("Choose an app to browse its artwork.");
+            focusPosition(focusIndex);
+        }
+    }
+
+    private void focusPosition(int index) {
+        if (entries.isEmpty()) {
+            return;
+        }
+        int target = Math.max(0, Math.min(index, entries.size() - 1));
+        grid.scrollToPosition(target);
+        grid.post(() -> {
+            RecyclerView.ViewHolder holder = grid.findViewHolderForAdapterPosition(target);
+            if (holder != null) {
+                holder.itemView.requestFocus();
             }
         });
     }
 
     /** The icons of the app that was picked, its banner and its icon. */
-    private void showIconsOf(String pkg) {
+    private void showIconsOf(String pkg, int sourcePosition) {
+        lastAppPosition = sourcePosition;
         chosenPackage = pkg;
         final List<Entry> icons = new ArrayList<>();
         PackageManager pm = getPackageManager();
         try {
-            // getApplicationBanner covers launcher apps too; querying only
-            // LEANBACK_LAUNCHER missed the banner of most ordinary apps.
             Drawable banner = pm.getApplicationBanner(pkg);
             if (banner != null) {
                 Entry entry = new Entry();
@@ -171,11 +186,30 @@ public class IconPickerActivity extends Activity {
         } catch (Exception ignored) {
         }
         title.setText(pickLabel(pkg));
-        help.setText("Pick the picture you want to use.");
+        help.setText(icons.isEmpty()
+                ? "No artwork available for this app."
+                : "Pick the picture you want to use.");
         entries.clear();
         entries.addAll(icons);
         adapter.notifyDataSetChanged();
-        grid.scrollToPosition(0);
+        if (icons.isEmpty()) {
+            ring.hide();
+        } else {
+            focusPosition(0);
+        }
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int key = event.getKeyCode();
+        if ((key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE)
+                && chosenPackage != null && !pickAppMode) {
+            if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
+                restoreAppList(lastAppPosition);
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
     private String pickLabel(String pkg) {
@@ -231,19 +265,33 @@ public class IconPickerActivity extends Activity {
             holder.itemView.setOnFocusChangeListener(null);
             boolean focused = holder.itemView.hasFocus();
             holder.art.animate().cancel();
+            holder.name.animate().cancel();
             holder.art.setScaleX(focused ? CardFocus.SCALE : 1f);
             holder.art.setScaleY(focused ? CardFocus.SCALE : 1f);
             holder.art.setAlpha(focused ? 1f : CardFocus.DIM);
             holder.art.setTranslationZ(focused ? dp(8) : 0f);
             holder.art.setArtFocus(focused);
             holder.name.setAlpha(focused ? 1f : 0.68f);
+            if (focused) {
+                ring.moveTo(holder.art, dp(16));
+            }
             holder.itemView.setOnFocusChangeListener((v, hasFocus) -> {
                 holder.art.animate().cancel();
+                holder.name.animate().cancel();
                 CardFocus.apply(holder.art, hasFocus);
                 holder.name.animate().alpha(hasFocus ? 1f : 0.68f)
                         .setDuration(Motion.DURATION)
                         .setInterpolator(Motion.EASING)
                         .start();
+                if (hasFocus) {
+                    ring.moveTo(holder.art, dp(16));
+                } else {
+                    v.post(() -> {
+                        if (grid.findFocus() == null) {
+                            ring.hide();
+                        }
+                    });
+                }
             });
             holder.itemView.setOnClickListener(v -> {
                 if (pickAppMode) {
@@ -254,7 +302,8 @@ public class IconPickerActivity extends Activity {
                     return;
                 }
                 if (chosenPackage == null) {
-                    showIconsOf(entry.packageName);
+                    int pos = holder.getBindingAdapterPosition();
+                    showIconsOf(entry.packageName, pos >= 0 ? pos : 0);
                 } else {
                     pick(entry);
                 }
@@ -279,9 +328,13 @@ public class IconPickerActivity extends Activity {
     }
 
     private Typeface outfit(int weight) {
-        return new Typeface.Builder(getAssets(), "fonts/outfit.ttf")
-                .setFontVariationSettings("'wght' " + weight)
-                .build();
+        try {
+            return new Typeface.Builder(getAssets(), "fonts/outfit.ttf")
+                    .setFontVariationSettings("'wght' " + weight)
+                    .build();
+        } catch (RuntimeException ex) {
+            return Typeface.create("sans-serif-light", Typeface.NORMAL);
+        }
     }
 
     private int dp(float value) {

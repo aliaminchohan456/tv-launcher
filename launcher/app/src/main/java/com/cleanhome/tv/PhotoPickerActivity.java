@@ -6,14 +6,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Outline;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,11 +42,16 @@ public class PhotoPickerActivity extends Activity {
     private final List<Uri> uris = new ArrayList<>();
     private final List<Bitmap> thumbs = new ArrayList<>();
     private Adapter adapter;
+    private FocusRing ring;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_picker);
+        ring = new FocusRing((FrameLayout) findViewById(R.id.photo_root));
+        ((TextView) findViewById(R.id.photo_kicker)).setTypeface(outfit(500));
+        ((TextView) findViewById(R.id.photo_title)).setTypeface(outfit(600));
+        ((TextView) findViewById(R.id.photo_empty)).setTypeface(outfit(400));
         RecyclerView grid = findViewById(R.id.photo_grid);
         grid.setLayoutManager(new GridLayoutManager(this, COLS));
         grid.setItemAnimator(null);
@@ -106,7 +111,6 @@ public class PhotoPickerActivity extends Activity {
             BitmapFactory.Options bounds = new BitmapFactory.Options();
             bounds.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(in, null, bounds);
-            in.close();
             int sample = 1;
             while (bounds.outWidth / sample > 320 && sample < 16) {
                 sample *= 2;
@@ -142,19 +146,29 @@ public class PhotoPickerActivity extends Activity {
         @NonNull
         @Override
         public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ImageView view = new ImageView(PhotoPickerActivity.this);
+            CardArtView view = new CardArtView(PhotoPickerActivity.this);
             int width = dp(180);
             RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(width, dp(101));
-            lp.setMargins(dp(5), dp(5), dp(5), dp(5));
+            lp.setMargins(dp(8), dp(8), dp(8), dp(8));
             view.setLayoutParams(lp);
             view.setScaleType(ImageView.ScaleType.CENTER_CROP);
             view.setBackgroundColor(0xFF2A2A2E);
             view.setFocusable(true);
             view.setClickable(true);
-            round(view, 16f / 180f);
+            CardArtView.round(view, 16f / 180f);
+            CardFocus.apply(view, false);
             view.setOnFocusChangeListener((v, hasFocus) -> {
-                v.setScaleX(hasFocus ? 1.06f : 1f);
-                v.setScaleY(hasFocus ? 1.06f : 1f);
+                v.animate().cancel();
+                CardFocus.apply(v, hasFocus);
+                if (hasFocus) {
+                    ring.moveTo(v, dp(16));
+                } else {
+                    v.post(() -> {
+                        if (getCurrentFocus() == null) {
+                            ring.hide();
+                        }
+                    });
+                }
             });
             return new Holder(view);
         }
@@ -163,6 +177,12 @@ public class PhotoPickerActivity extends Activity {
         public void onBindViewHolder(@NonNull Holder holder, int position) {
             Bitmap bitmap = position < thumbs.size() ? thumbs.get(position) : null;
             holder.image.setImageBitmap(bitmap);
+            boolean focused = holder.image.hasFocus();
+            holder.image.animate().cancel();
+            CardFocus.apply(holder.image, focused);
+            if (focused) {
+                ring.moveTo(holder.image, dp(16));
+            }
             Uri uri = position < uris.size() ? uris.get(position) : null;
             holder.image.setOnClickListener(v -> {
                 if (uri != null) {
@@ -177,23 +197,23 @@ public class PhotoPickerActivity extends Activity {
         }
 
         final class Holder extends RecyclerView.ViewHolder {
-            final ImageView image;
+            final CardArtView image;
 
             Holder(View view) {
                 super(view);
-                image = (ImageView) view;
+                image = (CardArtView) view;
             }
         }
     }
 
-    private void round(View view, float fraction) {
-        view.setOutlineProvider(new ViewOutlineProvider() {
-            @Override
-            public void getOutline(View v, Outline outline) {
-                outline.setRoundRect(0, 0, v.getWidth(), v.getHeight(), v.getWidth() * fraction);
-            }
-        });
-        view.setClipToOutline(true);
+    private Typeface outfit(int weight) {
+        try {
+            return new Typeface.Builder(getAssets(), "fonts/outfit.ttf")
+                    .setFontVariationSettings("'wght' " + weight)
+                    .build();
+        } catch (RuntimeException ex) {
+            return Typeface.create("sans-serif-light", Typeface.NORMAL);
+        }
     }
 
     private int dp(float value) {
