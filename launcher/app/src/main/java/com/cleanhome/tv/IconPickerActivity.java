@@ -3,7 +3,6 @@ package com.cleanhome.tv;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -93,49 +92,33 @@ public class IconPickerActivity extends Activity {
     /** Every app that can be launched, with the icon it would give. */
     private void loadApps() {
         final List<Entry> found = new ArrayList<>();
-        if (pickAppMode) {
-            Set<String> docked = new HashSet<>(Dock.load(this));
-            for (HomeApp app : AppLoader.load(this)) {
-                if (!docked.contains(app.packageName)) {
-                    Entry entry = new Entry();
-                    entry.packageName = app.packageName;
-                    entry.label = app.label;
-                    entry.art = app.art;
-                    found.add(entry);
-                }
-            }
-            showAppEntries(found);
-            return;
-        }
-        PackageManager pm = getPackageManager();
-        Intent query = new Intent(Intent.ACTION_MAIN);
-        query.addCategory(Intent.CATEGORY_LAUNCHER);
-        query.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
-        Set<String> seen = new HashSet<>();
-        for (ResolveInfo info : pm.queryIntentActivities(query, 0)) {
-            if (info.activityInfo == null) {
-                continue;
-            }
-            String pkg = info.activityInfo.packageName;
-            if (!seen.add(pkg)) {
-                continue;
-            }
-            CharSequence label = info.loadLabel(pm);
-            Drawable art = info.activityInfo.loadBanner(pm);
-            if (art == null) {
-                art = info.loadIcon(pm);
-            }
-            if (art == null) {
+        Set<String> docked = pickAppMode ? new HashSet<>(Dock.load(this)) : null;
+        // AppLoader queries LEANBACK_LAUNCHER and LAUNCHER separately. Asking
+        // one Intent for both categories only matches apps that declare both,
+        // which left this screen nearly empty on the television.
+        for (HomeApp app : AppLoader.load(this)) {
+            if (docked != null && docked.contains(app.packageName)) {
                 continue;
             }
             Entry entry = new Entry();
-            entry.packageName = pkg;
-            entry.label = label == null ? pkg : label.toString();
-            entry.art = AppLoader.toBitmap(art, 480);
-            entry.spec = "app:" + pkg + ":banner";
+            entry.packageName = app.packageName;
+            entry.label = app.label;
+            entry.art = app.art;
+            if (!pickAppMode) {
+                // The spec has to name the picture that really exists. A
+                // hardcoded ":banner" returned null later for apps with only
+                // a round launcher icon.
+                String kind = "icon";
+                try {
+                    if (getPackageManager().getApplicationBanner(app.packageName) != null) {
+                        kind = "banner";
+                    }
+                } catch (Exception ignored) {
+                }
+                entry.spec = "app:" + app.packageName + ":" + kind;
+            }
             found.add(entry);
         }
-        java.util.Collections.sort(found, (a, b) -> a.label.compareToIgnoreCase(b.label));
         showAppEntries(found);
     }
 
@@ -163,16 +146,11 @@ public class IconPickerActivity extends Activity {
         chosenPackage = pkg;
         final List<Entry> icons = new ArrayList<>();
         PackageManager pm = getPackageManager();
-        Set<String> seen = new HashSet<>();
-        Intent query = new Intent(Intent.ACTION_MAIN);
-        query.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
-        query.setPackage(pkg);
-        for (ResolveInfo info : pm.queryIntentActivities(query, 0)) {
-            if (info.activityInfo == null) {
-                continue;
-            }
-            Drawable banner = info.activityInfo.loadBanner(pm);
-            if (banner != null && seen.add("banner")) {
+        try {
+            // getApplicationBanner covers launcher apps too; querying only
+            // LEANBACK_LAUNCHER missed the banner of most ordinary apps.
+            Drawable banner = pm.getApplicationBanner(pkg);
+            if (banner != null) {
                 Entry entry = new Entry();
                 entry.packageName = pkg;
                 entry.label = "Banner";
@@ -180,10 +158,8 @@ public class IconPickerActivity extends Activity {
                 entry.spec = "app:" + pkg + ":banner";
                 icons.add(entry);
             }
-        }
-        try {
             Drawable icon = pm.getApplicationIcon(pkg);
-            if (icon != null && seen.add("icon")) {
+            if (icon != null) {
                 Entry entry = new Entry();
                 entry.packageName = pkg;
                 entry.label = "App icon";
@@ -192,7 +168,7 @@ public class IconPickerActivity extends Activity {
                 entry.icon = true;
                 icons.add(entry);
             }
-        } catch (PackageManager.NameNotFoundException ignored) {
+        } catch (Exception ignored) {
         }
         title.setText(pickLabel(pkg));
         help.setText("Pick the picture you want to use.");

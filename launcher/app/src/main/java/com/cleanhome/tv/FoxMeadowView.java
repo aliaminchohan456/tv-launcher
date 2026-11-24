@@ -46,6 +46,10 @@ final class FoxMeadowView extends FrameLayout implements Choreographer.FrameCall
     private final Shader insectGlow = halo(0xc4de83);
     private static final float[] FIREFLY_X = {318, 705, 451, 174, 824};
     private static final float[] FIREFLY_Y = {438, 436, 415, 447, 413};
+    // Dew catches the first light on the taller grass tips. Static so the loop
+    // stays allocation-free; the glints drift a few units above their blade.
+    private static final float[] DEW_X = {12, 101, 242, 376, 504, 655, 807, 927};
+    private static final float[] DEW_Y = {476, 509, 478, 499, 449, 453, 507, 478};
     private boolean enabled = true;
     // Trees in the same wind phase share one cached silhouette and draw call.
     private final Path[] pineGrove = new Path[8];
@@ -339,8 +343,15 @@ final class FoxMeadowView extends FrameLayout implements Choreographer.FrameCall
         if (state.starAlpha > 0.01f) {
             int starCount = (hr == 1 || hr == 2 || hr == 23) ? 30 : 24;
             for (int i = 0; i < starCount; i++) {
+                float pulse = 82 + 52 * sin(t * .58f + starPhase[i]);
+                // Only the large stars get a halo. The small ones stay
+                // pin-sharp, so the night sky keeps its depth without noise.
+                if ((i & 3) == 0 && state.starAlpha > .3f) {
+                    glow(c, moonlight, starX[i], starY[i], 6.5f, 6.5f,
+                            Math.round(state.starAlpha * (25 + 11 * sin(t * .58f + starPhase[i]))));
+                }
                 color(0xffccd7ec);
-                ink.setAlpha(Math.round(state.starAlpha * (82 + 52 * sin(t * .58f + starPhase[i]))));
+                ink.setAlpha(Math.round(state.starAlpha * pulse));
                 c.drawCircle(starX[i], starY[i], starRadius[i], ink);
             }
         }
@@ -515,6 +526,8 @@ final class FoxMeadowView extends FrameLayout implements Choreographer.FrameCall
             }
         }
 
+        if (state.propMode == FoxHourlySchedule.PropMode.MORNING_DEW) drawMorningDew(c, t);
+
         // Ground Prop by Hour
         if (state.propMode == FoxHourlySchedule.PropMode.CAMPFIRE_BRIGHT
                 || state.propMode == FoxHourlySchedule.PropMode.CAMPFIRE_EMBERS) {
@@ -549,6 +562,24 @@ final class FoxMeadowView extends FrameLayout implements Choreographer.FrameCall
             color(isSeed ? 0xfff1f0df : 0xffffd487); ink.setAlpha((int) (210 * a));
             c.drawCircle(x, y, isSeed ? 1.8f : 1.4f, ink);
             if (isSeed) { ink.setStrokeWidth(.7f); c.drawLine(x, y, x - 3, y + 4, ink); }
+        }
+    }
+
+    private void drawMorningDew(Canvas c, float t) {
+        // A low band of haze behind the pines, then individual beads lifting
+        // off the grass. Both use the cached daylight halo: no shader allocations.
+        glow(c, sunlight, 480, 388, 320, 22, 24);
+        glow(c, sunlight, 220, 402, 170, 15, 15);
+        for (int i = 0; i < DEW_X.length; i++) {
+            float p = (t * .11f + i * .19f) % 1f;
+            float alpha = sin(p * 3.14159f) * (55 + 35 * sin(t * .9f + i));
+            if (alpha <= 1f) continue;
+            float x = DEW_X[i] + 1.5f * sin(t + i);
+            float y = DEW_Y[i] - 4f * p;
+            glow(c, sunlight, x, y, 6.5f, 5f, Math.round(alpha));
+            color(0xfff8e8c8);
+            ink.setAlpha(Math.round(115 + 85 * sin(p * 3.14159f)));
+            c.drawCircle(x, y, 1.1f, ink);
         }
     }
 

@@ -26,6 +26,8 @@ final class FloatingClockView extends FrameLayout {
     private final LinearLayout face;
     private final android.widget.ImageView photo;
     private final TextView credit;
+    private final boolean preview;
+    private final TextView hint;
     private String requested;
     private int generation;
     private int previewHour = -1;
@@ -40,6 +42,7 @@ final class FloatingClockView extends FrameLayout {
                 previewMinute = now.getMinute();
             }
             previewHour = Math.floorMod(previewHour + delta, 24);
+            showHint();
             removeCallbacks(tick);
             updateTime();
         }
@@ -47,9 +50,13 @@ final class FloatingClockView extends FrameLayout {
     }
 
     private final Runnable tick = this::updateTime;
+    private final Runnable hideHint = this::hideHint;
 
-    FloatingClockView(Context context) {
+    FloatingClockView(Context context) { this(context, false); }
+
+    FloatingClockView(Context context, boolean preview) {
         super(context);
+        this.preview = preview;
         ClockPreferences.Background mode = ClockPreferences.background(context);
         meadow = mode == ClockPreferences.Background.MEADOW ? new FoxMeadowView(context) : null;
         ambient = meadow != null || mode == ClockPreferences.Background.AMBIENT;
@@ -130,9 +137,34 @@ final class FloatingClockView extends FrameLayout {
         face.addView(credit, -2, -2);
         addView(face, new LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.CENTER_HORIZONTAL));
+        if (preview) {
+            hint = label(15f, 460, 0xd8f2ede4);
+            hint.setText(meadow != null ? "LEFT / RIGHT  HOURS    OK  GREET    BACK  EXIT"
+                    : ambient ? "OK  GREET    BACK  EXIT" : "BACK  EXIT");
+            hint.setGravity(Gravity.CENTER);
+            hint.setLetterSpacing(.14f);
+            hint.setShadowLayer(dp(6), 0, dp(2), 0xaa000000);
+            hint.setAlpha(0f);
+            addView(hint, new LayoutParams(-2, -2,
+                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL));
+        } else {
+            hint = null;
+        }
     }
 
     private int dp(float value) { return Math.round(value * getResources().getDisplayMetrics().density); }
+
+    private void showHint() {
+        if (hint == null) return;
+        removeCallbacks(hideHint);
+        hint.animate().cancel();
+        hint.setAlpha(.88f);
+        postDelayed(hideHint, 4500L);
+    }
+
+    private void hideHint() {
+        if (hint != null) hint.animate().alpha(0f).setDuration(900L).start();
+    }
 
     private TextView label(float size, int weight, int color) {
         TextView label = new TextView(getContext());
@@ -155,6 +187,7 @@ final class FloatingClockView extends FrameLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (ambient) pulse.start();
+        if (hint != null) showHint();
         updateTime();
     }
 
@@ -163,6 +196,8 @@ final class FloatingClockView extends FrameLayout {
         pulse.cancel();
         warmGlow.animate().cancel();
         removeCallbacks(tick);
+        removeCallbacks(hideHint);
+        if (hint != null) hint.animate().cancel();
         generation++;
         requested = null;
         photo.animate().cancel();
@@ -229,7 +264,10 @@ final class FloatingClockView extends FrameLayout {
     };
 
     private void updateAmbient(java.time.LocalTime time) {
-        companion.refreshTimePeriodFromClock();
+        // Meadow owns the mascot's period: setMeadowHour() derives it from the
+        // preview hour. A wall-clock refresh here would put 07/11/18 back in the
+        // real hour's period and silently drop their choreography in preview.
+        if (meadow == null) companion.refreshTimePeriodFromClock();
         sky.setHour(time.getHour());
         int color = time.getHour() < 5 || time.getHour() >= 20 ? 0xffddd8d0 : 0xfff5f0e8;
         clock.setTextColor(color);
@@ -273,9 +311,11 @@ final class FloatingClockView extends FrameLayout {
         if (event.getAction() == android.view.KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
             if (meadow != null) {
                 meadow.triggerOkInteraction();
+                showHint();
                 return true;
             }
             companion.triggerOkInteraction();
+            showHint();
             if (sky.isMidday()) {
                 warmGlow.animate().alpha(.08f).setDuration(450).withEndAction(() ->
                         warmGlow.animate().alpha(0f).setDuration(550).start()).start();

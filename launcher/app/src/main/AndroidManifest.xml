@@ -72,10 +72,6 @@
             android:name=".PhotoPickerActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".PhotoPickerActivity"
-            android:exported="false" />
-
         <service
             android:name=".ClockDream"
             android:exported="true"

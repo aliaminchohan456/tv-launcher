@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
 import java.io.File;
@@ -60,9 +59,9 @@ final class AppStyles {
 
     static File iconFile(Context context, String fileName) {
         File dir = new File(context.getFilesDir(), "icons");
-        if (!dir.isDirectory() && !dir.mkdirs()) {
-            return new File(dir, fileName);
-        }
+        // If the directory cannot be made, the caller still gets the path and
+        // its own existence check decides what to do.
+        if (!dir.isDirectory()) dir.mkdirs();
         return new File(dir, fileName);
     }
 
@@ -119,14 +118,6 @@ final class AppStyles {
             decoded.recycle();
         }
         return scaled;
-    }
-
-    static Bitmap drawableToBitmap(Drawable drawable, int size) {
-        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, size, size);
-        drawable.draw(canvas);
-        return bitmap;
     }
 
     private static SharedPreferences prefs(Context context) {

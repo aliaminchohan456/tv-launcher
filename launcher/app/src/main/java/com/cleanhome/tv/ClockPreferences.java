@@ -30,9 +30,17 @@ final class ClockPreferences {
 
     static Background background(Context context) {
         SharedPreferences settings = prefs(context);
-        String initial = settings.getBoolean("daily_earth", true) ? "AMBIENT" : "DUSK";
-        String saved = settings.getString("background", initial);
-        return "LANDSCAPE".equals(saved) ? Background.AMBIENT : Background.valueOf(saved);
+        Background initial = settings.getBoolean("daily_earth", true)
+                ? Background.AMBIENT : Background.DUSK;
+        String saved = settings.getString("background", initial.name());
+        if ("LANDSCAPE".equals(saved)) return Background.AMBIENT;
+        try {
+            return Background.valueOf(saved);
+        } catch (RuntimeException badValue) {
+            // A stale or hand-edited preference must never keep the dream
+            // from starting. Put it back to the default instead of crashing.
+            return initial;
+        }
     }
 
     static void cycleBackground(Context context) {

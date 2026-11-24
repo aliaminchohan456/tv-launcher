@@ -76,7 +76,7 @@ public class PhotoPickerActivity extends Activity {
         final List<Uri> resultUris = found;
         final List<Bitmap> resultThumbs = art;
         runOnUiThread(() -> {
-            if (isFinishing()) {
+            if (isFinishing() || isDestroyed()) {
                 return;
             }
             uris.clear();
