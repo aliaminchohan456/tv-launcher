@@ -170,12 +170,16 @@ public class MainActivity extends Activity {
             List<HomeApp> all = AppLoader.load(this);
             List<TvInputInfo> found = loadInputs();
             runOnUiThread(() -> {
-                // A package broadcast can arrive before this first load
-                // finishes. Do not let the older list overwrite the newer one.
-                if (firstToken != appLoadToken || isFinishing() || isDestroyed()) {
+                if (isFinishing() || isDestroyed()) {
                     return;
                 }
-                applyApps(all);
+                // A package broadcast can arrive before this first load
+                // finishes. Do not let the older list overwrite the newer one,
+                // but still show the inputs: reloadApps() only reloads apps,
+                // so skipping them here would leave the Inputs menu empty.
+                if (firstToken == appLoadToken) {
+                    applyApps(all);
+                }
                 showInputs(found);
             });
         }, "home-load").start();
