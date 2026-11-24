@@ -652,6 +652,12 @@ public class LauncherSettingsActivity extends Activity {
     public boolean dispatchKeyEvent(android.view.KeyEvent event) {
         int key = event.getKeyCode();
         if (key == android.view.KeyEvent.KEYCODE_BACK) {
+            // Act on the release only. Acting on the press as well let one
+            // physical Back dismiss a dialog and finish this screen on the way
+            // up, before the owner could press again.
+            if (event.getAction() != android.view.KeyEvent.ACTION_UP || event.isCanceled()) {
+                return true;
+            }
             // A dialog that is still up takes the first Back. A dialog that
             // has already closed itself must not leave this screen stuck.
             if (currentDialog != null && currentDialog.isShowing()) {

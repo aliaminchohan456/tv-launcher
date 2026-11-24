@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,17 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class EditAppActivity extends Activity {
     static final String EXTRA_PACKAGE = "package";
@@ -139,7 +133,7 @@ public class EditAppActivity extends Activity {
         addArt(own, pm, packageName, "icon");
         addArt(own, pm, packageName, "banner");
         runOnUiThread(() -> {
-            if (isFinishing()) {
+            if (isFinishing() || isDestroyed()) {
                 return;
             }
             selectedSpec = currentSpec == null ? "" : currentSpec;
@@ -409,6 +403,7 @@ public class EditAppActivity extends Activity {
                 return;
             }
             runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) return;
                 preview.setImageBitmap(bitmap);
                 selectedSpec = "file:icon_" + packageName.replace('.', '_') + ".png";
                 applyBadge();

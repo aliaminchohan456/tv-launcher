@@ -1,4 +1,4 @@
-﻿# TV launcher handoff
+# TV launcher handoff
 
 This folder is a live job on a real TCL Android TV. Another agent should continue from here. Do not start over. Do not uninstall system packages. Do not disable the packages listed under Keep.
 
@@ -13,6 +13,10 @@ Three completed one-minute runs on the same TCL measured 50.0 presented FPS each
 - [Qwen handoff with implementation details and open questions](Qwen-Fox-Meadow-handoff.txt)
 - [Completed pacing measurements](videos/fox-meadow/sofa-review/pacing.json)
 - [Revised TCL recording](videos/fox-meadow/sofa-review/Fox-Meadow-TCL-review.mp4) · [TCL screenshots](videos/fox-meadow/sofa-review/TCL-screenshots.jpg)
+
+Whole-launcher source pass on the same date, also not yet built or installed: `IconPickerActivity` no longer asks one Intent for both launcher categories (which left the picker nearly empty) and now builds `app:pkg:banner/icon` specs that match artwork that exists; `ClockPreferences.background()` falls back instead of crashing on a stale preference; the first app load in `MainActivity` shares the reload token so a package broadcast cannot be overwritten by an older list; one Back press in settings no longer dismisses a dialog and finishes the screen; async picker callbacks no longer touch a destroyed activity; the dead Wi-Fi panel, unused `AtmosphereView`, unused methods and unused imports were removed. Details below.
+
+Source-only follow-up, not yet built or installed on the TV: `FloatingClockView.updateAmbient()` no longer refreshes the mascot's period from the wall clock while Meadow is mounted. That call overwrote the period chosen by `setMeadowHour()` and broke the generic 07/11/18 choreography whenever the preview hour differed from the real hour. `ClockScreenActivity` now leaves the preview only on Back/Escape instead of on any key, consumes the other D-pad keys, pauses the Meadow frame loop in `onStop()`, and shows a fading control legend. Dawn now gets haze and dew beads, and the larger stars get a quiet halo. The duplicate `PhotoPickerActivity` manifest entry is gone. Java sources were syntax-parsed locally; there is no JDK or Android SDK in this workspace, so APK build and on-TV verification are still required.
 
 ## Goal
 
@@ -292,7 +296,7 @@ OK on the Wi-Fi button was briefly changed to open a menu of the networks around
 
 It was set aside because Android 12 does not let a third-party app read the saved networks (`getConfiguredNetworks()` returned 0 while the television knew two) and does not let one force a connection to a saved network (`addNetwork`, `enableNetwork` and `connect` all refuse third-party callers since Android Q). `addNetworkSuggestions` is the only road left, and it only suggests; the system decides when to connect. That could not give the direct connect the user asked for, so the button went back to opening the Android Wi-Fi settings, which is where a saved network can be joined with one tap.
 
-Files left behind, unused: the `WifiEntry` class, `wifiRows`, `buildWifiRowsAsync`, `wifiEntries`, `showWifiRows`, `startScan`, `chooseWifi`, `askWifiPassword`, `joinWifi`, `storedWifiPassword`, `storeWifiPassword`, `tryJoinWithoutPassword`, and the `MENU_WIFI` constant. Removing them is safe if the feature is wanted again later.
+The unused code was removed on 23 November 2026: the `WifiEntry` class, `wifiRows`, the Wi-Fi menu methods, the padlock/badge drawing and the `MENU_WIFI` constant. The Wi-Fi pill opens `Settings.ACTION_WIFI_SETTINGS` directly. Nothing here can be restored except from git history or this description.
 
 ## The settings screen (23 October 2026)
 
@@ -496,6 +500,8 @@ TizenTube carries the custom label "YouTube" and the icon `app:io.gh.reisxd.tize
 - Join a network with `addNetwork`, `enableNetwork` or `connect`. Android 12 refuses all three to a normal app. `addNetworkSuggestions` is the only road, see the Wi-Fi menu section.
 - Call `adb install` if it hangs. Push and `pm install -r`.
 - Leave screensaver pointing at a disabled dream.
+- Call `FoxMascotView.refreshTimePeriodFromClock()` while Meadow is mounted. Meadow's period comes from `setMeadowHour()`; the wall clock overwrites it in preview and drops the 07/11/18 choreography.
+- Let any key except Back/Escape leave the screensaver preview. Left/Right step hours, Up/Down and OK are consumed; the control legend fades but the preview stays until Back.
 - Turn dither on for the ambient wash or any other full-screen paint. On this panel it costs about 30 ms per pass and drops the frame onto the slow path. The grain covers what dither would have covered.
 - Rebuild the ambient's radial gradient per frame. It is baked once into the mask bitmap and tinted; the fade changes only the tint.
 - Put a `clipPath` back into `GlassHighlight` for a halo. The halo never drew (5 dp spread against a 4.5 dp ring), and `clipPath` is expensive. The seam is a stroked annulus now.
@@ -515,7 +521,7 @@ TizenTube carries the custom label "YouTube" and the icon `app:io.gh.reisxd.tize
 - Network debugging is still on. The user has to turn it off on the TV; nothing in the launcher needs it any more.
 - The top row currently hides Inputs and Wi-Fi; Settings is shown. That is the state left on the set after the 25 October tests and the 27 October casting work, confirmed by reading `shared_prefs/dock.xml`. The all-hidden case is fixed and tested, but it is not the live setting.
 - Quick Paste is uninstalled. If the user wants it back, it has to come from Play Store; it is not in `backup\disabled-by-us.txt`.
-- The abandoned Wi-Fi panel is still in `MainActivity.java`: `WifiEntry`, `wifiRows`, `buildWifiRowsAsync`, `wifiEntries`, `showWifiRows`, `startScan`, `chooseWifi`, `askWifiPassword`, `joinWifi`, `storedWifiPassword`, `storeWifiPassword`, `tryJoinWithoutPassword`, `MENU_WIFI` and `scanReceiver`. It is unused and safe to delete with its imports; the pill opens `Settings.ACTION_WIFI_SETTINGS` directly.
+- The abandoned Wi-Fi panel was deleted from `MainActivity.java` with its imports. The pill opens `Settings.ACTION_WIFI_SETTINGS` directly; do not rebuild the menu without solving the Android 12 saved-network restriction first.
 - README, `restore.ps1`, and `launcher\build-and-install.ps1` exist. Keep them accurate if you change package names, dock order, or paths.
 
 ## Testing without a person at the remote

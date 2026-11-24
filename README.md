@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 <img src="docs/home.jpg" alt="Clean Home on a TCL G10: black canvas, Netflix focused, deep red colour wash, dock of four apps, frosted pills for Inputs, Wi-Fi and Settings" width="100%">
 
@@ -180,7 +180,7 @@ The launcher ships its own `DreamService`, `com.cleanhome.tv/.ClockDream`, with 
 
 <img src="docs/fox-meadow.jpg" alt="Fox Meadow at night: a crescent moon, a large clock reading 10:01 PM, a sleeping fox beside a small fire, and a dark ridge line of trees" width="100%">
 
-**Fox Meadow** is the one with a schedule. `FoxHourlySchedule` owns 24 palettes and interpolates them minute by minute, so the light at 06:40 is between dawn and morning. The fox is a separate view with its own poses; at 21:59 it settles, tucks its tail and sleeps. In manual preview, **Left and Right step through the 24 hours**, **OK greets the fox**, and **Back** leaves. The automatic screensaver follows the television's clock.
+**Fox Meadow** is the one with a schedule. `FoxHourlySchedule` owns 24 palettes and interpolates them minute by minute, so the light at 06:40 is between dawn and morning. The fox is a separate view with its own poses; at 21:59 it settles, tucks its tail and sleeps. Dawn adds a low haze and dew beads on the grass; after dark the larger stars carry a soft halo. The preview shows a fading control legend on entry and after each press: **Left and Right step through the 24 hours**, **OK greets the fox**, and only **Back** leaves. The automatic screensaver follows the television's clock.
 
 A note for anyone reading the source: the handoff document records that this panel presents the Fox Meadow scene at **50 fps**, and that a solid-colour control and a build with the frame gate disabled all measured the same 50. The cause is still open, it is described in [`summary.md`](summary.md), and no 60 fps claim is made for it.
 
@@ -422,7 +422,7 @@ Tv Launcher/
 - **The Wi-Fi network picker was built and set aside.** Android 12 does not let a third-party app read or join saved networks; `addNetworkSuggestions` only suggests. The button opens the system Wi-Fi screen instead, where joining is one tap.
 - **The "other apps" row in Edit scrolls sideways**, and the last icon is cut off until you move right. That is deliberate: a wrapping grid clipped the second row.
 - **Debug build, unminified.** No release signing is configured; this is a personal appliance, not a Play Store release.
-- **The abandoned Wi-Fi panel still exists in `MainActivity.java`** as unused code. It is safe to delete.
+- **The abandoned Wi-Fi panel was removed from `MainActivity.java`.** The Wi-Fi pill opens the system screen; the old menu is documented in `summary.md` so it is not rebuilt by mistake.
 
 ---
 

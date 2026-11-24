@@ -14,7 +14,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Outline;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.graphics.Rect;
@@ -26,25 +25,19 @@ import android.media.tv.TvInputManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.net.wifi.WifiNetworkSuggestion;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.provider.Settings;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -60,10 +53,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public class MainActivity extends Activity {
     private static final int COLS = 4;
@@ -71,12 +62,8 @@ public class MainActivity extends Activity {
     private static final int DOCK = 1;
     private static final int GRID = 2;
     private static final int MENU = 3;
-    private static final int MENU_INPUTS = 0;
-    private static final int MENU_WIFI = 1;
-    private static final int WIFI_ROWS = 5;
     private static final int REQ_SSID = 41;
     private static final String SSID_TAG = "SsidPill";
-    private static final String WIFI_TAG = "WifiPanel";
 
     /** How long the title and the arrow take to fade. */
     private static final long FADE_MS = 200L;
@@ -144,11 +131,7 @@ public class MainActivity extends Activity {
     private TextView dockMoveHint;
     private int gridIndex;
     private int menuIndex;
-    private int menuKind = MENU_INPUTS;
     private int menuPill;
-    private final List<WifiEntry> wifiRows = new ArrayList<>();
-    private BroadcastReceiver scanReceiver;
-    private Dialog wifiDialog;
     private int focusTicksLeft;
     private int ssidToken;
     private int heroToken;
@@ -182,10 +165,16 @@ public class MainActivity extends Activity {
         bindViews();
         loadWallpaper();
         restoreFocus();
+        final int firstToken = ++appLoadToken;
         new Thread(() -> {
             List<HomeApp> all = AppLoader.load(this);
             List<TvInputInfo> found = loadInputs();
             runOnUiThread(() -> {
+                // A package broadcast can arrive before this first load
+                // finishes. Do not let the older list overwrite the newer one.
+                if (firstToken != appLoadToken || isFinishing() || isDestroyed()) {
+                    return;
+                }
                 applyApps(all);
                 showInputs(found);
             });
@@ -348,13 +337,6 @@ public class MainActivity extends Activity {
             unregisterReceiver(packageReceiver);
             packageReceiver = null;
         }
-        if (scanReceiver != null) {
-            unregisterReceiver(scanReceiver);
-            scanReceiver = null;
-        }
-        if (wifiDialog != null && wifiDialog.isShowing()) {
-            wifiDialog.dismiss();
-        }
         super.onDestroy();
     }
 
@@ -435,7 +417,6 @@ public class MainActivity extends Activity {
             stopDockMove(false);
             renderZone();
         }
-        saveFocus();
         super.onPause();
     }
 
@@ -903,7 +884,9 @@ public class MainActivity extends Activity {
         updateAmbient();
         if (app.label.equals(heroLabel)) {
             // The name is already right. It only has to come back if it was
-            // faded out while the top row or the grid held the focus.
+            // faded out while the top row or the grid held the focus. A swap
+            // cancelled mid-fade can leave the text shifted, so clear that too.
+            shelfTitle.setTranslationY(0f);
             fadeShelf(1f);
             return;
         }
@@ -1579,15 +1562,9 @@ public class MainActivity extends Activity {
             launch(gridApps.get(gridIndex));
             return;
         }
-        if (zone == MENU) {
-            if (menuKind == MENU_WIFI) {
-                if (menuIndex < wifiRows.size()) {
-                    chooseWifi(wifiRows.get(menuIndex));
-                }
-            } else if (menuIndex < inputs.size()) {
-                switchInput(inputs.get(menuIndex));
-                closeMenu();
-            }
+        if (zone == MENU && menuIndex < inputs.size()) {
+            switchInput(inputs.get(menuIndex));
+            closeMenu();
         }
     }
 
@@ -1596,23 +1573,8 @@ public class MainActivity extends Activity {
         if (inputRows.isEmpty()) {
             return;
         }
-        menuKind = MENU_INPUTS;
         menuPill = 0;
         openMenuPanel();
-    }
-
-    /**
-     * The menu of the networks, under the Wi-Fi button.
-     *
-     * The list is filled from what the system scanned last, so the first row
-     * appears at once, and a fresh scan is asked for behind it.
-     */
-    private void openWifiMenu() {
-        menuKind = MENU_WIFI;
-        menuPill = 1;
-        buildWifiRowsAsync();
-        openMenuPanel();
-        startScan();
     }
 
     private void openMenuPanel() {
@@ -1635,7 +1597,7 @@ public class MainActivity extends Activity {
     }
 
     private void positionMenu() {
-        int width = dp(MENU_WIFI == menuKind ? 310 : 240);
+        int width = dp(240);
         if (inputMenu.getLayoutParams().width != width) {
             inputMenu.getLayoutParams().width = width;
             inputMenu.requestLayout();
@@ -1657,7 +1619,6 @@ public class MainActivity extends Activity {
     }
 
     private void launch(HomeApp app) {
-        saveFocus();
         try {
             startActivity(app.launch);
         } catch (RuntimeException ignored) {
@@ -1751,7 +1712,7 @@ public class MainActivity extends Activity {
         inputMarks.clear();
         inputMarkAnims.clear();
         if (found.isEmpty()) {
-            View empty = menuRow("No inputs", false, null);
+            View empty = menuRow("No inputs");
             ((TextView) empty.getTag()).setAlpha(0.6f);
             inputMenu.addView(empty);
             inputRows.add(empty);
@@ -1759,7 +1720,7 @@ public class MainActivity extends Activity {
             return;
         }
         for (TvInputInfo info : found) {
-            View row = menuRow(inputLabel(info), false, null);
+            View row = menuRow(inputLabel(info));
             inputMenu.addView(row);
             inputRows.add(row);
         }
@@ -1768,482 +1729,21 @@ public class MainActivity extends Activity {
 
     /** Keeps an open menu in step when its rows are rebuilt behind it. */
     private void refreshOpenMenu() {
-        if (zone != MENU || menuKind != MENU_INPUTS) {
+        if (zone != MENU) {
             return;
         }
         menuIndex = clamp(menuIndex, 0, Math.max(0, inputRows.size() - 1));
         positionMenu();
         renderZone();
-    }
-
-    /** Fills the open Wi-Fi menu from the networks the system can see. */
-    private void buildWifiRowsAsync() {
-        new Thread(() -> {
-            List<WifiEntry> found = wifiEntries();
-            runOnUiThread(() -> {
-                if (zone == MENU && menuKind == MENU_WIFI) {
-                    showWifiRows(found);
-                }
-            });
-        }, "wifi-list").start();
-    }
-
-    /**
-     * The five strongest networks, the connected one first.
-     *
-     * The connected network is always in the list even when it is weak, and
-     * the last row opens the system's own screen for the cases this menu
-     * cannot finish, such as a network the television already remembers.
-     */
-    private List<WifiEntry> wifiEntries() {
-        List<WifiEntry> entries = new ArrayList<>();
-        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        if (wifi == null) {
-            return entries;
-        }
-        boolean log = Log.isLoggable(WIFI_TAG, Log.DEBUG);
-        Set<String> saved = new HashSet<>();
-        try {
-            List<WifiConfiguration> known = wifi.getConfiguredNetworks();
-            if (known != null) {
-                for (WifiConfiguration config : known) {
-                    String name = cleanSsid(config.SSID);
-                    if (name != null) {
-                        saved.add(name);
-                    }
-                }
-            }
-            if (log) {
-                Log.d(WIFI_TAG, "saved networks the system shows us: " + saved.size());
-            }
-        } catch (RuntimeException ex) {
-            if (log) {
-                Log.d(WIFI_TAG, "cannot read the saved networks", ex);
-            }
-        }
-        String current = readSsid();
-        List<ScanResult> results = null;
-        try {
-            results = wifi.getScanResults();
-        } catch (RuntimeException ex) {
-            if (log) {
-                Log.d(WIFI_TAG, "cannot read the scan", ex);
-            }
-        }
-        if (results == null) {
-            return entries;
-        }
-        if (log) {
-            Log.d(WIFI_TAG, "scan results: " + results.size() + ", connected: " + current);
-        }
-        for (ScanResult result : results) {
-            String name = cleanSsid(result.SSID);
-            if (name == null) {
-                continue;
-            }
-            String caps = result.capabilities == null ? "" : result.capabilities;
-            boolean secured = caps.contains("WEP") || caps.contains("PSK")
-                    || caps.contains("EAP") || caps.contains("SAE") || caps.contains("OWE");
-            boolean sae = caps.contains("SAE");
-            WifiEntry seen = null;
-            for (WifiEntry entry : entries) {
-                if (entry.ssid.equals(name)) {
-                    seen = entry;
-                    break;
-                }
-            }
-            if (seen == null) {
-                entries.add(new WifiEntry(name, secured, sae, name.equals(current),
-                        saved.contains(name), false, result.level));
-            } else if (result.level > seen.level) {
-                seen.level = result.level;
-            }
-        }
-        entries.sort((a, b) -> Integer.compare(b.level, a.level));
-
-        List<WifiEntry> top = new ArrayList<>();
-        for (WifiEntry entry : entries) {
-            if (entry.connected) {
-                top.add(entry);
-                break;
-            }
-        }
-        for (WifiEntry entry : entries) {
-            if (top.size() >= WIFI_ROWS) {
-                break;
-            }
-            if (!entry.connected) {
-                top.add(entry);
-            }
-        }
-        return top;
-    }
-
-    /** Draws the five rows and the way out under them. */
-    private void showWifiRows(List<WifiEntry> found) {
-        wifiRows.clear();
-        inputMenu.removeAllViews();
-        inputRows.clear();
-        inputMarks.clear();
-        inputMarkAnims.clear();
-        if (found.isEmpty()) {
-            View empty = menuRow("No networks found", false, null);
-            ((TextView) empty.getTag()).setAlpha(0.6f);
-            inputMenu.addView(empty);
-            inputRows.add(empty);
-        } else {
-            for (WifiEntry entry : found) {
-                String badge = entry.connected ? "CONNECTED" : (entry.saved ? "SAVED" : null);
-                View row = menuRow(entry.ssid, entry.secured, badge);
-                inputMenu.addView(row);
-                inputRows.add(row);
-                wifiRows.add(entry);
-            }
-        }
-        View settings = menuRow("Wi-Fi settings", false, null);
-        ((TextView) settings.getTag()).setAlpha(0.55f);
-        inputMenu.addView(settings);
-        inputRows.add(settings);
-        wifiRows.add(new WifiEntry("", false, false, false, false, true, 0));
-        menuIndex = clamp(menuIndex, 0, Math.max(0, inputRows.size() - 1));
-        positionMenu();
-        renderZone();
-    }
-
-    /** Asks the system for a fresh scan. It may say no if one just ran. */
-    private void startScan() {
-        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        if (wifi == null) {
-            return;
-        }
-        try {
-            wifi.startScan();
-        } catch (RuntimeException ex) {
-            Log.d(WIFI_TAG, "the scan was refused", ex);
-        }
-    }
-
-    /** A row of the Wi-Fi menu was chosen. */
-    private void chooseWifi(WifiEntry entry) {
-        if (entry.settingsRow) {
-            closeMenu();
-            openSettings(Settings.ACTION_WIFI_SETTINGS);
-            return;
-        }
-        if (entry.connected) {
-            closeMenu();
-            return;
-        }
-        String stored = storedWifiPassword(entry.ssid);
-        if (stored != null) {
-            // We already know this password — join without asking again.
-            joinWifi(entry, stored);
-            return;
-        }
-        if (!entry.secured) {
-            // An open network needs no password.
-            joinWifi(entry, null);
-            return;
-        }
-        // A secured network we have not joined through this launcher.
-        // Android 12 does not let a third-party app force a connection to a
-        // saved network, so the password is asked for. Once it is stored, the
-        // next tap joins without asking again.
-        askWifiPassword(entry);
-    }
-
-    /**
-     * Tries to join a secured network without a password.
-     *
-     * If the television already has the network saved, the system ignores our
-     * empty suggestion and uses the saved copy, so the connection happens with
-     * no dialog at all. Otherwise the suggestion is refused and the password
-     * is asked for.
-     */
-    private void tryJoinWithoutPassword(WifiEntry entry) {
-        closeMenu();
-        String ssid = entry.ssid;
-        new Thread(() -> {
-            int status = WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_INTERNAL;
-            try {
-                WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-                if (wifi != null) {
-                    WifiNetworkSuggestion suggestion = new WifiNetworkSuggestion.Builder()
-                            .setSsid(ssid)
-                            .build();
-                    status = wifi.addNetworkSuggestions(Collections.singletonList(suggestion));
-                }
-            } catch (RuntimeException ex) {
-                Log.d(WIFI_TAG, "joining without a password failed", ex);
-            }
-            final int result = status;
-            Log.d(WIFI_TAG, "join without a password for " + ssid + ": " + result);
-            if (result == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS
-                    || result == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_DUPLICATE) {
-                // Give it up to four seconds to connect, checking often.
-                for (int i = 0; i < 8; i++) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException ignored) {
-                    }
-                    if (ssid.equals(readSsid())) {
-                        runOnUiThread(() -> Toast.makeText(this, "Joined " + ssid, Toast.LENGTH_SHORT).show());
-                        return;
-                    }
-                }
-            }
-            // It did not connect — ask for the password.
-            runOnUiThread(() -> askWifiPassword(entry));
-        }, "wifi-try").start();
-    }
-
-    /** The password we stored for a network we joined before, if any. */
-    private String storedWifiPassword(String ssid) {
-        return getPrefs().getString("wifi-pw:" + ssid, null);
-    }
-
-    /** Remembers a password so the same network can be joined with one tap. */
-    private void storeWifiPassword(String ssid, String password) {
-        getPrefs().edit().putString("wifi-pw:" + ssid, password).apply();
-    }
-
-    /**
-     * The password, asked the way the rest of the launcher asks for a word.
-     *
-     * A network that is open joins at once, and this is only reached for one
-     * that has a lock on it.
-     */
-    private void askWifiPassword(WifiEntry entry) {
-        if (wifiDialog != null && wifiDialog.isShowing()) {
-            wifiDialog.dismiss();
-        }
-        Dialog dialog = new Dialog(this, android.R.style.Theme_DeviceDefault_Dialog);
-        wifiDialog = dialog;
-        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
-
-        LinearLayout card = new LinearLayout(this);
-        card.setOrientation(LinearLayout.VERTICAL);
-        card.setBackgroundResource(R.drawable.input_card);
-        card.setPadding(dp(22), dp(20), dp(22), dp(18));
-
-        TextView title = new TextView(this);
-        title.setText(entry.ssid);
-        title.setTextColor(0xFFFFFFFF);
-        title.setTextSize(17f);
-        title.setTypeface(medium);
-        title.setSingleLine(true);
-        title.setEllipsize(android.text.TextUtils.TruncateAt.END);
-        card.addView(title);
-
-        TextView note = new TextView(this);
-        note.setText("Enter the password to join this network.");
-        note.setTextColor(0xB3FFFFFF);
-        note.setTextSize(12f);
-        note.setTypeface(text);
-        LinearLayout.LayoutParams noteParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        noteParams.topMargin = dp(3);
-        card.addView(note, noteParams);
-
-        EditText field = new EditText(this);
-        field.setSingleLine(true);
-        field.setHint("Password");
-        field.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        field.setTextColor(0xFFFFFFFF);
-        field.setHintTextColor(0x66FFFFFF);
-        field.setTextSize(14f);
-        field.setTypeface(text);
-        field.setBackgroundResource(R.drawable.edit_field);
-        field.setPadding(dp(12), dp(10), dp(12), dp(10));
-        LinearLayout.LayoutParams fieldParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        fieldParams.topMargin = dp(14);
-        card.addView(field, fieldParams);
-
-        LinearLayout buttons = new LinearLayout(this);
-        buttons.setOrientation(LinearLayout.HORIZONTAL);
-        buttons.setGravity(Gravity.END);
-        LinearLayout.LayoutParams buttonsParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        buttonsParams.topMargin = dp(14);
-        card.addView(buttons, buttonsParams);
-
-        TextView cancel = new TextView(this);
-        cancel.setText("Cancel");
-        cancel.setTextColor(0xCCFFFFFF);
-        cancel.setTextSize(13f);
-        cancel.setTypeface(text);
-        cancel.setBackgroundResource(R.drawable.option_row);
-        cancel.setPadding(dp(16), dp(8), dp(16), dp(8));
-        cancel.setFocusable(true);
-        buttons.addView(cancel);
-
-        TextView join = new TextView(this);
-        join.setText("Join");
-        join.setTextColor(0xFFFFFFFF);
-        join.setTextSize(13f);
-        join.setTypeface(medium);
-        join.setBackgroundResource(R.drawable.option_row);
-        join.setPadding(dp(20), dp(8), dp(20), dp(8));
-        join.setVisibility(View.GONE);
-        field.addTextChangedListener(new android.text.TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                join.setVisibility(s.length() >= 8 ? View.VISIBLE : View.GONE);
-            }
-
-            @Override
-            public void afterTextChanged(android.text.Editable s) {
-            }
-        });
-
-        cancel.setOnClickListener(v -> dialog.dismiss());
-        join.setOnClickListener(v -> {
-            String password = field.getText().toString();
-            if (password.length() < 8) {
-                note.setText("A password this short cannot be right.");
-                return;
-            }
-            dialog.dismiss();
-            joinWifi(entry, password);
-        });
-        // The keyboard keeps the remote while it is open, so its own Enter
-        // must be the way to join. Otherwise the buttons are only reachable
-        // after closing it with Back.
-        field.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
-        field.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
-                join.performClick();
-                return true;
-            }
-            return false;
-        });
-
-        dialog.setContentView(card);
-        if (dialog.getWindow() != null) {
-            android.view.Window window = dialog.getWindow();
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            android.view.WindowManager.LayoutParams params = window.getAttributes();
-            params.dimAmount = 0.45f;
-            window.setAttributes(params);
-            window.setLayout(dp(380), android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
-                    | android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        }
-        dialog.setOnShowListener(d -> {
-            field.requestFocus();
-            card.setAlpha(0f);
-            card.setScaleX(0.97f);
-            card.setScaleY(0.97f);
-            card.animate()
-                    .alpha(1f)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(Motion.DURATION)
-                    .setInterpolator(Motion.EASING)
-                    .start();
-        });
-        dialog.show();
-    }
-
-    /**
-     * Hands the network to Android and lets it do the joining.
-     *
-     * A normal app is not allowed to write the television's Wi-Fi on its own,
-     * so the network is offered to the system as a suggestion, which it joins
-     * on its own when it is in range.
-     */
-    private void joinWifi(WifiEntry entry, String password) {
-        closeMenu();
-        String ssid = entry.ssid;
-        boolean secured = entry.secured;
-        boolean sae = entry.sae;
-        new Thread(() -> {
-            int status = WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_INTERNAL;
-            try {
-                WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-                if (wifi != null) {
-                    // An older suggestion with an older password would win
-                    // over the new one, so it is taken out first.
-                    List<WifiNetworkSuggestion> old = wifi.getNetworkSuggestions();
-                    if (old != null) {
-                        List<WifiNetworkSuggestion> remove = new ArrayList<>();
-                        for (WifiNetworkSuggestion suggestion : old) {
-                            if (suggestion.getSsid().equals(ssid)) {
-                                remove.add(suggestion);
-                            }
-                        }
-                        if (!remove.isEmpty()) {
-                            wifi.removeNetworkSuggestions(remove);
-                        }
-                    }
-                    WifiNetworkSuggestion.Builder builder = new WifiNetworkSuggestion.Builder()
-                            .setSsid(ssid);
-                    if (secured) {
-                        if (sae) {
-                            builder.setWpa3Passphrase(password);
-                        } else {
-                            builder.setWpa2Passphrase(password);
-                        }
-                    }
-                    status = wifi.addNetworkSuggestions(Collections.singletonList(builder.build()));
-                }
-            } catch (RuntimeException ex) {
-                Log.d(WIFI_TAG, "the suggestion failed", ex);
-            }
-            final int result = status;
-            Log.d(WIFI_TAG, "suggestion for " + ssid + ": " + result);
-            runOnUiThread(() -> {
-                if (result == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS
-                        || result == WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_DUPLICATE) {
-                    if (password != null) {
-                        storeWifiPassword(ssid, password);
-                    }
-                    Toast.makeText(this, "Joining " + ssid, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Android will not join this network on its own.",
-                            Toast.LENGTH_LONG).show();
-                    openSettings(Settings.ACTION_WIFI_SETTINGS);
-                }
-            });
-        }, "wifi-join").start();
-    }
-
-    /** One network in the Wi-Fi menu. */
-    private static final class WifiEntry {
-        final String ssid;
-        final boolean secured;
-        final boolean sae;
-        final boolean connected;
-        final boolean saved;
-        final boolean settingsRow;
-        int level;
-
-        WifiEntry(String ssid, boolean secured, boolean sae, boolean connected,
-                boolean saved, boolean settingsRow, int level) {
-            this.ssid = ssid;
-            this.secured = secured;
-            this.sae = sae;
-            this.connected = connected;
-            this.saved = saved;
-            this.settingsRow = settingsRow;
-            this.level = level;
-        }
     }
 
     /**
      * One row of a menu.
      *
      * The light colour behind the text is a view of its own, so it can fade
-     * in and out without taking the text with it. A network that needs a
-     * password carries a small padlock, and the one that is connected carries
-     * a small word on the right.
+     * in and out without taking the text with it.
      */
-    private View menuRow(String label, boolean locked, String badge) {
+    private View menuRow(String label) {
         FrameLayout row = new FrameLayout(this);
         // A fixed height, not wrap_content. A wrapping row hands the light
         // band a height of zero (it is measured before the row knows how tall
@@ -2264,14 +1764,6 @@ public class MainActivity extends Activity {
         line.setGravity(Gravity.CENTER_VERTICAL);
         line.setPadding(dp(10), dp(7), dp(10), dp(7));
 
-        if (locked) {
-            View lock = new LockView(this);
-            LinearLayout.LayoutParams lockParams =
-                    new LinearLayout.LayoutParams(dp(11), dp(13));
-            lockParams.rightMargin = dp(9);
-            line.addView(lock, lockParams);
-        }
-
         TextView caption = new TextView(this);
         caption.setText(label);
         caption.setTextColor(0xFFF2F2F2);
@@ -2282,75 +1774,11 @@ public class MainActivity extends Activity {
         line.addView(caption, new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        if (badge != null) {
-            TextView chip = networkChip(badge);
-            LinearLayout.LayoutParams chipParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            chipParams.leftMargin = dp(8);
-            line.addView(chip, chipParams);
-        }
-
         row.addView(line, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER_VERTICAL));
         row.setTag(caption);
         return row;
-    }
-
-    /** The small word on the right of a row: "CONNECTED" or "SAVED". */
-    private TextView networkChip(String text) {
-        TextView chip = new TextView(this);
-        chip.setText(text);
-        chip.setTextSize(9f);
-        chip.setLetterSpacing(0.12f);
-        chip.setTextColor(0xF2FFFFFF);
-        chip.setTypeface(medium);
-        chip.setBackgroundResource(R.drawable.pill_bg);
-        chip.setPadding(dp(8), dp(4), dp(8), dp(4));
-        return chip;
-    }
-
-    /**
-     * A small padlock for a network that needs a password.
-     *
-     * It is drawn rather than typed, so it carries the same weight as the
-     * text on a television and no picture of its own colour.
-     */
-    private static final class LockView extends View {
-        private final android.graphics.Paint paint =
-                new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
-
-        LockView(Context context) {
-            super(context);
-            paint.setColor(0x8CFFFFFF);
-            paint.setStrokeCap(android.graphics.Paint.Cap.ROUND);
-        }
-
-        @Override
-        protected void onDraw(android.graphics.Canvas canvas) {
-            float w = getWidth();
-            float h = getHeight();
-            if (w <= 0 || h <= 0) {
-                return;
-            }
-            float stroke = Math.max(1.2f, w * 0.13f);
-            paint.setStrokeWidth(stroke);
-
-            // The shackle, a half ring that sits on the body.
-            float bodyTop = h * 0.46f;
-            paint.setStyle(android.graphics.Paint.Style.STROKE);
-            android.graphics.RectF shackle = new android.graphics.RectF(
-                    w * 0.20f, stroke / 2f, w * 0.80f, bodyTop + stroke);
-            canvas.drawArc(shackle, 180f, 180f, false, paint);
-
-            // The body.
-            paint.setStyle(android.graphics.Paint.Style.FILL);
-            android.graphics.RectF body = new android.graphics.RectF(
-                    stroke / 2f, bodyTop, w - stroke / 2f, h - stroke / 2f);
-            float radius = w * 0.24f;
-            canvas.drawRoundRect(body, radius, radius, paint);
-        }
     }
 
     /**
@@ -2544,15 +1972,6 @@ public class MainActivity extends Activity {
                 wallpaper.setVisibility(View.VISIBLE);
             });
         }, "wallpaper").start();
-    }
-
-    private void saveFocus() {
-        getPrefs().edit()
-                .putInt("zone", zone == MENU ? TOP : zone)
-                .putInt("top", topIndex)
-                .putInt("dock", dockIndex)
-                .putInt("grid", gridIndex)
-                .apply();
     }
 
     private void restoreFocus() {

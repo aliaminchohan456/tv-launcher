@@ -1,10 +1,8 @@
 package com.cleanhome.tv;
 
-import android.graphics.Outline;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,10 +38,6 @@ final class GridAdapter extends RecyclerView.Adapter<GridAdapter.Holder> {
         if (index >= 0) {
             notifyItemChanged(index);
         }
-    }
-
-    int getSelected() {
-        return selected;
     }
 
     @NonNull
