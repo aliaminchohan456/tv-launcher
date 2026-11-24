@@ -36,11 +36,58 @@ public class LauncherSettingsActivity extends Activity {
     private static final int DOCK_COLUMNS = 4;
     private static final int DOCK_CARD_RADIUS = 16;
     private static final int PICK_APP = 31;
-    private static final int SECTION_DOCK = 0;
-    private static final int SECTION_BUTTONS = 1;
-    private static final int SECTION_CLOCK = 2;
-    private static final int SECTION_MORE = 3;
-    private static final String[] SECTION_NAMES = {"Dock", "Buttons", "Clock", "More"};
+
+    /**
+     * The four sections of the settings screen.
+     *
+     * <p>Each value owns the words and the content view that belong to it, so
+     * the sidebar, the heading and the visible panel cannot drift apart. The
+     * old code kept the names in one array and the descriptions in two
+     * different arrays; the Buttons description had already drifted between
+     * them.</p>
+     */
+    private enum Section {
+        DOCK("Dock", "The apps on the home screen", "\u25A6", R.id.section_dock),
+        BUTTONS("Buttons", "The three buttons in the top right corner", "\u25C9", R.id.section_buttons),
+        CLOCK("Clock", "Time format and screensaver", "\u25F7", R.id.section_clock),
+        MORE("More", "Reset and close", "\u2699", R.id.section_more);
+
+        final String title;
+        final String description;
+        final String icon;
+        final int contentId;
+
+        Section(String title, String description, String icon, int contentId) {
+            this.title = title;
+            this.description = description;
+            this.icon = icon;
+            this.contentId = contentId;
+        }
+    }
+
+    /**
+     * What the app picker was opened for: add a new card, or replace the card
+     * at {@code index}. The old code used {@code pendingIndex = -1} to mean
+     * "add", which made a cancelled pick and a missing result indistinguishable
+     * from a real request.
+     */
+    private static final class PickRequest {
+        final boolean replace;
+        final int index;
+
+        private PickRequest(boolean replace, int index) {
+            this.replace = replace;
+            this.index = index;
+        }
+
+        static PickRequest add() {
+            return new PickRequest(false, -1);
+        }
+
+        static PickRequest replace(int index) {
+            return new PickRequest(true, index);
+        }
+    }
 
     private final List<String> dock = new ArrayList<>();
     private final List<View> dockCards = new ArrayList<>();
@@ -52,7 +99,7 @@ public class LauncherSettingsActivity extends Activity {
     private TextView title;
     private TextView subtitle;
     private FocusRing ring;
-    private int section = SECTION_DOCK;
+    private PickRequest pendingPick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,20 +133,13 @@ public class LauncherSettingsActivity extends Activity {
         buildButtons();
         buildMore();
         buildClockSettings();
-        showSection(SECTION_DOCK);
+        showSection(Section.DOCK);
     }
 
     // ---------------------------------------------------------------- sidebar
 
     private void buildSidebar() {
-        String[] descs = {
-                "The apps on the home screen",
-                "The three buttons in the corner",
-                "Time format and screensaver",
-                "Reset and close"
-        };
-        String[] icons = {"\u25A6", "\u25C9", "\u25F7", "\u2699"};
-        for (int i = 0; i < SECTION_NAMES.length; i++) {
+        for (Section section : Section.values()) {
             LinearLayout item = new LinearLayout(this);
             item.setOrientation(LinearLayout.HORIZONTAL);
             item.setGravity(Gravity.CENTER_VERTICAL);
@@ -113,7 +153,7 @@ public class LauncherSettingsActivity extends Activity {
             item.setLayoutParams(params);
 
             TextView icon = new TextView(this);
-            icon.setText(icons[i]);
+            icon.setText(section.icon);
             icon.setTextSize(18f);
             icon.setTextColor(0xCCFFFFFF);
             icon.setTypeface(outfit(400));
@@ -126,14 +166,14 @@ public class LauncherSettingsActivity extends Activity {
             textCol.setPadding(dp(4), 0, 0, 0);
 
             TextView name = new TextView(this);
-            name.setText(SECTION_NAMES[i]);
+            name.setText(section.title);
             name.setTextSize(15f);
             name.setTypeface(outfit(500));
             name.setTextColor(0xFFFFFFFF);
             textCol.addView(name);
 
             TextView desc = new TextView(this);
-            desc.setText(descs[i]);
+            desc.setText(section.description);
             desc.setTextSize(11f);
             desc.setTypeface(outfit(400));
             desc.setTextColor(0xADFFFFFF);
@@ -142,32 +182,25 @@ public class LauncherSettingsActivity extends Activity {
             item.addView(textCol, new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-            final int index = i;
+            final Section target = section;
             item.setOnFocusChangeListener((v, hasFocus) -> {
                 if (hasFocus) {
-                    showSection(index);
+                    showSection(target);
                 }
             });
             sidebar.addView(item);
         }
     }
 
-    private void showSection(int index) {
-        section = index;
+    private void showSection(Section section) {
         findViewById(R.id.settings_dock_hint).setVisibility(
-                index == SECTION_DOCK ? View.VISIBLE : View.INVISIBLE);
-        findViewById(R.id.section_dock).setVisibility(index == SECTION_DOCK ? View.VISIBLE : View.GONE);
-        findViewById(R.id.section_buttons).setVisibility(index == SECTION_BUTTONS ? View.VISIBLE : View.GONE);
-        findViewById(R.id.section_more).setVisibility(index == SECTION_MORE ? View.VISIBLE : View.GONE);
-        findViewById(R.id.section_clock).setVisibility(index == SECTION_CLOCK ? View.VISIBLE : View.GONE);
-        String[] subtitles = {
-                "The apps on the home screen",
-                "The three buttons in the top right corner",
-                "Time format and screensaver",
-                "Reset and close"
-        };
-        title.setText(SECTION_NAMES[index]);
-        subtitle.setText(subtitles[index]);
+                section == Section.DOCK ? View.VISIBLE : View.INVISIBLE);
+        for (Section candidate : Section.values()) {
+            findViewById(candidate.contentId).setVisibility(
+                    candidate == section ? View.VISIBLE : View.GONE);
+        }
+        title.setText(section.title);
+        subtitle.setText(section.description);
     }
 
     // ---------------------------------------------------------------- dock
@@ -184,7 +217,7 @@ public class LauncherSettingsActivity extends Activity {
         add.setBackgroundResource(R.drawable.input_card);
         add.setFocusable(true);
         add.setLayoutParams(dockCell(dock.size(), dp(DOCK_CARD_HEIGHT)));
-        add.setOnClickListener(v -> pickApp(-1));
+        add.setOnClickListener(v -> pickApp(PickRequest.add()));
 
         TextView addLabel = new TextView(this);
         addLabel.setText("+ Add app");
@@ -198,7 +231,7 @@ public class LauncherSettingsActivity extends Activity {
         dockRow.addView(add);
         View firstCard = dockArts.isEmpty() ? add : dockArts.get(0);
         firstCard.setId(View.generateViewId());
-        sidebar.getChildAt(SECTION_DOCK).setNextFocusRightId(firstCard.getId());
+        sidebar.getChildAt(Section.DOCK.ordinal()).setNextFocusRightId(firstCard.getId());
     }
 
     private GridLayout.LayoutParams dockCell(int index, int height) {
@@ -231,7 +264,7 @@ public class LauncherSettingsActivity extends Activity {
             view.animate().cancel();
             CardFocus.apply(view, focused);
         });
-        art.setOnClickListener(v -> pickApp(index));
+        art.setOnClickListener(v -> pickApp(PickRequest.replace(index)));
         art.setOnLongClickListener(v -> {
             showDockMenu(index);
             return true;
@@ -304,21 +337,26 @@ public class LauncherSettingsActivity extends Activity {
         }
     }
 
-    /** Opens the app picker. A negative index means a new app at the end. */
-    private void pickApp(int index) {
+    /** Opens the app picker for a new card or for the card at the request's index. */
+    private void pickApp(PickRequest request) {
+        pendingPick = request;
         Intent intent = new Intent(this, IconPickerActivity.class);
         intent.putExtra(IconPickerActivity.EXTRA_PICK_APP, true);
-        intent.putExtra(IconPickerActivity.EXTRA_REPLACE_APP, index >= 0);
+        intent.putExtra(IconPickerActivity.EXTRA_REPLACE_APP, request.replace);
         startActivityForResult(intent, PICK_APP);
-        pendingIndex = index;
     }
-
-    private int pendingIndex = -1;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode != PICK_APP || resultCode != RESULT_OK || data == null) {
+        if (requestCode != PICK_APP) {
+            return;
+        }
+        // Consume the request even when the picker was cancelled, so a later
+        // result can never apply to an older slot.
+        PickRequest request = pendingPick;
+        pendingPick = null;
+        if (resultCode != RESULT_OK || data == null || request == null) {
             return;
         }
         String pkg = data.getStringExtra(IconPickerActivity.EXTRA_PACKAGE);
@@ -330,15 +368,15 @@ public class LauncherSettingsActivity extends Activity {
             rebuildDock(existing);
             return;
         }
-        if (pendingIndex < 0 || pendingIndex >= dock.size()) {
+        if (!request.replace || request.index < 0 || request.index >= dock.size()) {
             dock.add(pkg);
+            Dock.save(this, dock);
+            rebuildDock(dock.size() - 1);
         } else {
-            dock.set(pendingIndex, pkg);
+            dock.set(request.index, pkg);
+            Dock.save(this, dock);
+            rebuildDock(request.index);
         }
-        Dock.save(this, dock);
-        int focus = pendingIndex < 0 || pendingIndex >= dock.size()
-                ? dock.size() - 1 : pendingIndex;
-        rebuildDock(focus);
     }
 
     /** Move the app, take it out, all on one card. */
@@ -367,7 +405,7 @@ public class LauncherSettingsActivity extends Activity {
                 rebuildDock(index + 1);
             });
         }
-        addMenuRow(box, "Replace app", () -> pickApp(index));
+        addMenuRow(box, "Replace app", () -> pickApp(PickRequest.replace(index)));
         addMenuRow(box, "Remove from dock", () -> {
             dock.remove(index);
             Dock.save(this, dock);
@@ -443,11 +481,11 @@ public class LauncherSettingsActivity extends Activity {
                 R.drawable.ic_wifi, Dock.BUTTON_WIFI);
         addToggle(buttonsBox, "Settings", "Opens the Android settings",
                 R.drawable.ic_settings, Dock.BUTTON_SETTINGS);
-        linkSectionRows(SECTION_BUTTONS, buttonsBox);
+        linkSectionRows(Section.BUTTONS, buttonsBox);
     }
 
-    private void linkSectionRows(int sectionIndex, LinearLayout rows) {
-        View tab = sidebar.getChildAt(sectionIndex);
+    private void linkSectionRows(Section section, LinearLayout rows) {
+        View tab = sidebar.getChildAt(section.ordinal());
         if (tab.getId() == View.NO_ID) {
             tab.setId(View.generateViewId());
         }
@@ -570,7 +608,7 @@ public class LauncherSettingsActivity extends Activity {
         addAction(moreBox, "Close settings",
                 "Goes back to the home screen.",
                 () -> finish());
-        linkSectionRows(SECTION_MORE, moreBox);
+        linkSectionRows(Section.MORE, moreBox);
     }
 
     private void buildClockSettings() {
@@ -589,7 +627,7 @@ public class LauncherSettingsActivity extends Activity {
         });
         addAction(box, "Preview screensaver", "OK greets the fox · Left/Right previews all 24 hours in Meadow · Back exits",
                 () -> startActivity(new Intent(this, ClockScreenActivity.class)));
-        linkSectionRows(SECTION_CLOCK, box);
+        linkSectionRows(Section.CLOCK, box);
     }
 
     private String backgroundLabel() {
@@ -682,6 +720,7 @@ public class LauncherSettingsActivity extends Activity {
     @Override
     protected void onDestroy() {
         dialogDismiss();
+        pendingPick = null;
         super.onDestroy();
     }
 

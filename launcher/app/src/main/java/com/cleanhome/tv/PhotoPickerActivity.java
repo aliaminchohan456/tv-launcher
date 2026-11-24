@@ -39,10 +39,20 @@ public class PhotoPickerActivity extends Activity {
     private static final int COLS = 4;
     private static final int MAX = 200;
 
+    /**
+     * What the screen is showing. The old code had only "grid empty or not",
+     * so the first seconds after opening looked exactly like a TV with no
+     * pictures at all.
+     */
+    private enum State { LOADING, EMPTY, READY }
+
     private final List<Uri> uris = new ArrayList<>();
     private final List<Bitmap> thumbs = new ArrayList<>();
     private Adapter adapter;
     private FocusRing ring;
+    private RecyclerView grid;
+    private TextView status;
+    private State state = State.LOADING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +61,32 @@ public class PhotoPickerActivity extends Activity {
         ring = new FocusRing((FrameLayout) findViewById(R.id.photo_root));
         ((TextView) findViewById(R.id.photo_kicker)).setTypeface(outfit(500));
         ((TextView) findViewById(R.id.photo_title)).setTypeface(outfit(600));
-        ((TextView) findViewById(R.id.photo_empty)).setTypeface(outfit(400));
-        RecyclerView grid = findViewById(R.id.photo_grid);
+        status = findViewById(R.id.photo_empty);
+        status.setTypeface(outfit(400));
+        grid = findViewById(R.id.photo_grid);
         grid.setLayoutManager(new GridLayoutManager(this, COLS));
         grid.setItemAnimator(null);
         adapter = new Adapter();
         grid.setAdapter(adapter);
+        renderState();
         new Thread(this::load, "photos").start();
+    }
+
+    /** One place decides what the waiting/empty/ready screen says. */
+    private void renderState() {
+        switch (state) {
+            case LOADING:
+                status.setText("Looking for pictures…");
+                status.setVisibility(View.VISIBLE);
+                break;
+            case EMPTY:
+                status.setText("There are no pictures on this TV yet.");
+                status.setVisibility(View.VISIBLE);
+                break;
+            case READY:
+                status.setVisibility(View.GONE);
+                break;
+        }
     }
 
     private void load() {
@@ -89,9 +118,11 @@ public class PhotoPickerActivity extends Activity {
             thumbs.clear();
             thumbs.addAll(resultThumbs);
             adapter.notifyDataSetChanged();
-            TextView empty = findViewById(R.id.photo_empty);
-            empty.setVisibility(uris.isEmpty() ? View.VISIBLE : View.GONE);
-            focusFirst();
+            state = uris.isEmpty() ? State.EMPTY : State.READY;
+            renderState();
+            if (state == State.READY) {
+                focusFirst();
+            }
         });
     }
 
@@ -128,7 +159,6 @@ public class PhotoPickerActivity extends Activity {
 
     /** The first tile takes focus so the D-pad works without a touch screen. */
     private void focusFirst() {
-        RecyclerView grid = findViewById(R.id.photo_grid);
         grid.post(() -> {
             View first = grid.getChildAt(0);
             if (first != null) {

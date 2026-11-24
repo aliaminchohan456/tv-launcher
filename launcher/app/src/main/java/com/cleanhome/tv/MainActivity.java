@@ -58,10 +58,6 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
     private static final int COLS = 4;
-    private static final int TOP = 0;
-    private static final int DOCK = 1;
-    private static final int GRID = 2;
-    private static final int MENU = 3;
     private static final int REQ_SSID = 41;
     private static final String SSID_TAG = "SsidPill";
 
@@ -96,8 +92,8 @@ public class MainActivity extends Activity {
     private TextView shelfTitle;
     private int highlightRetries;
     private int seenStyleGeneration = -1;
-    private boolean reloadOnResume;
-    private int appLoadToken;
+    private boolean reloadOnNextResume;
+    private final Epoch appLoadEpoch = new Epoch();
     private BroadcastReceiver packageReceiver;
     /** Waits for the burst of package broadcasts that one install sends. */
     private final Runnable packageReload = this::reloadApps;
@@ -123,10 +119,10 @@ public class MainActivity extends Activity {
     private Typeface thin;
     private Typeface text;
 
-    private int zone = DOCK;
+    private HomeZone zone = HomeZone.DOCK;
     private int topIndex;
     private int dockIndex;
-    private int dockMoveOrigin = -1;
+    private final DockReorder dockReorder = new DockReorder();
     private static final int TCL_G10_NETFLIX_KEY = 4062;
     private static final int TCL_G10_YOUTUBE_KEY = 4065;
     private TextView dockMoveHint;
@@ -134,10 +130,11 @@ public class MainActivity extends Activity {
     private int menuIndex;
     private int menuPill;
     private int focusTicksLeft;
-    private int ssidToken;
-    private int heroToken;
+    private final Epoch ssidEpoch = new Epoch();
+    private final Epoch heroEpoch = new Epoch();
     private Dialog optionsDialog;
-    private int ringZone = -1;
+    private String optionsPackage;
+    private HomeZone ringZone;
     private boolean ringJump;
     private boolean gridScrolled;
     private String heroLabel = "";
@@ -173,7 +170,7 @@ public class MainActivity extends Activity {
         bindViews();
         loadWallpaper();
         restoreFocus();
-        final int firstToken = ++appLoadToken;
+        final int firstToken = appLoadEpoch.next();
         new Thread(() -> {
             List<HomeApp> all = AppLoader.load(this);
             List<TvInputInfo> found = loadInputs();
@@ -185,7 +182,7 @@ public class MainActivity extends Activity {
                 // finishes. Do not let the older list overwrite the newer one,
                 // but still show the inputs: reloadApps() only reloads apps,
                 // so skipping them here would leave the Inputs menu empty.
-                if (firstToken == appLoadToken) {
+                if (appLoadEpoch.isCurrent(firstToken)) {
                     applyApps(all);
                 }
                 showInputs(found);
@@ -204,14 +201,14 @@ public class MainActivity extends Activity {
      * name behind.
      */
     private void loadSsidAsync() {
-        final int token = ++ssidToken;
+        final int token = ssidEpoch.next();
         new Thread(() -> {
             String ssid = readSsid();
             String label = ssid != null ? ssid : fallbackNetworkLabel();
             runOnUiThread(() -> {
                 // A slow read must never overwrite a newer one, and a closed
                 // screen must not be touched at all.
-                if (token != ssidToken || isFinishing() || isDestroyed()) {
+                if (!ssidEpoch.isCurrent(token) || isFinishing() || isDestroyed()) {
                     return;
                 }
                 setPill(pills[1], label);
@@ -288,8 +285,14 @@ public class MainActivity extends Activity {
                 if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.getAction())
                         && !intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
                         && intent.getData() != null) {
+                    String removed = intent.getData().getSchemeSpecificPart();
+                    // A menu for an app that is no longer installed would offer
+                    // App Info, Uninstall and Edit for a package that is gone.
+                    if (removed.equals(optionsPackage)) {
+                        dismissOptions();
+                    }
                     List<String> dock = Dock.load(context);
-                    if (dock.remove(intent.getData().getSchemeSpecificPart())) {
+                    if (dock.remove(removed)) {
                         Dock.save(context, dock);
                     }
                 }
@@ -345,12 +348,7 @@ public class MainActivity extends Activity {
         if (root != null) {
             root.removeCallbacks(focusTick);
         }
-        if (optionsDialog != null) {
-            if (optionsDialog.isShowing()) {
-                optionsDialog.dismiss();
-            }
-            optionsDialog = null;
-        }
+        dismissOptions();
         if (networkWatch != null) {
             ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             if (cm != null) {
@@ -397,16 +395,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!reloadOnResume) {
+        if (!reloadOnNextResume) {
             focusFirstDockApp();
         }
         root.requestFocus();
         // The user may have changed the buttons or the dock in the settings.
         applyHiddenButtons();
         int styles = AppStyles.generation(this);
-        if (reloadOnResume || !Dock.loadAvailable(this).equals(dockPackages())
+        if (reloadOnNextResume || !Dock.loadAvailable(this).equals(dockPackages())
                 || styles != seenStyleGeneration) {
-            reloadOnResume = false;
+            reloadOnNextResume = false;
             reloadApps();
         }
         seenStyleGeneration = styles;
@@ -427,7 +425,10 @@ public class MainActivity extends Activity {
     /** Home opens on the first dock app, not the top buttons. */
     private void focusFirstDockApp() {
         stopDockMove(false);
-        zone = DOCK;
+        // A menu left over from a long press belongs to the card that had the
+        // focus. Home resets the focus, so the menu goes with it.
+        dismissOptions();
+        zone = HomeZone.DOCK;
         dockIndex = 0;
     }
 
@@ -439,12 +440,12 @@ public class MainActivity extends Activity {
         centerDown = false;
         centerWasLong = false;
         // Any title swap that is still waiting must not fire on the next screen.
-        heroToken++;
+        heroEpoch.invalidate();
         if (pendingHeroSwap != null) {
             handler.removeCallbacks(pendingHeroSwap);
             pendingHeroSwap = null;
         }
-        if (dockMoveOrigin >= 0) {
+        if (dockReorder.isActive()) {
             stopDockMove(false);
             renderZone();
         }
@@ -504,8 +505,13 @@ public class MainActivity extends Activity {
     }
 
     private void applyApps(List<HomeApp> all) {
-        dockMoveOrigin = -1;
+        dockReorder.cancel();
         allApps = all;
+        // The options menu belongs to the focused app. If that app has gone,
+        // the menu must go too: every row in it would act on a missing package.
+        if (optionsPackage != null && findApp(all, optionsPackage) == null) {
+            dismissOptions();
+        }
         HomeApp previousDockApp = dockIndex < dockApps.size() ? dockApps.get(dockIndex) : null;
         HomeApp previousGridApp = gridIndex < gridApps.size() ? gridApps.get(gridIndex) : null;
         dockApps.clear();
@@ -568,8 +574,8 @@ public class MainActivity extends Activity {
         grid.setAdapter(gridAdapter);
         gridIndex = restoredIndex(gridApps, previousGridApp, gridIndex);
         dockIndex = restoredIndex(dockApps, previousDockApp, dockIndex);
-        if (zone == GRID && gridApps.isEmpty()) {
-            zone = DOCK;
+        if (zone == HomeZone.GRID && gridApps.isEmpty()) {
+            zone = HomeZone.DOCK;
         }
         appsReady = true;
         renderZone();
@@ -587,57 +593,60 @@ public class MainActivity extends Activity {
     }
 
     private void renderZone() {
+        // The one renderer for the home focus machine. Everything below is
+        // derived from zone, the indexes and the two lists; key handlers must
+        // not toggle these views themselves. See docs/state-machines.md.
         highlightRetries = 0;
         // A move to another part of the screen is not a slide. The ring
         // dissolves and comes back instead of flying across the panel.
         ringJump = (ringZone != zone) || gridScrolled;
         ringZone = zone;
         gridScrolled = false;
-        boolean showGrid = zone == GRID && appsReady;
-        boolean showShelf = (zone == DOCK || zone == TOP) && appsReady && !dockApps.isEmpty();
+        boolean showGrid = zone == HomeZone.GRID && appsReady;
+        boolean showShelf = (zone == HomeZone.DOCK || zone == HomeZone.TOP) && appsReady && !dockApps.isEmpty();
         homeHeader.setVisibility(showGrid && gridIndex >= COLS ? View.GONE : View.VISIBLE);
         grid.setVisibility(showGrid ? View.VISIBLE : View.GONE);
         // The arrow stays in place while it fades, so the dock never moves.
-        boolean arrow = !gridApps.isEmpty() && (zone == DOCK || zone == TOP);
-        hintDown.setVisibility(arrow && dockMoveOrigin < 0 ? View.VISIBLE : View.GONE);
-        dockMoveHint.setVisibility(dockMoveOrigin >= 0 ? View.VISIBLE : View.GONE);
+        boolean arrow = !gridApps.isEmpty() && (zone == HomeZone.DOCK || zone == HomeZone.TOP);
+        hintDown.setVisibility(arrow && !dockReorder.isActive() ? View.VISIBLE : View.GONE);
+        dockMoveHint.setVisibility(dockReorder.isActive() ? View.VISIBLE : View.GONE);
         shelfTitle.setVisibility(showShelf ? View.VISIBLE : View.INVISIBLE);
         // The wash stays on while the input menu is open. It is still the
         // same screen, the colour should not blink out from under the menu.
         // The grid is a screen of its own and it gets the wash as well.
-        boolean showAmbient = (zone == DOCK || zone == TOP || zone == MENU || zone == GRID)
+        boolean showAmbient = (zone == HomeZone.DOCK || zone == HomeZone.TOP || zone == HomeZone.MENU || zone == HomeZone.GRID)
                 && appsReady;
         ambient.setVisibility(showAmbient ? View.VISIBLE : View.INVISIBLE);
-        inputMenu.setVisibility(zone == MENU ? View.VISIBLE : View.GONE);
+        inputMenu.setVisibility(zone == HomeZone.MENU ? View.VISIBLE : View.GONE);
         for (int i = 0; i < pills.length; i++) {
             // The button the menu came out of stays lit while it is open.
-            pills[i].setSelected((zone == TOP && i == topIndex)
-                    || (zone == MENU && i == menuPill));
+            pills[i].setSelected((zone == HomeZone.TOP && i == topIndex)
+                    || (zone == HomeZone.MENU && i == menuPill));
         }
         // The name and the arrow belong to the dock. They fade away when the
         // top row takes the focus and fade back when the dock gets it again.
         // The dock owns the name: showHero fades it and swaps its text, so a
         // second fade here would make the two fight on every focus move.
-        if (zone != DOCK) {
+        if (zone != HomeZone.DOCK) {
             fadeShelf(0f);
         }
-        fadeArrow(zone == DOCK ? 1f : 0f);
-        fadeDock(zone != GRID ? 1f : 0f);
-        fadePills(zone != GRID ? 1f : 0f);
+        fadeArrow(zone == HomeZone.DOCK ? 1f : 0f);
+        fadeDock(zone != HomeZone.GRID ? 1f : 0f);
+        fadePills(zone != HomeZone.GRID ? 1f : 0f);
         giveGridTheDockRoom();
         updateCards();
         if (gridAdapter != null) {
-            gridAdapter.setSelected(zone == GRID ? gridIndex : -1);
+            gridAdapter.setSelected(zone == HomeZone.GRID ? gridIndex : -1);
         }
         for (int i = 0; i < inputRows.size(); i++) {
             // The row lights up on the same curve the ring moves on, so the
             // two always agree.
-            fadeMark(i, zone == MENU && i == menuIndex);
+            fadeMark(i, zone == HomeZone.MENU && i == menuIndex);
         }
-        if (zone == GRID) {
+        if (zone == HomeZone.GRID) {
             // The grid lights up with the app that has the focus in it.
             updateAmbient();
-        } else if (zone == DOCK && showShelf && dockIndex < dockApps.size()) {
+        } else if (zone == HomeZone.DOCK && showShelf && dockIndex < dockApps.size()) {
             showHero(dockApps.get(dockIndex));
         }
         root.post(() -> {
@@ -649,7 +658,7 @@ public class MainActivity extends Activity {
     }
 
     private void scrollDockToFocus() {
-        if (zone == DOCK && dockIndex < dockTiles.size()) {
+        if (zone == HomeZone.DOCK && dockIndex < dockTiles.size()) {
             View tile = dockTiles.get(dockIndex);
             int left = tile.getLeft();
             int right = tile.getRight() - (dockBand.getWidth()
@@ -671,7 +680,7 @@ public class MainActivity extends Activity {
      * too tall, so it would scroll and push the first row up under the clock.
      */
     private void scrollGridToFocus() {
-        if (zone != GRID || gridApps.isEmpty()
+        if (zone != HomeZone.GRID || gridApps.isEmpty()
                 || !(grid.getLayoutManager() instanceof GridLayoutManager)) {
             return;
         }
@@ -702,7 +711,7 @@ public class MainActivity extends Activity {
         HomeApp app = null;
         float centre = 0.30f;
         float centreY = 0.42f;
-        if (zone == GRID) {
+        if (zone == HomeZone.GRID) {
             if (gridIndex >= 0 && gridIndex < gridApps.size()) {
                 app = gridApps.get(gridIndex);
             }
@@ -737,7 +746,7 @@ public class MainActivity extends Activity {
         if (grid == null || dockBand == null) {
             return;
         }
-        int target = (zone == GRID) ? -dockBand.getHeight() : 0;
+        int target = (zone == HomeZone.GRID) ? -dockBand.getHeight() : 0;
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) grid.getLayoutParams();
         if (lp != null && lp.bottomMargin != target) {
             lp.bottomMargin = target;
@@ -775,6 +784,13 @@ public class MainActivity extends Activity {
             pills[i].setVisibility(hidden[i] ? View.GONE : View.VISIBLE);
         }
         keepTopVisible();
+        // The inputs menu hangs under the Inputs pill. If that pill was just
+        // hidden, the menu has nothing to hang from; close it rather than
+        // leave a panel on screen with no visible owner.
+        if (zone == HomeZone.MENU && (menuPill < 0 || menuPill >= pills.length
+                || pills[menuPill].getVisibility() != View.VISIBLE)) {
+            closeMenu();
+        }
     }
 
     /**
@@ -839,17 +855,17 @@ public class MainActivity extends Activity {
                 || pills[topIndex].getVisibility() != View.VISIBLE) {
             topIndex = firstVisiblePill();
         }
-        if (topIndex < 0 && zone == TOP) {
+        if (topIndex < 0 && zone == HomeZone.TOP) {
             // Every button was hidden while the focus was up here. There is
             // nothing left to stand on, so the focus comes back to the dock.
-            zone = DOCK;
+            zone = HomeZone.DOCK;
         }
     }
 
     /** Grows the focused card and dims every other card. */
     private void updateCards() {
         for (int i = 0; i < dockTiles.size(); i++) {
-            CardFocus.apply(dockTiles.get(i), zone == DOCK && i == dockIndex);
+            CardFocus.apply(dockTiles.get(i), zone == HomeZone.DOCK && i == dockIndex);
         }
     }
 
@@ -922,7 +938,7 @@ public class MainActivity extends Activity {
             return;
         }
         heroLabel = app.label;
-        final int token = ++heroToken;
+        final int token = heroEpoch.next();
         if (pendingHeroSwap != null) {
             handler.removeCallbacks(pendingHeroSwap);
         }
@@ -941,13 +957,13 @@ public class MainActivity extends Activity {
         pendingHeroSwap = new Runnable() {
             @Override
             public void run() {
-                if (token != heroToken || isFinishing() || isDestroyed()) {
+                if (!heroEpoch.isCurrent(token) || isFinishing() || isDestroyed()) {
                     return;
                 }
                 shelfTitle.setText(heroLabel);
                 shelfTitle.setTranslationY(dp(8f));
                 shelfTitle.animate()
-                        .alpha(zone == DOCK ? 1f : 0f)
+                        .alpha(zone == HomeZone.DOCK ? 1f : 0f)
                         .translationY(0f)
                         .setDuration(150)
                         .setInterpolator(FOCUS_EASING)
@@ -969,12 +985,12 @@ public class MainActivity extends Activity {
     private void placeHighlight() {
         View target = null;
         float corner = dp(16);
-        if (zone == TOP) {
+        if (zone == HomeZone.TOP) {
             highlight.hide();
             return;
-        } else if (zone == DOCK && dockIndex < dockTiles.size()) {
+        } else if (zone == HomeZone.DOCK && dockIndex < dockTiles.size()) {
             target = dockTiles.get(dockIndex);
-        } else if (zone == GRID && gridAdapter != null) {
+        } else if (zone == HomeZone.GRID && gridAdapter != null) {
             RecyclerView.ViewHolder holder = grid.findViewHolderForAdapterPosition(gridIndex);
             if (holder == null) {
                 highlight.setVisibility(View.INVISIBLE);
@@ -986,7 +1002,7 @@ public class MainActivity extends Activity {
             }
             highlightRetries = 0;
             target = holder.itemView.findViewById(R.id.art);
-        } else if (zone == MENU && menuIndex < inputRows.size()) {
+        } else if (zone == HomeZone.MENU && menuIndex < inputRows.size()) {
             target = inputRows.get(menuIndex);
             corner = dp(10);
         }
@@ -1064,10 +1080,10 @@ public class MainActivity extends Activity {
 
     /** The card that currently has the focus, if any. */
     private View focusedCardView() {
-        if (zone == DOCK && dockIndex >= 0 && dockIndex < dockTiles.size()) {
+        if (zone == HomeZone.DOCK && dockIndex >= 0 && dockIndex < dockTiles.size()) {
             return dockTiles.get(dockIndex);
         }
-        if (zone == GRID && gridAdapter != null) {
+        if (zone == HomeZone.GRID && gridAdapter != null) {
             RecyclerView.ViewHolder holder = grid.findViewHolderForAdapterPosition(gridIndex);
             if (holder != null) {
                 return holder.itemView.findViewById(R.id.art);
@@ -1109,7 +1125,7 @@ public class MainActivity extends Activity {
         if (handleTclHomeShortcut(event)) {
             return true;
         }
-        if (dockMoveOrigin >= 0 && isNav(key)) {
+        if (dockReorder.isActive() && isNav(key)) {
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
                 if ((key == KeyEvent.KEYCODE_BACK || isActivateKey(key)) && event.getRepeatCount() > 0) {
                     return true;
@@ -1156,7 +1172,7 @@ public class MainActivity extends Activity {
 
     private boolean handleClockBack(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
-            clockBackDown = dockMoveOrigin < 0 && (zone == DOCK || zone == TOP)
+            clockBackDown = !dockReorder.isActive() && (zone == HomeZone.DOCK || zone == HomeZone.TOP)
                     && ClockPreferences.opensOnBack(this);
         }
         if (!clockBackDown) {
@@ -1164,7 +1180,7 @@ public class MainActivity extends Activity {
         }
         if (event.getAction() == KeyEvent.ACTION_UP) {
             clockBackDown = false;
-            if (!event.isCanceled() && dockMoveOrigin < 0 && (zone == DOCK || zone == TOP)) {
+            if (!event.isCanceled() && !dockReorder.isActive() && (zone == HomeZone.DOCK || zone == HomeZone.TOP)) {
                 startActivity(new Intent(this, ClockScreenActivity.class));
             }
         }
@@ -1172,8 +1188,8 @@ public class MainActivity extends Activity {
     }
 
     private boolean handleTclHomeShortcut(KeyEvent event) {
-        if (!"G10".equalsIgnoreCase(Build.DEVICE) || dockMoveOrigin >= 0
-                || (zone != DOCK && zone != TOP)) {
+        if (!"G10".equalsIgnoreCase(Build.DEVICE) || dockReorder.isActive()
+                || (zone != HomeZone.DOCK && zone != HomeZone.TOP)) {
             return false;
         }
         int key = event.getKeyCode();
@@ -1229,10 +1245,10 @@ public class MainActivity extends Activity {
     private void onNav(int key) {
         int before = focusSignature();
         if (key == KeyEvent.KEYCODE_BACK) {
-            if (zone == MENU) {
+            if (zone == HomeZone.MENU) {
                 closeMenu();
-            } else if (zone == GRID) {
-                zone = DOCK;
+            } else if (zone == HomeZone.GRID) {
+                zone = HomeZone.DOCK;
             }
             renderZone();
             if (focusSignature() != before) {
@@ -1257,34 +1273,34 @@ public class MainActivity extends Activity {
 
     /** Where the focus is, as one number. Two different values mean it moved. */
     private int focusSignature() {
-        if (zone == TOP) {
+        if (zone == HomeZone.TOP) {
             return 100 + topIndex;
         }
-        if (zone == DOCK) {
+        if (zone == HomeZone.DOCK) {
             return 200 + dockIndex;
         }
-        if (zone == GRID) {
+        if (zone == HomeZone.GRID) {
             return 300 + gridIndex;
         }
-        if (zone == MENU) {
+        if (zone == HomeZone.MENU) {
             return 400 + menuIndex;
         }
         return 0;
     }
 
     private void moveHorizontal(int dir) {
-        if (zone == TOP) {
+        if (zone == HomeZone.TOP) {
             topIndex = stepTop(dir);
-        } else if (zone == DOCK) {
+        } else if (zone == HomeZone.DOCK) {
             if (dockIndex == 0 && dir < 0) {
                 // Off the left end of the dock opens the launcher's settings.
                 openLauncherSettings();
                 return;
             }
             dockIndex = clamp(dockIndex + dir, 0, Math.max(0, dockApps.size() - 1));
-        } else if (zone == MENU) {
+        } else if (zone == HomeZone.MENU) {
             return;
-        } else if (zone == GRID && !gridApps.isEmpty()) {
+        } else if (zone == HomeZone.GRID && !gridApps.isEmpty()) {
             int rowStart = (gridIndex / COLS) * COLS;
             int rowEnd = Math.min(rowStart + COLS, gridApps.size()) - 1;
             gridIndex = clamp(gridIndex + dir, rowStart, rowEnd);
@@ -1292,12 +1308,12 @@ public class MainActivity extends Activity {
     }
 
     private void moveVertical(int dir) {
-        if (zone == MENU) {
+        if (zone == HomeZone.MENU) {
             if (dir < 0 && menuIndex == 0) {
                 if (!hasVisiblePill()) {
                     return;
                 }
-                zone = TOP;
+                zone = HomeZone.TOP;
                 topIndex = menuPill;
                 keepTopVisible();
                 return;
@@ -1306,34 +1322,34 @@ public class MainActivity extends Activity {
             return;
         }
         if (dir < 0) {
-            if (zone == GRID) {
+            if (zone == HomeZone.GRID) {
                 if (gridIndex >= COLS) {
                     gridIndex -= COLS;
                     gridScrolled = true;
                 } else {
-                    zone = DOCK;
+                    zone = HomeZone.DOCK;
                 }
-            } else if (zone == DOCK) {
+            } else if (zone == HomeZone.DOCK) {
                 // With every button hidden there is nothing above the dock,
                 // so UP must stay on the dock instead of landing on an
                 // invisible button and opening its menu with OK.
                 if (!hasVisiblePill()) {
                     return;
                 }
-                zone = TOP;
+                zone = HomeZone.TOP;
                 // The button under the focus may be one the user has hidden.
                 keepTopVisible();
             }
             return;
         }
-        if (zone == TOP) {
-            zone = DOCK;
-        } else if (zone == DOCK && !gridApps.isEmpty()) {
-            zone = GRID;
+        if (zone == HomeZone.TOP) {
+            zone = HomeZone.DOCK;
+        } else if (zone == HomeZone.DOCK && !gridApps.isEmpty()) {
+            zone = HomeZone.GRID;
             if (gridIndex >= gridApps.size()) {
                 gridIndex = 0;
             }
-        } else if (zone == GRID) {
+        } else if (zone == HomeZone.GRID) {
             int next = gridIndex + COLS;
             if (next < gridApps.size()) {
                 gridIndex = next;
@@ -1354,10 +1370,10 @@ public class MainActivity extends Activity {
     }
 
     private HomeApp focusedApp() {
-        if (zone == DOCK && dockIndex >= 0 && dockIndex < dockApps.size()) {
+        if (zone == HomeZone.DOCK && dockIndex >= 0 && dockIndex < dockApps.size()) {
             return dockApps.get(dockIndex);
         }
-        if (zone == GRID && gridIndex >= 0 && gridIndex < gridApps.size()) {
+        if (zone == HomeZone.GRID && gridIndex >= 0 && gridIndex < gridApps.size()) {
             return gridApps.get(gridIndex);
         }
         return null;
@@ -1399,7 +1415,8 @@ public class MainActivity extends Activity {
     }
 
     private void stopDockMove(boolean save) {
-        if (dockMoveOrigin < 0) {
+        int origin = dockReorder.finish();
+        if (origin < 0) {
             return;
         }
         if (save) {
@@ -1415,9 +1432,8 @@ public class MainActivity extends Activity {
             }
             Dock.save(this, packages);
         } else {
-            moveDockCard(dockMoveOrigin);
+            moveDockCard(origin);
         }
-        dockMoveOrigin = -1;
     }
 
     private void changeDockMembership(HomeApp app, boolean remove) {
@@ -1429,7 +1445,7 @@ public class MainActivity extends Activity {
         }
         Dock.save(this, packages);
         if (!remove) {
-            zone = DOCK;
+            zone = HomeZone.DOCK;
             dockIndex = dockApps.size();
         }
         applyApps(allApps);
@@ -1447,9 +1463,11 @@ public class MainActivity extends Activity {
         }
         Dialog dialog = new Dialog(this, android.R.style.Theme_DeviceDefault_Dialog);
         optionsDialog = dialog;
+        optionsPackage = app.packageName;
         dialog.setOnDismissListener(d -> {
             if (optionsDialog == dialog) {
                 optionsDialog = null;
+                optionsPackage = null;
             }
         });
         dialog.setContentView(R.layout.options_menu);
@@ -1465,7 +1483,7 @@ public class MainActivity extends Activity {
         TextView title = dialog.findViewById(R.id.option_title);
         title.setText(app.label);
         title.setTypeface(medium);
-        boolean inDock = zone == DOCK;
+        boolean inDock = zone == HomeZone.DOCK;
         TextView move = dialog.findViewById(R.id.option_move);
         TextView dockAction = dialog.findViewById(R.id.option_dock);
         move.setTypeface(text);
@@ -1474,7 +1492,7 @@ public class MainActivity extends Activity {
         dockAction.setText(inDock ? "Remove from dock" : "Add to dock");
         move.setOnClickListener(v -> {
             dialog.dismiss();
-            dockMoveOrigin = dockIndex;
+            dockReorder.begin(dockIndex);
             renderZone();
         });
         dockAction.setOnClickListener(v -> {
@@ -1523,19 +1541,44 @@ public class MainActivity extends Activity {
         dialog.show();
     }
 
+    /**
+     * Closes the card menu and forgets the app it belonged to.
+     *
+     * The dialog is detached before {@code dismiss()} so a dismiss listener
+     * cannot clear a newer menu that was opened in the same frame.
+     */
+    private void dismissOptions() {
+        Dialog dialog = optionsDialog;
+        optionsDialog = null;
+        optionsPackage = null;
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    /** The app with this package in a list, or null. */
+    private static HomeApp findApp(List<HomeApp> apps, String packageName) {
+        for (HomeApp app : apps) {
+            if (app.packageName.equals(packageName)) {
+                return app;
+            }
+        }
+        return null;
+    }
+
     private void openAppInfo(String packageName) {
-        reloadOnResume = true;
+        reloadOnNextResume = true;
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.fromParts("package", packageName, null));
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException ex) {
-            reloadOnResume = false;
+            reloadOnNextResume = false;
         }
     }
 
     private void uninstallApp(String packageName) {
-        reloadOnResume = true;
+        reloadOnNextResume = true;
         Intent intent = new Intent(Intent.ACTION_DELETE);
         intent.setData(Uri.parse("package:" + packageName));
         try {
@@ -1547,20 +1590,20 @@ public class MainActivity extends Activity {
             try {
                 startActivity(fallback);
             } catch (ActivityNotFoundException missing) {
-                reloadOnResume = false;
+                reloadOnNextResume = false;
             }
         }
     }
 
     private void reloadApps() {
-        final int token = ++appLoadToken;
+        final int token = appLoadEpoch.next();
         new Thread(() -> {
             List<HomeApp> all = AppLoader.load(this);
             runOnUiThread(() -> {
                 // Two reloads can overlap when an install sends more than one
                 // broadcast. Only the newest list may be applied, and never
                 // to a screen that is already gone.
-                if (token != appLoadToken || isFinishing() || isDestroyed()) {
+                if (!appLoadEpoch.isCurrent(token) || isFinishing() || isDestroyed()) {
                     return;
                 }
                 applyApps(all);
@@ -1569,14 +1612,14 @@ public class MainActivity extends Activity {
     }
 
     private void activate() {
-        if (zone == TOP) {
+        if (zone == HomeZone.TOP) {
             // A hidden button has no border to show. If one ever holds the
             // focus, OK must not open its menu: take the focus back down.
             if (topIndex < 0 || topIndex >= pills.length
                     || pills[topIndex].getVisibility() != View.VISIBLE) {
                 topIndex = firstVisiblePill();
                 if (topIndex < 0) {
-                    zone = DOCK;
+                    zone = HomeZone.DOCK;
                 }
                 renderZone();
                 return;
@@ -1590,19 +1633,19 @@ public class MainActivity extends Activity {
             }
             return;
         }
-        if (zone == DOCK && appsReady && dockApps.isEmpty()) {
+        if (zone == HomeZone.DOCK && appsReady && dockApps.isEmpty()) {
             openLauncherSettings();
             return;
         }
-        if (zone == DOCK && dockIndex < dockApps.size()) {
+        if (zone == HomeZone.DOCK && dockIndex < dockApps.size()) {
             launch(dockApps.get(dockIndex));
             return;
         }
-        if (zone == GRID && gridIndex < gridApps.size()) {
+        if (zone == HomeZone.GRID && gridIndex < gridApps.size()) {
             launch(gridApps.get(gridIndex));
             return;
         }
-        if (zone == MENU && menuIndex < inputs.size()) {
+        if (zone == HomeZone.MENU && menuIndex < inputs.size()) {
             switchInput(inputs.get(menuIndex));
             closeMenu();
         }
@@ -1618,7 +1661,7 @@ public class MainActivity extends Activity {
     }
 
     private void openMenuPanel() {
-        zone = MENU;
+        zone = HomeZone.MENU;
         menuIndex = 0;
         // Put the menu where it belongs before it is shown. If it is shown
         // first it sits in the top left corner of the screen for a frame and
@@ -1630,7 +1673,7 @@ public class MainActivity extends Activity {
 
     /** Takes the ring back to the button the menu came out of. */
     private void closeMenu() {
-        zone = TOP;
+        zone = HomeZone.TOP;
         topIndex = menuPill;
         keepTopVisible();
         renderZone();
@@ -1769,7 +1812,7 @@ public class MainActivity extends Activity {
 
     /** Keeps an open menu in step when its rows are rebuilt behind it. */
     private void refreshOpenMenu() {
-        if (zone != MENU) {
+        if (zone != HomeZone.MENU) {
             return;
         }
         menuIndex = clamp(menuIndex, 0, Math.max(0, inputRows.size() - 1));

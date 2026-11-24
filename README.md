@@ -31,7 +31,7 @@ Everything here has been measured on the actual panel — frame timings with `du
 | Language | Java 17, no Kotlin, no Compose |
 | minSdk / targetSdk | 31 / 34 |
 | Dependencies | `androidx.recyclerview:recyclerview:1.3.2` — that is the whole list |
-| Source | 28 classes, ~7,800 lines |
+| Source | 32 classes, ~7,900 lines, plus four JVM state-machine tests |
 | Debug APK | 5.1 MB |
 | Screens | Home, other apps, long-press menu, edit app, icon picker, photo picker, launcher settings, screensaver preview |
 | Screensaver | A `DreamService` with four backgrounds, one of them NASA satellite photography downloaded daily |
@@ -48,6 +48,7 @@ Everything here has been measured on the actual panel — frame timings with `du
 - [The launcher's own settings](#the-launchers-own-settings)
 - [Screensavers](#screensavers)
 - [Design details](#design-details)
+- [State machines](#state-machines)
 - [Performance](#performance)
 - [Build and install](#build-and-install)
 - [Turning Google TV off](#turning-google-tv-off)
@@ -218,6 +219,19 @@ Three decisions are worth spelling out because they were not free:
 
 ---
 
+## State machines
+
+The remote is a state machine, not a mouse. The launcher's focus zones, the dock reorder mode, the card menu, the picker screens and the screensaver all have a small set of states and a small set of legal moves between them. They are written down in [`docs/state-machines.md`](docs/state-machines.md), with the invariants that keep a dead key, a hidden focus target or a stale menu from happening.
+
+The parts that can be tested without a screen are plain Java: `DockReorder`, `EditSession`, `IconPickerState` and `Epoch`. `HomeZone` is a plain enum, and the home renderer draws every zone from that one value. The rest of the launcher renders each screen from its state, so a new state is a change in one place rather than a visibility toggle at every call site.
+
+```powershell
+cd launcher
+.\gradlew.bat :app:testDebugUnitTest --offline
+```
+
+---
+
 ## Performance
 
 Measured on the installed build with `dumpsys gfxinfo` over a scripted D-pad sweep, after a `gfxinfo reset`:
@@ -376,6 +390,11 @@ Tv Launcher/
 ├─ launcher/                     Android project (Gradle, Java 17)
 │  ├─ app/src/main/java/com/cleanhome/tv/
 │  │  ├─ MainActivity.java          Home: zones, wash, ring, title, input menu
+│  │  ├─ HomeZone.java              The four home focus zones and their moves
+│  │  ├─ DockReorder.java           Two-state dock reorder mode
+│  │  ├─ Epoch.java                 Generation guard for async work
+│  │  ├─ EditSession.java           Edit-screen load/selection state
+│  │  ├─ IconPickerState.java       Apps / icons mode of the icon picker
 │  │  ├─ Dock.java                  The dock, and the settings around it
 │  │  ├─ CardArtView.java           The picture inside a card, dock and grid
 │  │  ├─ CardFocus.java             The focused look: scale, brightness, lift
@@ -394,10 +413,15 @@ Tv Launcher/
 │  │  ├─ FoxMascotView.java         The fox: poses, gestures, sleep
 │  │  ├─ FoxHourlySchedule.java     24 palettes, interpolated by the minute
 │  │  └─ EarthEdition.java          Daily NASA MODIS mosaic, cached
+│  ├─ app/src/test/java/com/cleanhome/tv/
+│  │  ├─ EpochTest.java             The generation guard
+│  │  ├─ EditSessionTest.java       A late load cannot overwrite a choice
+│  │  ├─ IconPickerStateTest.java   Apps and icons mode
+│  │  └─ DockReorderTest.java       Begin, finish, cancel
 │  ├─ livecable/                 Small helper activity for the cable input
 │  └─ build-and-install.ps1      Build, verify, install, set as Home
 ├─ backup/                       Package, role and settings dumps before the debloat
-├─ docs/                         The screenshots in this file
+├─ docs/                         Screenshots and the state-machine map
 ├─ restore.ps1                   Put Google TV back, one command
 ├─ summary.md                    The engineering log
 └─ Qwen-Fox-Meadow-handoff.txt   Screensaver review notes and open questions
@@ -410,6 +434,7 @@ Tv Launcher/
 | File | What is in it |
 | --- | --- |
 | [`summary.md`](summary.md) | The long one. Every decision, every measurement, every trap that was already fallen into, and a **Do not** list that exists for a reason. |
+| [`docs/state-machines.md`](docs/state-machines.md) | Every implicit state machine in the launcher: states, events, invariants, the code that owns each one, and the tests that guard it. |
 | [`Qwen-Fox-Meadow-handoff.txt`](Qwen-Fox-Meadow-handoff.txt) | The screensaver reviewed from sofa distance: what was changed, what was measured, what is still open. |
 | [`reverse engineer apk guide.md`](<reverse engineer apk guide.md>) | How Google TV's own launcher was decompiled on this machine, with the pitfalls. |
 | [`backup/`](backup/) | The device before anything was disabled: packages, components, roles, settings. |

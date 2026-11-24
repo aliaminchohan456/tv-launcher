@@ -55,6 +55,8 @@ final class FoxMeadowView extends FrameLayout implements Choreographer.FrameCall
     private final Path[] pineGrove = new Path[8];
     private final Choreographer choreographer = Choreographer.getInstance();
     private static final long MIN_FRAME_NS = 14_000_000L;
+    // Frame-loop state machine: it runs only when enabled && visible &&
+    // attached. updateFrameRegistration() is the one transition point.
     private boolean looping, visible, sawLastEveningMinute;
     private long lastFrameNanos = -1L;
     private final long epoch = SystemClock.uptimeMillis();

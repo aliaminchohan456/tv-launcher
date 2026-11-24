@@ -29,17 +29,19 @@ final class FloatingClockView extends FrameLayout {
     private final boolean preview;
     private final TextView hint;
     private String requested;
-    private int generation;
-    private int previewHour = -1;
+    private final Epoch earthEpoch = new Epoch();
+    private boolean previewing;
+    private int previewHour;
     private int previewMinute;
 
     boolean stepPreviewHour(int delta) {
         if (meadow == null) return false;
         if (delta != 0) {
-            if (previewHour < 0) {
+            if (!previewing) {
                 java.time.LocalTime now = java.time.LocalTime.now();
                 previewHour = now.getHour();
                 previewMinute = now.getMinute();
+                previewing = true;
             }
             previewHour = Math.floorMod(previewHour + delta, 24);
             showHint();
@@ -209,7 +211,7 @@ final class FloatingClockView extends FrameLayout {
         removeCallbacks(tick);
         removeCallbacks(hideHint);
         if (hint != null) hint.animate().cancel();
-        generation++;
+        earthEpoch.invalidate();
         requested = null;
         photo.animate().cancel();
         photo.setImageDrawable(null);
@@ -219,7 +221,7 @@ final class FloatingClockView extends FrameLayout {
     private void updateTime() {
         long now = System.currentTimeMillis();
         boolean use24 = ClockPreferences.is24Hour(getContext());
-        java.time.LocalTime time = previewHour >= 0
+        java.time.LocalTime time = previewing
                 ? java.time.LocalTime.of(previewHour, previewMinute)
                 : java.time.Instant.ofEpochMilli(now).atZone(java.time.ZoneId.systemDefault()).toLocalTime();
         Date instant = new Date(now);
@@ -239,14 +241,14 @@ final class FloatingClockView extends FrameLayout {
             updateAmbient(time);
         } else if (mode == ClockPreferences.Background.EARTH && !day.toString().equals(requested)) {
             requested = day.toString();
-            int token = ++generation;
+            final int token = earthEpoch.next();
             Context app = getContext().getApplicationContext();
             int sample = getResources().getDisplayMetrics().widthPixels <= 1920 ? 2 : 1;
             EarthEdition.WORKER.execute(() -> {
                 try {
                     EarthEdition edition = EarthEdition.load(app, day, sample);
                     new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
-                        if (token != generation || !isAttachedToWindow()) return;
+                        if (!earthEpoch.isCurrent(token) || !isAttachedToWindow()) return;
                         photo.setAlpha(0f);
                         photo.setImageBitmap(edition.image);
                         photo.animate().alpha(1f).setDuration(800).start();
@@ -290,7 +292,7 @@ final class FloatingClockView extends FrameLayout {
             date.setTextColor(brightSky ? 0xe0f8f5f0 : 0xb3f5f0e8);
             date.setShadowLayer(brightSky ? dp(8) : 5f, 0, brightSky ? dp(2) : 2f,
                     brightSky ? 0x48000000 : 0xaa000000);
-            meadow.refreshForTime(time, previewHour >= 0);
+            meadow.refreshForTime(time, previewing);
             return;
         }
         float hour = time.getHour() + time.getMinute() / 60f;

@@ -31,6 +31,29 @@ TV cleanup: removed the old APK/XAPK installers from Download (about 1 GB) and c
 
 Remaining: the javac deprecation note and the two pre-existing manifest lint errors (`MissingLeanbackLauncher`, `CoarseFineLocation`).
 
+## Implicit state machines made explicit (24 November 2026)
+
+The whole launcher was read for state that was encoded in booleans, `int` sentinels or nullable fields. The inventory is now in [`docs/state-machines.md`](docs/state-machines.md): 31 machines, each with its states, events, invariants and owner. The ones that were load-bearing or already causing races are now explicit Java types:
+
+- `HomeZone` replaces the four `int` zone constants. `renderZone()` is documented as the one renderer for the home machine.
+- `DockReorder` replaces `dockMoveOrigin` and its `-1` sentinel. Begin, finish and cancel are the only transitions.
+- `Epoch` replaces the hand-written `++token` / `token != field` pattern. It now guards app loads, SSID reads, hero swaps, Earth fetches and gallery copies.
+- `EditSession` separates the edit screen's load from the owner's choice. A slow load can no longer overwrite an icon picked while it was running, and a reset before the load lands still shows the standard art.
+- `IconPickerState` replaces the nullable `chosenPackage` plus `lastAppPosition` with an `APPS` / `ICONS(app, returnPosition)` machine.
+- `LauncherSettingsActivity.Section` owns each tab's title, description, glyph and content view. The sidebar and subtitle had already drifted for Buttons; they now cannot.
+- `PickRequest` replaces `pendingIndex = -1` for the dock picker, and the request is consumed even when the picker is cancelled.
+- `PhotoPickerActivity.State` adds `LOADING` / `EMPTY` / `READY`; the screen says "Looking for pictures…" instead of looking like an empty library while MediaStore is read.
+
+Three holes closed while the machines were made explicit:
+
+- Home now closes the card options menu, and a package-removal broadcast closes it immediately. Previously the menu could offer App Info, Uninstall and Edit for a package that was gone.
+- Hiding the Inputs pill while its menu is open closes the menu. A panel with no visible owner is not a renderable state.
+- `EditAppActivity` invalidates an in-flight gallery copy on reset and guards two quick gallery picks with an epoch, so a decode that finishes late cannot bring back a deleted picture or replace a newer one. Each copy now writes a unique scratch file in the cache and renames it over the final icon only while its epoch is current, so an older decode cannot leave older bytes on disk.
+
+Verification: `:app:assembleDebug` and `:app:testDebugUnitTest` pass; four test classes / 22 tests cover `Epoch`, `EditSession`, `IconPickerState` and `DockReorder`. The debug APK was installed by `push` + `pm install -r` at `192.168.1.16:5555`; the installed base APK SHA-256 is `D446AE078EDC39C7EAA0865B951E09C2DA5158496B4198530AC485C565970002`, matching the local build. On the TCL: Home, grid/ring, Back, long-press menu, Home closing the menu, dock reorder with save hint and Back revert, Settings Dock/Buttons/Clock/More, Edit badge/ring, PhotoPicker empty state, Inputs menu open/close, and Clock preview (including Left/Right hour stepping) all rendered. The final hash was reinstalled after the last gallery-guard change and Home plus the card-menu/Home close were re-checked. No `FATAL EXCEPTION`, `AndroidRuntime` crash or ANR for `com.cleanhome.tv` in logcat.
+
+The Inputs pill was temporarily shown to exercise the inputs menu and then hidden again; the time format was accidentally cycled while navigating the settings screen and restored to "Follow TV setting". The dock order, wallpaper and launcher data were left as found.
+
 ## Goal
 
 Debloat the TV and replace Google TV Home with a small native launcher that looks like the right-hand set in `C:\Users\aliam\Downloads\stock-vs-new-side.jpg`.
@@ -60,6 +83,8 @@ Debloat the TV and replace Google TV Home with a small native launcher that look
 | Host | Windows PowerShell 5.1. No `&&`. Chain with `;`. |
 
 USB ports: nothing is plugged in. Network debugging can cut USB power on this set. Remind the user to turn debugging off when the whole job is finished.
+
+Address note (24 November 2026): the set was reachable at `192.168.1.16:5555`; the DHCP lease had moved from `.21`. Use `adb mdns services` before assuming either address.
 
 Every new shell must `adb start-server` then `adb connect 192.168.1.21:5555` and wait about 1 second. The local adb server dies when the shell exits. The first command otherwise races as "device not found". If the connect times out, the TV has taken a new DHCP address: `adb mdns services` prints the current one as `adb-... _adb._tcp 192.168.1.x:5555`. After a TV reboot the set also asks for the USB debugging authorisation again; nothing can be done from the host until that dialog is accepted on the TV.
 

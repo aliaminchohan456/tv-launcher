@@ -46,8 +46,7 @@ public class IconPickerActivity extends Activity {
     private TextView help;
     private FocusRing ring;
     private Adapter adapter;
-    private String chosenPackage;
-    private int lastAppPosition;
+    private final IconPickerState state = new IconPickerState();
     private boolean pickAppMode;
     private boolean replaceApp;
     private Typeface medium;
@@ -121,7 +120,7 @@ public class IconPickerActivity extends Activity {
     }
 
     private void restoreAppList(int focusIndex) {
-        chosenPackage = null;
+        state.showApps();
         if (pickAppMode) {
             title.setText(replaceApp ? "Replace dock app" : "Add to dock");
         } else {
@@ -159,8 +158,7 @@ public class IconPickerActivity extends Activity {
 
     /** The icons of the app that was picked, its banner and its icon. */
     private void showIconsOf(String pkg, int sourcePosition) {
-        lastAppPosition = sourcePosition;
-        chosenPackage = pkg;
+        state.showIcons(pkg, sourcePosition);
         final List<Entry> icons = new ArrayList<>();
         PackageManager pm = getPackageManager();
         try {
@@ -203,9 +201,9 @@ public class IconPickerActivity extends Activity {
     public boolean dispatchKeyEvent(KeyEvent event) {
         int key = event.getKeyCode();
         if ((key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE)
-                && chosenPackage != null && !pickAppMode) {
+                && state.isShowingIcons() && !pickAppMode) {
             if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
-                restoreAppList(lastAppPosition);
+                restoreAppList(state.returnPosition());
             }
             return true;
         }
@@ -301,7 +299,7 @@ public class IconPickerActivity extends Activity {
                     finish();
                     return;
                 }
-                if (chosenPackage == null) {
+                if (state.isShowingApps()) {
                     int pos = holder.getBindingAdapterPosition();
                     showIconsOf(entry.packageName, pos >= 0 ? pos : 0);
                 } else {

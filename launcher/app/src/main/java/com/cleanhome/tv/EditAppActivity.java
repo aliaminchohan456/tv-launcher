@@ -31,7 +31,8 @@ public class EditAppActivity extends Activity {
     private static final int PICKER = 23;
 
     private String packageName;
-    private String selectedSpec;
+    private final EditSession session = new EditSession();
+    private final Epoch galleryEpoch = new Epoch();
     private boolean focusPlaced;
     private ImageView preview;
     private EditText nameField;
@@ -120,10 +121,11 @@ public class EditAppActivity extends Activity {
             }
             return false;
         });
-        new Thread(this::loadChoices, "edit-icons").start();
+        final int loadToken = session.beginLoad();
+        new Thread(() -> loadChoices(loadToken), "edit-icons").start();
     }
 
-    private void loadChoices() {
+    private void loadChoices(int token) {
         PackageManager pm = getPackageManager();
         Bitmap standard = standardArt(pm, packageName);
         Bitmap custom = AppStyles.loadCustomArt(this, packageName, 480);
@@ -135,11 +137,20 @@ public class EditAppActivity extends Activity {
             if (isFinishing() || isDestroyed()) {
                 return;
             }
-            selectedSpec = currentSpec == null ? "" : currentSpec;
+            // A choice made while this read was in flight wins. The load may
+            // still populate the choices below, but it must not overwrite the
+            // selection or the preview the owner already has on screen.
+            if (!session.finishLoad(token, currentSpec)) {
+                return;
+            }
             standardArt = standard;
-            Bitmap showing = custom != null ? custom : standard;
-            if (showing != null) {
-                preview.setImageBitmap(showing);
+            if (session.appliesLoadedPreview()) {
+                boolean original = session.selectedSpec() == null
+                        || session.selectedSpec().isEmpty();
+                Bitmap showing = original ? standard : (custom != null ? custom : standard);
+                if (showing != null) {
+                    preview.setImageBitmap(showing);
+                }
             }
             LinearLayout row = findViewById(R.id.own_icons);
             addChoiceView(row, new Choice(standard, ""));
@@ -259,7 +270,7 @@ public class EditAppActivity extends Activity {
         if (row == null) {
             return;
         }
-        String chosen = selectedSpec == null ? "" : selectedSpec;
+        String chosen = session.selectedSpec() == null ? "" : session.selectedSpec();
         for (int i = 0; i < row.getChildCount(); i++) {
             View tile = row.getChildAt(i);
             if (!(tile instanceof android.widget.FrameLayout)) {
@@ -290,7 +301,7 @@ public class EditAppActivity extends Activity {
     }
 
     private void choose(String spec, Bitmap bitmap) {
-        selectedSpec = spec;
+        session.select(spec);
         if (bitmap != null) {
             preview.setImageBitmap(bitmap);
         }
@@ -390,7 +401,7 @@ public class EditAppActivity extends Activity {
             if (spec == null || spec.isEmpty()) {
                 return;
             }
-            selectedSpec = spec;
+            session.select(spec);
             Bitmap art = artForSpec(spec);
             if (art != null) {
                 preview.setImageBitmap(art);
@@ -405,24 +416,56 @@ public class EditAppActivity extends Activity {
         if (uri == null) {
             return;
         }
+        // The copy below is asynchronous. Claim the selection now so a load
+        // that lands during the copy does not paint the old picture first.
+        session.beginPendingChoice();
+        final int token = galleryEpoch.next();
+        final String fileName = "icon_" + packageName.replace('.', '_') + ".png";
+        // A unique scratch file per pick. Two picks sharing one file name used
+        // to be able to finish out of order and leave the older picture on
+        // disk, even though the newer one was previewed.
+        final File scratch = new File(getCacheDir(), fileName + "." + token + ".tmp");
         new Thread(() -> {
-            Bitmap bitmap = copyGallery(uri);
+            Bitmap bitmap = copyGallery(uri, scratch);
             runOnUiThread(() -> {
-                if (isFinishing() || isDestroyed()) {
+                if (!galleryEpoch.isCurrent(token) || isFinishing() || isDestroyed()) {
+                    scratch.delete();
                     return;
                 }
                 if (bitmap == null) {
+                    scratch.delete();
                     Toast.makeText(this, "Could not load that picture", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                File target = AppStyles.iconFile(this, fileName);
+                if (target.exists() && !target.delete()) {
+                    scratch.delete();
+                    Toast.makeText(this, "Could not save that picture", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                boolean saved = scratch.renameTo(target);
+                if (!saved) {
+                    // Some storage layers refuse a rename across directories.
+                    try (FileOutputStream out = new FileOutputStream(target)) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                        saved = true;
+                    } catch (Exception ex) {
+                        saved = false;
+                    }
+                    scratch.delete();
+                }
+                if (!saved) {
+                    Toast.makeText(this, "Could not save that picture", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 preview.setImageBitmap(bitmap);
-                selectedSpec = "file:icon_" + packageName.replace('.', '_') + ".png";
+                session.select("file:" + fileName);
                 applyBadge();
             });
         }, "edit-gallery").start();
     }
 
-    private Bitmap copyGallery(Uri uri) {
+    private Bitmap copyGallery(Uri uri, File target) {
         try (InputStream in = getContentResolver().openInputStream(uri)) {
             if (in == null) {
                 return null;
@@ -447,9 +490,7 @@ public class EditAppActivity extends Activity {
             if (decoded == null) {
                 return null;
             }
-            String fileName = "icon_" + packageName.replace('.', '_') + ".png";
-            File file = AppStyles.iconFile(this, fileName);
-            try (FileOutputStream out = new FileOutputStream(file)) {
+            try (FileOutputStream out = new FileOutputStream(target)) {
                 decoded.compress(Bitmap.CompressFormat.PNG, 100, out);
             }
             return decoded;
@@ -478,6 +519,9 @@ public class EditAppActivity extends Activity {
 
     /** Drops the custom name and the custom icon so the app looks like itself again. */
     private void resetToOriginal() {
+        // A gallery copy that is still decoding must not bring the deleted
+        // picture back after the reset.
+        galleryEpoch.invalidate();
         String spec = AppStyles.iconSpec(this, packageName);
         if (spec != null && spec.startsWith("file:")) {
             deleteIconFile(spec.substring("file:".length()));
@@ -488,7 +532,7 @@ public class EditAppActivity extends Activity {
         AppStyles.setIconSpec(this, packageName, null);
         AppStyles.bump(this);
 
-        selectedSpec = "";
+        session.reset();
         showName(realLabel());
         if (standardArt != null) {
             preview.setImageBitmap(standardArt);
@@ -506,11 +550,21 @@ public class EditAppActivity extends Activity {
 
     private void save() {
         AppStyles.setLabel(this, packageName, nameField.getText().toString());
-        if (selectedSpec != null) {
-            AppStyles.setIconSpec(this, packageName, selectedSpec);
+        String spec = session.selectedSpec();
+        if (spec != null) {
+            AppStyles.setIconSpec(this, packageName, spec);
         }
         AppStyles.bump(this);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Any read or gallery decode still running belongs to a screen that is
+        // about to be gone.
+        session.invalidate();
+        galleryEpoch.invalidate();
+        super.onDestroy();
     }
 
     private Typeface outfit(int weight) {

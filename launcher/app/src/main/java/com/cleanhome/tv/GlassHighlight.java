@@ -24,6 +24,10 @@ import android.widget.FrameLayout;
  * The ring is drawn at the card's own scale, so it tracks a card that is
  * growing or shrinking. Call {@link #setScale(float)} every frame while a
  * focus animation is running.
+ *
+ * <p>State machine: {@code UNPLACED -> SHOWN -> TRAVELLING -> FADING -> HIDDEN}.
+ * Only one travel or fade runs at a time, and a fade always ends at the latest
+ * target. The rules are written out in {@code docs/state-machines.md}.</p>
  */
 final class GlassHighlight extends View {
     private final Paint ring = new Paint(Paint.ANTI_ALIAS_FLAG);
